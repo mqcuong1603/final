@@ -1,0 +1,5 @@
+-moz-ui-invalid {
+    appearance: none; /* Standard property for compatibility */
+    -webkit-appearance: none; /* Vendor-prefixed property */
+  }
+  
