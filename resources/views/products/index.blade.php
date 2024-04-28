@@ -14,7 +14,7 @@
             <tr>
                 <th>ID</th>
                 <th>Barcode</th>
-                <th>Name</th>
+                <th>Product Name</th>
                 <th>Import Price</th>
                 <th>Retail Price</th>
                 <th>Category</th>
