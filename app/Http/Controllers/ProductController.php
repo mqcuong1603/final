@@ -18,17 +18,18 @@ class ProductController extends Controller
         Product::create($request->all());
         return redirect()->route('products.index');
     }
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $productId)
     {
+        $product = Product::findOrFail($productId);
         $product->update($request->all());
-        return redirect()->route('products.index');
+    
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
-    public function destroy(Product $product)
+    public function destroy($productId)
     {
-        if ($product->orders()->count() > 0) {
-            return redirect()->route('products.index')->withErrors('Product cannot be deleted because it has been purchased');
-        }
+        $product = Product::findOrFail($productId);
         $product->delete();
-        return redirect()->route('products.index');
+    
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }

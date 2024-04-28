@@ -15,13 +15,10 @@ Route::get('/hello', function () {
 //     $products = App\Models\Product::all(); // Retrieve all products from the database
 //     return View::make('products', ['products' => $products]);
 // });
-Route::get('/some-route', function () {
-    return view('products.index');
-});
 
-Route::get('/products', [ProductController::class, 'index']);
-// Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-// Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-// Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products', [ProductController::class, 'index']) ->name('products.index');
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.edit');
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
 
 
