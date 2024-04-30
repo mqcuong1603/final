@@ -1,0 +1,231 @@
+h1 {
+    color: #fff; 
+    background-color: #333; 
+    padding: 10px; 
+    text-align: center; 
+    margin-top: 0;
+}
+
+h2 {
+    color: #000;
+    background-color: #f0f0f0; 
+    padding: 8px; 
+    text-align: center; 
+    margin-bottom: 20px;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar {
+        width: 100%; /* Sidebar occupies full width */
+        margin-bottom: 20px;
+    }
+
+    .table-container1,
+    .table-container2 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Additional styles for very small screens, like smartphones */
+@media (max-width: 480px) {
+    .account-box,
+    .admin-box {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .search-input {
+        width: 150px;
+    }
+
+    .dropdown-content {
+        max-width: 120px;
+    }
+
+    .table-container1,
+    .table-container2 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        max-height: none; /* Allow full height on smaller screens */
+    }
+}
+
+.account-box {
+    position: absolute;
+    top: 100px;
+    left: 250px;
+    background-color: rgb(45, 43, 43);
+    color: white;
+    padding: 15px 20px; /* Increase padding for more size */
+    border-radius: 10px; /* Increase border radius for rounded corners */
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Increase font size for text */
+    transform: scale(1.2); /* Scale the box by 20% (1.2 times larger) */
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+    background-color: white;
+}
+
+header {
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+.search-bar {
+    padding: 10px;
+    background-color: #f0f0f0; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 100%; 
+    margin: 0 auto; 
+}
+
+
+.search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+
+.sidebar {
+    width: 200;
+    background-color: grey;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: background-color 0.2s; /* Smooth hover effect */
+}
+
+.sidebar a:hover {
+    background-color:rgb(170, 158, 158) ;
+}
+
+.sidebar a:last-child {
+    margin-top: 100px; 
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; 
+}
+
+.table-container1 { 
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0 10px;
+    overflow: auto; 
+    max-height: 400px;
+    margin-top: 100px;
+}
+
+.table-container2 { 
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0 10px;
+    overflow: auto; 
+    max-height: 400px;
+    margin-top: 100px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: grey; 
+    color: white;
+}
+
+
+.table-container + .table-container {
+    margin-top: 20px;
+}
+
+.admin-box {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: grey;
+    color: white;
+    padding: 15px 30px; /* Increase padding for more size */
+    border-radius: 10px; /* Increase border radius for rounded corners */
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Increase font size for text */
+    transform: scale(1.2); /* Scale the box by 20% (1.2 times larger) */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer; /* Biến con trỏ chuột thành hình tay khi hover */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 150px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    top: 100%; /* Hiển thị dropdown content bên dưới admin box */
+    right: 0;
+    margin-top: 20px; /* Khoảng cách từ dropdown content đến admin box */
+    margin-right: -15px; /* Điều chỉnh lề phải để nằm sát với admin box */
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 8px 12px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s; /* Hiệu ứng màu nền khi hover */
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd; /* Đổi màu nền khi hover */
+}
+

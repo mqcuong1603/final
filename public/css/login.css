@@ -1,0 +1,67 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            line-height: 1.55;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, rgba(0, 0, 0, .15), rgba(0, 0, 0, .5)), url('images/bg.jpg') center center;
+            background-size: cover;
+            height: 100vh;
+        }
+        
+        .wrapper {
+            width: 400px;
+            background-color: #edf2f7;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .form-button {
+            margin-bottom: 20px;
+        }
+
+        .form-wrapper {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-wrapper input {
+            font-size: 100%;
+            padding: 12px;
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, .15);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-wrapper input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
