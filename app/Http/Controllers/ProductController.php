@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,7 @@ class ProductController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $products = Product::all(); // Retrieve all products from the database
+        $products = Products::all(); // Retrieve all products from the database
 
         return view('admin.products', ['products' => $products]);
     }
@@ -28,7 +29,7 @@ class ProductController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $products = Product::all(); // Retrieve all products from the database
+        $products = Products::all(); // Retrieve all products from the database
 
         return view('sales.products', ['products' => $products]);
     }
