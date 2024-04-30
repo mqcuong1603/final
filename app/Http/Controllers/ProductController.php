@@ -1,26 +1,52 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\Product;
+
+use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
+
+    public function adminIndex()
+    {
+        // Ensure the user is an admin
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $products = Product::all(); // Retrieve all products from the database
+
+        return view('admin.products', ['products' => $products]);
+    }
+
+    public function salesIndex()
+    {
+        // Ensure the user is a salesperson
+        if (!Auth::user() || !Auth::user()->isSales) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $products = Product::all(); // Retrieve all products from the database
+
+        return view('sales.products', ['products' => $products]);
+    }
     public function index()
     {
-         $products = Product::all();
+        $products = Products::all();
         // return response()->json($products);
         return view('products.index', compact('products'));
-
     }
     public function store(Request $request)
     {
-        Product::create($request->all());
+        Products::create($request->all());
         return redirect()->route('products.index');
     }
 
-    public function edit($productId){
-        $product = Product::findOrFail($productId);
+    public function edit($productId)
+    {
+        $product = Products::findOrFail($productId);
         return view('products.edit', compact('product'));
     }
     public function update(Request $request, $productId)
@@ -37,17 +63,17 @@ class ProductController extends Controller
             'retail_price' => 'numeric',
             'category' => 'string|required'
         ]);
-    
-        $product = Product::findOrFail($productId);
+
+        $product = Products::findOrFail($productId);
         $product->update($request->all());
-    
+
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
     public function destroy($productId)
     {
-        $product = Product::findOrFail($productId);
+        $product = Products::findOrFail($productId);
         $product->delete();
-    
+
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }
