@@ -8,6 +8,13 @@
 }
 @endforeach
 
+@foreach($salesmen as $salesman){
+    <tr>
+        <td>{{ $salesman->fullName }}</td>
+    </tr>
+}
+@endforeach
+
 
 
 

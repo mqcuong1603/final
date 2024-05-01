@@ -14,10 +14,6 @@ namespace App\Models;
 class Salesman extends User
 {
     protected $fillable = [
-        'email_verified_at',
-        'remember_token',
-        'created_at',
-        'updated_at',
-   ];
-
+        'fullName', 'email', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry'
+    ];
 }
