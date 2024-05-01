@@ -1,10 +1,27 @@
-<?php
-foreach($users as $user){
-  print_r($users->name);
+<<<<<<< HEAD
+=======
+
+@foreach($users as $user){
+    <tr>
+        <td>{{ $user->fullName }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->status }}</td>
+    </tr>
 }
-?>
+@endforeach
+
+@foreach($salesmen as $salesman){
+    <tr>
+        <td>{{ $salesman->fullName }}</td>
+    </tr>
+}
+@endforeach
 
 
+
+
+
+>>>>>>> 413a65d9d980ee19f6245527e57167c20055b763
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -84,32 +101,7 @@ foreach($users as $user){
           </tbody>
         </table>
       </div>
-      <div class="table-container2">
-        <h2>New Account</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Luong Minh Dat</td>
-              <td>Administrator</td>
-            </tr>
-            <tr>
-              <td>Lu Dat Luan</td>
-              <td>Salesperson</td>
-            </tr>
-            <tr>
-              <td>Lu Dat Luan</td>
-              <td>Salesperson</td>
-            </tr>
-            <!-- Add more rows if needed -->
-          </tbody>
-        </table>
-      </div>
+      
     </div>
     <script>
       // Lấy tham chiếu đến admin box và dropdown content
