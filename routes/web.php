@@ -1,8 +1,14 @@
 <?php
+
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\LoginController;
+// use Illuminate\Support\Facades\View;
 
+
+//Login routes
 Route::get('/login', function () {
     return view('login');
 });
@@ -11,8 +17,8 @@ Route::get('/admin', function () {
     return view('admin.admin_dashboard');
 });
 
-Route::get('/editP', function () {
-    return view('products.editProduct');
+Route::get('/sales', function () {
+    return view('sales.salesInfo');
 });
 
 Route::get('/logout', function () {
@@ -29,6 +35,3 @@ Route::get('/products/', [ProductController::class, 'index']) ->name('products.i
 Route::get('/products/{productId}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{productId}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{productId}', [ProductController::class, 'destroy'])->name('products.destroy');
-
-
-

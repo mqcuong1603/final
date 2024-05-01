@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Symfony\Component\Mailer\Messenger\SendEmailMessage;
-use App\Mail\Mailer;
-use App\Mail\SalesActivationEmail;
-use App\Models\Salesman;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request; // Import the missing class
+use App\Models\User; // Import the User model
+use Illuminate\Support\Facades\Mail; // Import the Mail facade
+use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
+use App\Models\Salesman; // Import the Salesman model
 
 class AdminController extends Controller
 {
@@ -20,19 +18,20 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::all();
-        
-        return view('admin.admin_dashboard', ['users' => $users]);
+        $salesmen = Salesman::all();
+
+        return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
 
     /**
      * Locks a user account.
      *
-     * @param int $id The ID of the user to lock.
+     * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function lock(int $id)
+    public function lock(int $email)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($email);
         $user->isLocked = true;
         $user->save();
 
@@ -42,12 +41,12 @@ class AdminController extends Controller
     /**
      * Unlocks a user account.
      *
-     * @param int $id The ID of the user to unlock.
+     * @param int $email The email of the user to unlock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function unlock(int $id)
+    public function unlock(int $email)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($email);
         $user->isLocked = false;
         $user->save();
 
@@ -67,10 +66,10 @@ class AdminController extends Controller
     /**
      * Store a newly created user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function createSaleAccount(Request $request)
     {
         // Validate incoming request data
         $validatedData = $request->validate([
@@ -89,17 +88,66 @@ class AdminController extends Controller
     /**
      * Display the specified user.
      *
-     * @param  int  $id
+     * @param  int  $email The email of the user to display.
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(int $id)
+    public function show(int $email)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($email);
         return view('admin.show', ['user' => $user]);
     }
 
-    public function sendActivationEmail(Salesman $salesperson)
+    /**
+     * Send activation email to a salesman.
+     *
+     * @param  \App\Models\Salesman  $salesman The salesman to send the activation email to.
+     * @return void
+     */
+    public function sendActivationEmail(Salesman $salesman)
     {
-        Mail::to($salesperson->email)->send(new SalesActivationEmail);
+        Mail::to($salesman->email)->send(new SalesActivationEmail);
     }
+
+    /**
+     * Activate a salesman.
+     *
+     * @param  \App\Models\Salesman  $salesman The salesman to activate.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activateSalesman(Salesman $salesman)
+    {
+        $salesman->isActivated = true;
+        $salesman->save();
+
+        return redirect()->route('admin.index');
+    }
+
+    /**
+     * Deactivate a salesman.
+     *
+     * @param  \App\Models\Salesman  $salesman The salesman to deactivate.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deactivateSalesman(Salesman $salesman)
+    {
+        $salesman->isActivated = false;
+        $salesman->save();
+
+        return redirect()->route('admin.index');
+    }
+
+    /**
+     * Delete a salesman.
+     *
+     * @param  \App\Models\Salesman  $salesman The salesman to delete.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(Salesman $salesman)
+    {
+        $salesman->delete();
+
+        return redirect()->route('admin.index');
+    }
+
+
 }
