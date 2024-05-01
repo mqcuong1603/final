@@ -18,8 +18,9 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::all();
-        
-        return view('admin.admin_dashboard', ['users' => $users]);
+        $salesmen = Salesman::all();
+
+        return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
 
     public function isAdmin(Request $request)

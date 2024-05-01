@@ -8,7 +8,12 @@
 }
 @endforeach
 
-
+@foreach($salesmen as $salesman){
+    <tr>
+        <td>{{ $salesman->fullName }}</td>
+    </tr>
+}
+@endforeach
 
 
 
@@ -57,36 +62,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>john.doe@example.com</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
+          @foreach($users as $user){
+          <tr>
+              <td>{{ $user->fullName }}</td>
+              <td>{{ $user->email }}</td>
+              <td>{{ $user->status }}</td>
+          </tr>
+          }
+          @endforeach
             <!-- Add more rows if needed -->
           </tbody>
         </table>
