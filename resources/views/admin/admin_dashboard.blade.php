@@ -1,12 +1,3 @@
-<?php
-foreach($users as $user){
-  print_r($users->name);
-}
-?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>

@@ -11,8 +11,8 @@ Route::get('/admin', function () {
     return view('admin.admin_dashboard');
 });
 
-Route::get('/sales', function () {
-    return view('sales.salesInfo');
+Route::get('/editP', function () {
+    return view('products.editProduct');
 });
 
 Route::get('/logout', function () {
