@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 @foreach($users as $user){
     <tr>
@@ -18,10 +16,6 @@
 @endforeach
 
 
-
-
-
->>>>>>> 413a65d9d980ee19f6245527e57167c20055b763
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,6 +40,7 @@
       <input type="text" class="search-input" placeholder="Search...">
       <button>Search</button>
     </div>
+
     <div class="content">
       <div class="sidebar">
         <a href="#account">Account Management</a>
@@ -57,77 +52,126 @@
         <a href="logout.php">Logout</a>
       </div>
       <div class="table-container1">
-        <h2>List of Salespersons</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>john.doe@example.com</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane.smith@example.com</td>
-              <td>Inactive</td>
-            </tr>
-            <!-- Add more rows if needed -->
-          </tbody>
-        </table>
-      </div>
-      
+    <h2>List of Salespersons</h2>
+    <table>
+        <thead>
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Lock</th>
+        <th>Activate</th> <!-- New column -->
+        <th>Edit</th> <!-- New column for hamburger menu -->
+    </tr>
+</thead>
+
+<tbody>
+@foreach($salesmen as $salesman)
+    <tr>
+        <td>Placeholder Image</td>
+        <td>{{ $salesman->fullName }}</td>
+        <td>{{ $salesman->email }}</td>
+        <td>{{ $salesman->status }}</td>
+        <td>Lock</td> 
+        <td>Activate</td> 
+        <td>
+            <div class="dropdownB">
+                <button class="dropbtnB">☰</button>
+                <div class="dropdown-contentB">
+                    <a href="#" data-toggle="modal" data-target="#editModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}" data-salesman-email="{{ $salesman->email }}">Edit</a>
+                    <a href="#" data-toggle="modal" data-target="#lockModal" data-salesman-id="{{ $salesman->id }}" data-salesman-email="{{ $salesman->email }}">Lock</a>
+                    <a href="#" data-toggle="modal" data-target="#deleteModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}">Delete</a>
+                </div>
+            </div>
+        </td>
+    </tr>
+@endforeach
+
+</tbody>
+    </table>
+</div>
     </div>
+     <!-- Admin Dropdown -->
     <script>
-      // Lấy tham chiếu đến admin box và dropdown content
       const adminBox = document.getElementById('adminBox');
       const dropdownContent = document.getElementById('dropdownContent');
-      // Thêm sự kiện click cho admin box
       adminBox.addEventListener('click', function() {
-        // Kiểm tra trạng thái hiện tại của dropdown content
         if (dropdownContent.style.display === 'block') {
-          // Nếu dropdown đang hiển thị, ẩn nó đi
           dropdownContent.style.display = 'none';
         } else {
-          // Nếu dropdown đang ẩn, hiển thị nó lên
           dropdownContent.style.display = 'block';
         }
       });
-      // Đóng dropdown khi click bên ngoài dropdown content
       document.addEventListener('click', function(event) {
         if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
           dropdownContent.style.display = 'none';
         }
       });
-      // Ngăn chặn sự kiện click từ dropdown content lan sang admin box
       dropdownContent.addEventListener('click', function(event) {
-        event.stopPropagation(); // Ngăn chặn sự kiện click lan sang admin box
+        event.stopPropagation(); 
       });
+    </script>
+
+           <!-- Burger Dropdown -->
+      <script>
+        const dropdownBs = document.querySelectorAll('.dropdownB');
+
+dropdownBs.forEach((dropdownB) => {
+  const dropbtnB = dropdownB.querySelector('.dropbtnB');
+  const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
+
+  if (dropbtnB && dropdownContentB) {
+    // Hide the dropdown content by default
+    dropdownContentB.style.display = 'none';
+
+    dropbtnB.addEventListener('click', (event) => {
+      event.stopPropagation();
+      dropdownContentB.style.display = (dropdownContentB.style.display === 'block')? 'none' : 'block';
+
+      // Close other dropdown menus
+      dropdownBs.forEach((otherDropdownB) => {
+        if (otherDropdownB!== dropdownB) {
+          const otherDropdownContentB = otherDropdownB.querySelector('.dropdown-contentB');
+          otherDropdownContentB.style.display = 'none';
+        }
+      });
+    });
+  }
+});
+
+function editSalesman(name) {
+        console.log(`Edit ${name}`);
+    }
+
+    // Function to lock a salesman
+    function lockSalesman(email) {
+        console.log(`Lock ${email}`);
+    }
+
+    // Function to delete a salesman
+    function deleteSalesman(name) {
+        console.log(`Delete ${name}`);
+    }
+      </script>
+    
+
+    <script>
+     // Add an event listener to the edit button
+$(document).on('click', '[data-toggle="modal"]', function(event) {
+    event.preventDefault();
+    var salesmanId = $(this).data('salesman-id');
+    var salesmanName = $(this).data('salesman-name');
+    var salesmanEmail = $(this).data('salesman-email');
+
+    // Populate the modal form with the salesman's information
+    $('#salesman_id').val(salesmanId);
+    $('#fullName').val(salesmanName);
+    $('#email').val(salesmanEmail);
+
+    // Show the modal
+    $('#editModal').modal('show');
+});
     </script>
   </body>
 </html>
