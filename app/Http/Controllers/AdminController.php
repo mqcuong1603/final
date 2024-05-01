@@ -39,9 +39,9 @@ class AdminController extends Controller
      * @param int $id The ID of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function lock(int $id)
+    public function lock(int $email)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($email);
         $user->isLocked = true;
         $user->save();
 
@@ -54,9 +54,9 @@ class AdminController extends Controller
      * @param int $id The ID of the user to unlock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function unlock(int $id)
+    public function unlock(int $email)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($email);
         $user->isLocked = false;
         $user->save();
 
@@ -79,7 +79,7 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function createSaleAccount(Request $request)
     {
         // Validate incoming request data
         $validatedData = $request->validate([
