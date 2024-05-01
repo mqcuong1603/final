@@ -8,22 +8,11 @@ use App\Http\Controllers\LoginController;
 // use Illuminate\Support\Facades\View;
 
 
-Route::get('/sales', function () {
-    return view('sales.salesInfo');
-});
-
-Route::get('/logout', function () {
-    return view('logout');
-});
-
-//login routes
+//Login routes
 Route::get('/login', function () {
     return view('login');
 });
-
-//Login routes
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
 //admin routes
 Route::get('/admin_dashboard', [AdminController::class, 'index'])->name('admin.admin_dashboard');
