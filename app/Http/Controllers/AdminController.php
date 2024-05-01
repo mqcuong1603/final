@@ -6,6 +6,7 @@ use Illuminate\Http\Request; // Import the missing class
 use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
+use App\Models\Salesman; // Import the Salesman model
 
 class AdminController extends Controller
 {

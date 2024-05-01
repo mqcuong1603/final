@@ -11,7 +11,7 @@ namespace App\Models;
  *
  * This model extends the User model and inherits its properties and methods.
  */
-class Salesman extends Users
+class Salesman extends User
 {
     protected $fillable = [
         'fullName', 'email', 'isAdmin', 'isActivated', 'profilePicture'

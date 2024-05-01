@@ -21,7 +21,7 @@
                 <input required placeholder="Email" type="email" name="email" id="adminEmail" autocomplete="off">
             </div>
             <div class="form-wrapper">
-                <input required placeholder="Password" type="password" name="adminPassword" id="adminPassword" autocomplete="off">
+                <input required placeholder="Password" type="password" name="password" id="adminPassword" autocomplete="off">
             </div>
             <input type="hidden" name="formType" value="admin">
             <button type="submit">Login</button>
