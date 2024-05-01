@@ -11,6 +11,7 @@
 @foreach($salesmen as $salesman){
     <tr>
         <td>{{ $salesman->fullName }}</td>
+        <td>{{ $salesman->email }}</td>
     </tr>
 }
 @endforeach

@@ -144,6 +144,7 @@ class AdminController extends Controller
      */
     public function delete(Salesman $salesman)
     {
+        
         $salesman->delete();
 
         return redirect()->route('admin.index');
