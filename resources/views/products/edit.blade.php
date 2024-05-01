@@ -1,6 +1,12 @@
-
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/editP.css">
+</head>
+<body>
 <div class="container">
     <h2>Edit Product</h2>
     <form action="{{ route('products.update', $product->id) }}" method="POST">
@@ -30,4 +36,5 @@
         <button type="submit" class="btn btn-primary">Update Product</button>
     </form>
 </div>
-
+</body>
+</html>

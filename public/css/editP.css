@@ -1,0 +1,152 @@
+h1 {
+    color: #fff; 
+    background-color: #333; 
+    padding: 10px; 
+    text-align: center; 
+    margin-top: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between; /* Align items with space between them */
+    padding: 20px;
+}
+
+.sidebar {
+    width: 200;
+    background-color: grey;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: background-color 0.2s; /* Smooth hover effect */
+}
+
+.sidebar a:hover {
+    background-color:rgb(170, 158, 158) ;
+}
+
+.sidebar a:last-child {
+    margin-top: 100px; 
+}
+
+.content {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.btn1 {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 2px black; /* Thêm viền bên trong màu đen */
+}
+
+
+.btn2 {
+    padding: 10px 20px;
+    background-color: rgb(78, 72, 72);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 2px black; /* Thêm viền bên trong màu đen */
+
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+.detail-box {
+    position: absolute;
+    top: 60px;
+    left: 250px;
+    background-color: grey;
+    color: white;
+    padding: 15px 30px; /* Increase padding for more size */
+    border-radius: 10px; /* Increase border radius for rounded corners */
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Increase font size for text */
+    transform: scale(1.2); /* Scale the box by 20% (1.2 times larger) */
+}
+
+.admin-box {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: grey;
+    color: white;
+    padding: 15px 30px; /* Increase padding for more size */
+    border-radius: 10px; /* Increase border radius for rounded corners */
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Increase font size for text */
+    transform: scale(1.2); /* Scale the box by 20% (1.2 times larger) */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer; /* Biến con trỏ chuột thành hình tay khi hover */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 150px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    top: 100%; /* Hiển thị dropdown content bên dưới admin box */
+    right: 0;
+    margin-top: 20px; /* Khoảng cách từ dropdown content đến admin box */
+    margin-right: -15px; /* Điều chỉnh lề phải để nằm sát với admin box */
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 8px 12px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s; /* Hiệu ứng màu nền khi hover */
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd; /* Đổi màu nền khi hover */
+}
+
+.form-input{
+    padding: 10px;
+    max-width: 500px;
+}
+
