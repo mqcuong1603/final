@@ -1,8 +1,13 @@
-<?php
-foreach($users as $user){
-  print_r($users->name);
+
+@foreach($users as $user){
+    <tr>
+        <td>{{ $user->fullName }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->status }}</td>
+    </tr>
 }
-?>
+@endforeach
+
 
 
 

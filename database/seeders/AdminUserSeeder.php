@@ -14,10 +14,13 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'name' => 'admin',
+            'fullName' => 'admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin'),
             'isAdmin' => true,
+            'isActivated' => true,
+            'isLocked' => false,
+            'profilePicture' => 'default.jpg'
         ]);
     }
 }

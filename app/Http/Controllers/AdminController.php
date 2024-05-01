@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Symfony\Component\Mailer\Messenger\SendEmailMessage;
-use App\Mail\Mailer;
-use App\Mail\SalesActivationEmail;
-use App\Models\Salesman;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request; // Import the missing class
+use App\Models\User; // Import the User model
+use Illuminate\Support\Facades\Mail; // Import the Mail facade
+use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
 
 class AdminController extends Controller
 {
@@ -22,6 +19,17 @@ class AdminController extends Controller
         $users = User::all();
         
         return view('admin.admin_dashboard', ['users' => $users]);
+    }
+
+    public function isAdmin(Request $request)
+    {
+        $user = User::findOrFail($request->email);
+        $user->isAdmin = true;
+        
+        if ($user->password = bcrypt($request->password)) {
+            $user->save();
+            return redirect()->route('admin.admin_dashboard');
+        }
     }
 
     /**
@@ -98,8 +106,8 @@ class AdminController extends Controller
         return view('admin.show', ['user' => $user]);
     }
 
-    public function sendActivationEmail(Salesman $salesperson)
+    public function sendActivationEmail(Salesman $salesman)
     {
-        Mail::to($salesperson->email)->send(new SalesActivationEmail);
+        Mail::to($salesman->email)->send(new SalesActivationEmail);
     }
 }
