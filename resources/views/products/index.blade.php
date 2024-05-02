@@ -46,17 +46,15 @@
                 <hr>
                 <div class="dropdown pb-4">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                        <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg" alt="hugenerd" width="30" height="30" class="rounded-circle">
                         <span class="d-none d-sm-inline mx-1">admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Change password</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -80,7 +78,7 @@
                     </div>
                 </nav>
             </div>
-            <div id="HTML_element"  style="overflow-y: auto;">
+            <div>
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -93,14 +91,18 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
+                </table>
+            </div>
+            <div id="HTML_element" style="overflow-y: auto;">
+                <table class="table table-hover table-striped">
                         @foreach ($products as $product)
                         <tr>
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->barcode }}</td>
-                            <td>{{ $product->product_name }}</td>
-                            <td>${{ number_format($product->import_price, 2) }}</td>
-                            <td>${{ number_format($product->retail_price, 2) }}</td>
-                            <td>{{ $product->category }}</td>
+                            <td style="width: 4%;">{{ $product->id }}</td>
+                            <td style="width: 15%;">{{ $product->barcode }}</td>
+                            <td style="width: 21%;">{{ $product->product_name }}</td>
+                            <td style="width: 18%;">${{ number_format($product->import_price, 2) }}</td>
+                            <td style="width: 17%;">${{ number_format($product->retail_price, 2) }}</td>
+                            <td style="width: 13%;">{{ $product->category }}</td>
                             <td>
                                 <!-- Edit button triggers modal -->
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
@@ -164,7 +166,7 @@
 <script>
     function setElementHeightToScreenHeight() {
         const element = document.getElementById("HTML_element");
-        element.style.height = window.innerHeight - 88 + "px";
+        element.style.height = window.innerHeight - 145 + "px";
     }
 </script>
 

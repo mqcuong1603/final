@@ -166,7 +166,7 @@ class AdminController extends Controller
         $salesman = Salesman::findOrFail($id);
         $salesman->update($request->all());
 
-        return redirect()->route('admin.index')->with('success', 'Information updated successfully');
+        return redirect()->route('admin.admin_dashboard')->with('success', 'Information updated successfully');
     }
 
     public function edit($id)
