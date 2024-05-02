@@ -52,45 +52,76 @@
         <a href="logout.php">Logout</a>
       </div>
       <div class="table-container1">
-    <h2>List of Salespersons</h2>
-    <table>
-        <thead>
-    <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Lock</th>
-        <th>Activate</th> <!-- New column -->
-        <th>Edit</th> <!-- New column for hamburger menu -->
-    </tr>
-</thead>
-
-<tbody>
-@foreach($salesmen as $salesman)
-    <tr>
-        <td>Placeholder Image</td>
-        <td>{{ $salesman->fullName }}</td>
-        <td>{{ $salesman->email }}</td>
-        <td>{{ $salesman->status }}</td>
-        <td>Lock</td> 
-        <td>Activate</td> 
-        <td>
-            <div class="dropdownB">
-                <button class="dropbtnB">☰</button>
-                <div class="dropdown-contentB">
-                    <a href="#" data-toggle="modal" data-target="#editModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}" data-salesman-email="{{ $salesman->email }}">Edit</a>
-                    <a href="#" data-toggle="modal" data-target="#lockModal" data-salesman-id="{{ $salesman->id }}" data-salesman-email="{{ $salesman->email }}">Lock</a>
-                    <a href="#" data-toggle="modal" data-target="#deleteModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}">Delete</a>
-                </div>
-            </div>
-        </td>
-    </tr>
-@endforeach
-
-</tbody>
-    </table>
-</div>
+        <h2>List of Salespersons</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>john.doe@example.com</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane.smith@example.com</td>
+              <td>Inactive</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane.smith@example.com</td>
+              <td>Inactive</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane.smith@example.com</td>
+              <td>Inactive</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane.smith@example.com</td>
+              <td>Inactive</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane.smith@example.com</td>
+              <td>Inactive</td>
+            </tr>
+            <!-- Add more rows if needed -->
+          </tbody>
+        </table>
+      </div>
+      <div class="table-container2">
+        <h2>New Account</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Luong Minh Dat</td>
+              <td>Administrator</td>
+            </tr>
+            <tr>
+              <td>Lu Dat Luan</td>
+              <td>Salesperson</td>
+            </tr>
+            <tr>
+              <td>Lu Dat Luan</td>
+              <td>Salesperson</td>
+            </tr>
+            <!-- Add more rows if needed -->
+          </tbody>
+        </table>
+      </div>
     </div>
      <!-- Admin Dropdown -->
     <script>

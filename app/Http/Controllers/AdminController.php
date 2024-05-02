@@ -22,7 +22,6 @@ class AdminController extends Controller
 
         return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
-
     /**
      * Locks a user account.
      *
