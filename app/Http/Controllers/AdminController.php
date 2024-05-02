@@ -163,5 +163,5 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
-    
+
 }
