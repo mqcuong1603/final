@@ -22,7 +22,6 @@ class AdminController extends Controller
 
         return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
-
     /**
      * Locks a user account.
      *
@@ -153,12 +152,12 @@ class AdminController extends Controller
     public function changePassword(Request $request)
     {
         $validatedData = $request->validate([
+            'email' => 'required|email',
             'password' => 'required|string|min:8',
-            'email' => 'required|email|max:255',
         ]);
 
         $user = User::where('email', $validatedData['email'])->first();
-        $user->password = $validatedData['password'];
+        $user->password = bcrypt($validatedData['password']);
         $user->save();
 
         return response()->json(['message' => 'Password changed successfully'], 200);
