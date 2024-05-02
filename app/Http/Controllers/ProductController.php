@@ -39,10 +39,32 @@ class ProductController extends Controller
         // return response()->json($products);
         return view('products.index', compact('products'));
     }
-    public function store(Request $request)
+    /* public function store(Request $request)
     {
         Products::create($request->all());
         return redirect()->route('products.index');
+    } */
+
+    public function store(Request $request)
+    {
+    $request->validate([
+        'product_id' => 'numeric|required',
+        'product_barcode' => 'numeric',
+        'product_name' => 'string|required',
+        'import_price' => 'numeric',
+        'retail_price' => 'numeric',
+        'category' => 'string|required'
+    ]);
+
+    Products::create($request->all());
+
+    return redirect()->route('products.index')->with('success', 'Product added successfully.');
+    }
+
+    public function create()
+    {
+        $product = new Products();
+        return view('products.create', compact('product'));
     }
 
     public function edit($productId)
