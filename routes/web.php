@@ -13,6 +13,10 @@ use App\Http\Controllers\LoginController;
 Route::get('/login', function () {
     return view('login');
 });
+
+Route::get('/editP', function () {
+    return view('/products.editProduct');
+});
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 //admin routes

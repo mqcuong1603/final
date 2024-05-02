@@ -55,7 +55,7 @@
         </form>
     </div>
     <div class="image-container">
-    <img src="css/images/product1.jpg" alt="Product Image">
+    <img src="{{ asset('images/iphone13.jpeg') }}" alt="Product Image">
     </div>
 </div>
 
