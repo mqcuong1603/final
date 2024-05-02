@@ -3,7 +3,10 @@
 
 <div class="container">
     <h2>Edit Product</h2>
-    <form action="" method="POST">
+    <form action="{{ route('products.update', $product->id) }}" method="POST">
+        @csrf
+        @method('PUT') 
+
         <div class="form-productName">
             <label>Product Name:</label>
             <input type="text" class="form-control" id="product_name" name="product_name" value="" required>

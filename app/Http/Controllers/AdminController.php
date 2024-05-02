@@ -149,5 +149,30 @@ class AdminController extends Controller
         return redirect()->route('admin.index');
     }
 
+    
+    public function update(Request $request, $id)
+    {
 
+        // $table->string('barcode')->unique();
+        //     $table->string('product_name');
+        //     $table->decimal('import_price', 8, 2);
+        //     $table->decimal('retail_price', 8, 2);
+        //     $table->string('category');
+        $request->validate([
+            'salesman_fullName' => 'string|required',
+            'email' => 'string|required',
+            'password' => 'numeric',
+        ]);
+
+        $salesman = Salesman::findOrFail($id);
+        $salesman->update($request->all());
+
+        return redirect()->route('admin.admin_dashboard')->with('success', 'Information updated successfully');
+    }
+
+    public function edit($id)
+    {
+        $salesman = Salesman::findOrFail($id);
+        return view('admin.edit', compact('salesman'));
+    }
 }

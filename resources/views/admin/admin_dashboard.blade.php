@@ -1,4 +1,22 @@
 
+@foreach($users as $user){
+    <tr>
+        <td>{{ $user->fullName }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->status }}</td>
+    </tr>
+}
+@endforeach
+
+@foreach($salesmen as $salesman){
+    <tr>
+        <td>{{ $salesman->fullName }}</td>
+    </tr>
+}
+@endforeach
+
+
+
 
 
 <!DOCTYPE html>
@@ -7,12 +25,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css')}}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <link rel="stylesheet" href="css/admin.css">
   </head>
   <body>
-    <h1>POINT OF SALE</h1>
+    <h1 style="color: white">POINT OF SALE</h1>
     <div class="account-box"> Account Management </div>
     <header>
       <div class="admin-box" id="adminBox"> Admin <div class="dropdown">
@@ -32,7 +48,7 @@
       <div class="sidebar">
         <a href="#account">Account Management</a>
         <a href="#createSales">Create Sales Account</a>
-        <a href="#product_catalog">Product Catalog</a>
+        <a href="/Finail-3/final/public/products">Product Catalog</a>
         <a href="#customer">Customer Management</a>
         <a href="#transaction">Transaction</a>
         <a href="#report">Report & Analytics </a>
@@ -42,64 +58,53 @@
 
       <div class="table-container1">
         <h2>List of Salespersons</h2>
-        <div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Total Accounts</h5>
-      <p class="card-text">{{ $salesmen->count() }}</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Active Accounts</h5>
-      <p class="card-text">{{ $salesmen->where('isActivated', '1')->count() }}</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Locked Accounts</h5>
-      <p class="card-text">{{ $salesmen->where('isLocked', '1')->count() }}</p>
-    </div>
-  </div>
-</div>
-    <table>
-        <thead>
-    <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Lock</th>
-        <th>Activate</th> 
-        <th>Edit</th>
-    </tr>
-</thead>
-
-<tbody>
-@foreach($salesmen as $salesman)
-    <tr>
-        <td>Placeholder Image</td>
-        <td>{{ $salesman->fullName }}</td>
-        <td>{{ $salesman->email }}</td>
-        <td>{{ $salesman->status }}</td>
-        <td>Lock</td> 
-        <td>Activate</td> 
-        <td>
-            <div class="dropdownB">
-                <button class="dropbtnB">☰</button>
-                <div class="dropdown-contentB">
-                    <a href="#" data-toggle="modal" data-target="#editModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}" data-salesman-email="{{ $salesman->email }}">Edit</a>
-                    <a href="#" data-toggle="modal" data-target="#lockModal" data-salesman-id="{{ $salesman->id }}" data-salesman-email="{{ $salesman->email }}">Lock</a>
-                    <a href="#" data-toggle="modal" data-target="#deleteModal" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}">Delete</a>
-                </div>
-            </div>
-        </td>
-    </tr>
-@endforeach
-
-</tbody>
-    </table>
-</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          @foreach($users as $user){
+          <tr>
+              <td>{{ $user->fullName }}</td>
+              <td>{{ $user->email }}</td>
+              <td>{{ $user->status }}</td>
+          </tr>
+          }
+          @endforeach
+            <!-- Add more rows if needed -->
+          </tbody>
+        </table>
+      </div>
+      <div class="table-container2">
+        <h2>New Account</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Luong Minh Dat</td>
+              <td>Administrator</td>
+            </tr>
+            <tr>
+              <td>Lu Dat Luan</td>
+              <td>Salesperson</td>
+            </tr>
+            <tr>
+              <td>Lu Dat Luan</td>
+              <td>Salesperson</td>
+            </tr>
+            <!-- Add more rows if needed -->
+          </tbody>
+        </table>
+      </div>
     </div>
      <!-- Admin Dropdown -->
     <script>
@@ -118,7 +123,7 @@
         }
       });
       dropdownContent.addEventListener('click', function(event) {
-        event.stopPropagation(); 
+        event.stopPropagation(); // Ngăn chặn sự kiện click lan sang admin box
       });
     </script>
 
@@ -182,5 +187,44 @@ $(document).on('click', '[data-toggle="modal"]', function(event) {
     $('#editModal').modal('show');
 });
     </script>
+
+
+@foreach($salesmen as $salesman)
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit User {{ $salesman->fullName }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.update', $salesman->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="fulName" value="{{ $salesman->fullName }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ $salesman->email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="active" {{ $salesman->status == 'activate'? 'selected' : '' }}>Activate</option>
+                                <option value="inactive" {{ $salesman->status == 'inactivate'? 'selected' : '' }}>Inactivate</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
   </body>
 </html>
