@@ -150,5 +150,18 @@ class AdminController extends Controller
         return redirect()->route('admin.index');
     }
 
+    public function changePassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'password' => 'required|string|min:8',
+            'email' => 'required|email|max:255',
+        ]);
 
+        $user = User::where('email', $validatedData['email'])->first();
+        $user->password = $validatedData['password'];
+        $user->save();
+
+        return response()->json(['message' => 'Password changed successfully'], 200);
+    }
+    
 }
