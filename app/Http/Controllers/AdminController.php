@@ -90,7 +90,7 @@ class AdminController extends Controller
      * @param  int  $email The email of the user to display.
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(int $email)
+    public function show($email)
     {
         $user = User::findOrFail($email);
         return view('admin.show', ['user' => $user]);
@@ -205,6 +205,3 @@ class AdminController extends Controller
     }
 
 }
-// Remove the extra closing brace '}' from the selected code block
-// to fix the syntax error and unexpected '}' errors.
-// The corrected code block is as follows:
