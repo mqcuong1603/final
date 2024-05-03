@@ -78,20 +78,25 @@
                 </div>
             </div>
       </div>
-      <div class=" col-auto col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
+      <div class=" py-3 col-auto col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
         <div>
           <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                         <div class="container-fluid">
-                        <a class="navbar-brand" href="javascript:void(0)">List Of Salepersons</a>
+                        <a class="navbar-brand" href="/admin_dashboard">List Of Salepersons</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                        <span class="navbar-toggler-icon"></span>
+                        Create Account
                         </button>
                         <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                          <form class="d-flex" action="" method="GET">
+                              <button class="btn btn-primary" type="submit">Create Account</button>
+                          </form>
+                        </li>
                         </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="text" placeholder="Search">
-                            <button class="btn btn-primary" type="button">Search</button>
+                        <form class="d-flex" action="{{ route('admin.search') }}" method="GET">
+                            <input class="form-control me-2" type="text" placeholder="Search" name="search" id="search">
+                            <button class="btn btn-primary" type="submit">Search</button>
                         </form>
                         </div>
                     </div>
@@ -223,6 +228,42 @@
             </div>
         </div>
     @endforeach
+
+    <!-- Create Account Modal -->
+<!--     @foreach ($salesmen as $salesman)
+        <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <div class="form-group">
+                              <label for="name">Full Name</label>
+                              <input type="text" class="form-control" id="fullName" name="fullName"
+                                  value="{{ $salesman->fullName }}">
+                          </div>
+                          <div class="form-group">
+                              <label for="email">Email</label>
+                              <input type="email" class="form-control" id="email" name="email"
+                                  value="{{ $salesman->email }}">
+                          </div>
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    @endforeach -->
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Admin Dropdown -->
