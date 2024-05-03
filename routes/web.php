@@ -22,10 +22,12 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::get('/delete/{salesman}', [AdminController::class, 'delete'])->name('admin.delete');
     Route::put('/update/{email}', [AdminController::class, 'update'])->name('admin.update');
     Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::get('/search', [AdminController::class, 'searchSalesman'])->name('admin.search');
 });
 
 //Sales routes
 Route::get('/sales/dashboard', 'SalesController@dashboard')->name('sales_dashboard');
+
 
 //products routes
 Route::get('/products/', [ProductController::class, 'index']) ->name('products.index');

@@ -192,4 +192,15 @@ class AdminController extends Controller
 
     return redirect()->route('admin.admin_dashboard');
 }
+
+    public function searchSalesman(Request $request)
+    {
+        $validatedData = $request->validate([
+            'search' => 'required|string|max:255'
+        ]);
+
+        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
+
+        return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
+    }
 }
