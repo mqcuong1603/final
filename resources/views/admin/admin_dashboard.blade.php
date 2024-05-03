@@ -1,12 +1,19 @@
-@foreach ($salesmen as $salesman)
-    {
+
+@foreach($users as $user){
+    <tr>
+        <td>{{ $user->fullName }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->status }}</td>
+    </tr>
+}
+@endforeach
+
+@foreach($salesmen as $salesman){
     <tr>
         <td>{{ $salesman->fullName }}</td>
         <td>{{ $salesman->email }}</td>
-        <td>{{ $salesman->isLocked }}</td>
-        <td>{{ $salesman->isActivated }}</td>
-        </tr>
-    }
+    </tr>
+}
 @endforeach
 
 
@@ -46,74 +53,55 @@
     </div>
 
     <div class="content">
-        <div class="sidebar">
-            <a href="#account">Account Management</a>
-            <a href="#createSales">Create Sales Account</a>
-            <a href="/Finail-3/final/public/products">Product Catalog</a>
-            <a href="#customer">Customer Management</a>
-            <a href="#transaction">Transaction</a>
-            <a href="#report">Report & Analytics </a>
-            <a href="logout.php">Logout</a>
-        </div>
-        <div class="table-container1">
-            <h2>List of Salespersons</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Lock</th>
-                        <th>Activate</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
+      <div class="sidebar">
+        <a href="#account">Account Management</a>
+        <a href="#createSales">Create Sales Account</a>
+        <a href="/Finail-3/final/public/products">Product Catalog</a>
+        <a href="#customer">Customer Management</a>
+        <a href="#transaction">Transaction</a>
+        <a href="#report">Report & Analytics </a>
+        <a href="logout.php">Logout</a>
+      </div>
+      <div class="table-container1">
+    <h2>List of Salespersons</h2>
+    <table>
+        <thead>
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Lock</th>
+        <th>Activate</th> <!-- New column -->
+        <th>Edit</th> <!-- New column for hamburger menu -->
+    </tr>
+</thead>
 
-                <tbody>
-                    @foreach ($salesmen as $salesman)
-                        <tr>
-                            <td>Placeholder Image</td>
-                            <td>{{ $salesman->fullName }}</td>
-                            <td>{{ $salesman->email }}</td>
-                            <td>
-                              @if ($salesman->isLocked == 0)
-                                Unlock
-                              @else
-                                Lock
-                              @endif
-                            </td>
-                            <td>
-                              @if ($salesman->isActivated == 0)
-                                Inactivate
-                              @else
-                                Activate
-                              @endif
-                            <td>
-                                <div class="dropdownB">
-                                    <button class="dropbtnB">☰</button>
-                                    <div class="dropdown-contentB">
-                                        <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#editModal-{{ $salesman->id }}"
-                                            data-salesman-id="{{ $salesman->id }}"
-                                            data-salesman-name="{{ $salesman->fullName }}"
-                                            data-salesman-email="{{ $salesman->email }}">Edit</a>
-                                        <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#lockModal-{{ $salesman->id }}"
-                                            data-salesman-id="{{ $salesman->id }}"
-                                            data-salesman-email="{{ $salesman->email }}">Lock</a>
-                                        <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-{{ $salesman->id }}"
-                                            data-salesman-id="{{ $salesman->id }}"
-                                            data-salesman-name="{{ $salesman->fullName }}">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+<tbody>
+@foreach($salesmen as $salesman)
+    <tr>
+        <td>Placeholder Image</td>
+        <td>{{ $salesman->fullName }}</td>
+        <td>{{ $salesman->email }}</td>
+        <td>{{ $salesman->status }}</td>
+        <td>Lock</td> 
+        <td>Activate</td> 
+        <td>
+            <div class="dropdownB">
+                <button class="dropbtnB">☰</button>
+                <div class="dropdown-contentB">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#editModal-{{ $salesman->id }}" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}" data-salesman-email="{{ $salesman->email }}">Edit</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#lockModal-{{$salesman->id}}" data-salesman-id="{{ $salesman->id }}" data-salesman-email="{{ $salesman->email }}">Lock</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal-{{$salesman->id}}" data-salesman-id="{{ $salesman->id }}" data-salesman-name="{{ $salesman->fullName }}">Delete</a>
+                </div>
+            </div>
+        </td>
+    </tr>
+@endforeach
 
-                </tbody>
-            </table>
-        </div>
+</tbody>
+    </table>
+</div>
     </div>
     <!-- Admin Dropdown -->
     @foreach ($salesmen as $salesman)
@@ -161,23 +149,23 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        const adminBox = document.getElementById('adminBox');
-        const dropdownContent = document.getElementById('dropdownContent');
-        adminBox.addEventListener('click', function() {
-            if (dropdownContent.style.display === 'block') {
-                dropdownContent.style.display = 'none';
-            } else {
-                dropdownContent.style.display = 'block';
-            }
-        });
-        document.addEventListener('click', function(event) {
-            if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
-                dropdownContent.style.display = 'none';
-            }
-        });
-        dropdownContent.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
+      const adminBox = document.getElementById('adminBox');
+      const dropdownContent = document.getElementById('dropdownContent');
+      adminBox.addEventListener('click', function() {
+        if (dropdownContent.style.display === 'block') {
+          dropdownContent.style.display = 'none';
+        } else {
+          dropdownContent.style.display = 'block';
+        }
+      });
+      document.addEventListener('click', function(event) {
+        if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
+          dropdownContent.style.display = 'none';
+        }
+      });
+      dropdownContent.addEventListener('click', function(event) {
+        event.stopPropagation(); 
+      });
     </script>
 
     <!-- Burger Dropdown -->

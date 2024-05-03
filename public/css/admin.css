@@ -138,29 +138,17 @@ header {
     justify-content: space-between; 
 }
 
-.table-container1 { 
+.table-container1 {
     flex: 1;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 5px;
     box-sizing: border-box;
-    margin: 0 10px;
-    overflow: auto; 
+    overflow: auto;
     max-height: 400px;
-    margin-top: 100px;
-}
-
-.table-container2 { 
-    flex: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin: 0 10px;
-    overflow: auto; 
-    max-height: 400px;
-    margin-top: 100px;
-}
+    margin-top: 20px; /* Adjust top margin as needed */
+  }
+  
 
 table {
     width: 100%;
@@ -229,3 +217,58 @@ th {
     background-color: #ddd; /* Đổi màu nền khi hover */
 }
 
+/*Hamburger menu*/
+.dropdownB {
+    position: relative;
+    display: inline-block;
+    cursor: pointer; /* Change cursor to hand when hovering */
+  }
+  
+  .dropdown-contentB {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 150px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    top:  5px; /* Display dropdown content below the hamburger menu */
+    right: 0;
+    margin-top: 20px; /* Space between dropdown content and hamburger menu */
+    margin-right: -15px; /* Adjust right margin to align with hamburger menu */
+  }
+  
+  .dropdown-contentB a {
+    color: black;
+    padding: 8px 12px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s; /* Background color effect on hover */
+  }
+  
+  .dropdown-contentB a:hover {
+    background-color: #ddd; /* Change background color on hover */
+  }
+  
+  .dropbtnB {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Change cursor to hand when hovering */
+  }
+  
+  .dropbtnB:hover {
+    background-color: #444;
+  }
+  
+  .dropdownB:hover.dropdown-contentB {
+    display: block;
+  }
+  
+  .dropdownB:hover.dropbtnB {
+    background-color: #444;
+  }
+  
+  
