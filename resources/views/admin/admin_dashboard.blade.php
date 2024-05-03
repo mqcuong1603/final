@@ -1,19 +1,4 @@
 
-@foreach($users as $user){
-    <tr>
-        <td>{{ $user->fullName }}</td>
-        <td>{{ $user->email }}</td>
-        <td>{{ $user->status }}</td>
-    </tr>
-}
-@endforeach
-
-@foreach($salesmen as $salesman){
-    <tr>
-        <td>{{ $salesman->fullName }}</td>
-    </tr>
-}
-@endforeach
 
 
 
@@ -26,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </head>
   <body>
     <h1 style="color: white">POINT OF SALE</h1>
@@ -55,7 +42,6 @@
         <a href="logout.php">Logout</a>
       </div>
 
-
       <div class="table-container1">
         <h2>List of Salespersons</h2>
         <table>
@@ -67,11 +53,11 @@
             </tr>
           </thead>
           <tbody>
-          @foreach($users as $user){
+          @foreach($salesmen as $salesman){
           <tr>
-              <td>{{ $user->fullName }}</td>
-              <td>{{ $user->email }}</td>
-              <td>{{ $user->status }}</td>
+              <td>{{ $salesman->fullName }}</td>
+              <td>{{ $salesman->email }}</td>
+              <td>{{ $salesman->status }}</td>
           </tr>
           }
           @endforeach
