@@ -288,27 +288,8 @@
         dropdownContent.addEventListener('click', function(event) {
             event.stopPropagation();
         });
-        const adminBox = document.getElementById('adminBox');
-        const dropdownContent = document.getElementById('dropdownContent');
-        adminBox.addEventListener('click', function() {
-            if (dropdownContent.style.display === 'block') {
-                dropdownContent.style.display = 'none';
-            } else {
-                dropdownContent.style.display = 'block';
-            }
-        });
-        document.addEventListener('click', function(event) {
-            if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
-                dropdownContent.style.display = 'none';
-            }
-        });
-        dropdownContent.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
     </script>
 
-    <!-- Burger Dropdown -->
-    <script>
     <!-- Burger Dropdown -->
     <script>
         const dropdownBs = document.querySelectorAll('.dropdownB');
@@ -316,21 +297,11 @@
         dropdownBs.forEach((dropdownB) => {
             const dropbtnB = dropdownB.querySelector('.dropbtnB');
             const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
-        dropdownBs.forEach((dropdownB) => {
-            const dropbtnB = dropdownB.querySelector('.dropbtnB');
-            const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
 
             if (dropbtnB && dropdownContentB) {
                 // Hide the dropdown content by default
                 dropdownContentB.style.display = 'none';
-            if (dropbtnB && dropdownContentB) {
-                // Hide the dropdown content by default
-                dropdownContentB.style.display = 'none';
 
-                dropbtnB.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
-                        'block';
                 dropbtnB.addEventListener('click', (event) => {
                     event.stopPropagation();
                     dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
@@ -347,21 +318,7 @@
                 });
             }
         });
-                    // Close other dropdown menus
-                    dropdownBs.forEach((otherDropdownB) => {
-                        if (otherDropdownB !== dropdownB) {
-                            const otherDropdownContentB = otherDropdownB.querySelector(
-                                '.dropdown-contentB');
-                            otherDropdownContentB.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
 
-        function editSalesman(name) {
-            console.log(`Edit ${name}`);
-        }
         function editSalesman(name) {
             console.log(`Edit ${name}`);
         }
@@ -370,16 +327,6 @@
         function lockSalesman(email) {
             console.log(`Lock ${email}`);
         }
-        // Function to lock a salesman
-        function lockSalesman(email) {
-            console.log(`Lock ${email}`);
-        }
-
-        // Function to delete a salesman
-        function deleteSalesman(name) {
-            console.log(`Delete ${name}`);
-        }
-    </script>
 
         // Function to delete a salesman
         function deleteSalesman(name) {
@@ -395,17 +342,7 @@
             var salesmanId = $(this).data('salesman-id');
             var salesmanName = $(this).data('salesman-name');
             var salesmanEmail = $(this).data('salesman-email');
-        // Add an event listener to the edit button
-        $(document).on('click', '[data-toggle="modal"]', function(event) {
-            event.preventDefault();
-            var salesmanId = $(this).data('salesman-id');
-            var salesmanName = $(this).data('salesman-name');
-            var salesmanEmail = $(this).data('salesman-email');
 
-            // Populate the modal form with the salesman's information
-            $('#salesman_id').val(salesmanId);
-            $('#fullName').val(salesmanName);
-            $('#email').val(salesmanEmail);
             // Populate the modal form with the salesman's information
             $('#salesman_id').val(salesmanId);
             $('#fullName').val(salesmanName);
@@ -414,13 +351,12 @@
             // Show the modal
             $('#editModal').modal('show');
         });
+    </script>
+    <script>
         function setElementHeightToScreenHeight() {
           const element = document.getElementById("HTML_element");
           element.style.height = window.innerHeight - 145 + "px";
         }
     </script>
 </body>
-
-</body>
-
 </html>
