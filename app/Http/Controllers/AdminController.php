@@ -29,13 +29,13 @@ class AdminController extends Controller
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function lock(int $email)
-    {
-        $user = User::findOrFail($email);
-        $user->isLocked = true;
-        $user->save();
+    public function lock($email)
+    {   
+        $salesman = Salesman::findOrFail($email);
+        $salesman->isLocked = true;
+        $salesman->save();
+        return redirect()->route('admin.admin_dashboard');
 
-        return redirect()->route('admin.index');
     }
 
     /**
@@ -44,13 +44,12 @@ class AdminController extends Controller
      * @param int $email The email of the user to unlock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function unlock(int $email)
+    public function unlock($email)
     {
-        $user = User::findOrFail($email);
-        $user->isLocked = false;
-        $user->save();
-
-        return redirect()->route('admin.index');
+        $salesman = Salesman::findOrFail($email);
+        $salesman->isLocked = false;
+        $salesman->save();
+        return redirect()->route('admin.admin_dashboard');
     }
 
     /**
@@ -142,9 +141,9 @@ class AdminController extends Controller
      * @param  \App\Models\Salesman  $salesman The salesman to delete.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete(Salesman $salesman)
+    public function delete($email)
     {
-
+        $salesman = Salesman::findOrFail($email);
         $salesman->delete();
 
         return redirect()->route('admin.index');
