@@ -143,7 +143,11 @@ class AdminController extends Controller
      */
     public function delete($email)
     {
+<<<<<<< HEAD
         $salesman = Salesman::findOrFail($email);
+=======
+
+>>>>>>> ea60629cc27e82d374553520d37d4657b09df383
         $salesman->delete();
 
         return redirect()->route('admin.index');
@@ -183,6 +187,7 @@ class AdminController extends Controller
     
     if (!$salesman) {
         return response()->json(['error' => 'User not found'], 404);
+<<<<<<< HEAD
     }
 
     $salesman->fullName = $validatedData['fullName'];
@@ -202,5 +207,15 @@ class AdminController extends Controller
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
+=======
+>>>>>>> ea60629cc27e82d374553520d37d4657b09df383
     }
+
+    $salesman->fullName = $validatedData['fullName'];
+    $salesman->email = $validatedData['email'];
+    $salesman->isActivated = $validatedData['status'];
+    $salesman->save();
+
+    return redirect()->route('admin.admin_dashboard');
+}
 }
