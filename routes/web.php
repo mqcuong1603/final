@@ -27,6 +27,7 @@ Route::prefix('admin_dashboard')->group(function () {
 
 //Sales routes
 Route::get('/sales/dashboard', 'SalesController@dashboard')->name('sales_dashboard');
+Route::get('/sales/active', 'SalesController@active')->name('sales.active');
 
 
 //products routes
