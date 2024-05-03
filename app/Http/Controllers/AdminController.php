@@ -7,6 +7,7 @@ use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
 use App\Models\Salesman; // Import the Salesman model
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -143,36 +144,53 @@ class AdminController extends Controller
      */
     public function delete(Salesman $salesman)
     {
-        
+
         $salesman->delete();
 
         return redirect()->route('admin.index');
     }
 
-    
-    public function update(Request $request, $id)
+    public function changePassword(Request $request)
     {
-
-        // $table->string('barcode')->unique();
-        //     $table->string('product_name');
-        //     $table->decimal('import_price', 8, 2);
-        //     $table->decimal('retail_price', 8, 2);
-        //     $table->string('category');
-        $request->validate([
-            'salesman_fullName' => 'string|required',
-            'email' => 'string|required',
-            'password' => 'numeric',
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
         ]);
 
-        $salesman = Salesman::findOrFail($id);
-        $salesman->update($request->all());
+        $user = User::where('email', $validatedData['email'])->first();
+        $user->password = bcrypt($validatedData['password']);
+        $user->save();
 
-        return redirect()->route('admin.admin_dashboard')->with('success', 'Information updated successfully');
+        return response()->json(['message' => 'Password changed successfully'], 200);
     }
 
-    public function edit($id)
-    {
-        $salesman = Salesman::findOrFail($id);
-        return view('admin.edit', compact('salesman'));
+    /**
+     * Update a user's information.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $oldEmail
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $oldEmail)
+{   
+    
+    $validatedData = $request->validate([
+        'fullName' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'status' => 'required|numeric|min:0|max:1'
+    ]);
+
+    $salesman = Salesman::where('email', $oldEmail)->first();
+    
+    if (!$salesman) {
+        return response()->json(['error' => 'User not found'], 404);
     }
+
+    $salesman->fullName = $validatedData['fullName'];
+    $salesman->email = $validatedData['email'];
+    $salesman->isActivated = $validatedData['status'];
+    $salesman->save();
+
+    return redirect()->route('admin.admin_dashboard');
+}
 }

@@ -20,7 +20,7 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::get('/lock/{email}', [AdminController::class, 'lock'])->name('admin.lock');
     Route::get('/unlock/{email}', [AdminController::class, 'unlock'])->name('admin.unlock');
     Route::get('/delete/{salesman}', [AdminController::class, 'delete'])->name('admin.delete');
-    Route::put('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+    Route::put('/update/{email}', [AdminController::class, 'update'])->name('admin.update');
     Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
 });
 
