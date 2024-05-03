@@ -143,32 +143,28 @@ class AdminController extends Controller
      */
     public function delete($email)
     {
-<<<<<<< HEAD
-        $salesman = Salesman::findOrFail($email);
-=======
+            $salesman = Salesman::findOrFail($email);
+            $salesman->delete();
 
->>>>>>> ea60629cc27e82d374553520d37d4657b09df383
-        $salesman->delete();
+            return redirect()->route('admin.index');
+        }
 
-        return redirect()->route('admin.index');
-    }
+        public function changePassword(Request $request)
+        {
+            $validatedData = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string|min:8',
+            ]);
 
-    public function changePassword(Request $request)
-    {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ]);
+            $user = User::where('email', $validatedData['email'])->first();
+            $user->password = bcrypt($validatedData['password']);
+            $user->save();
 
-        $user = User::where('email', $validatedData['email'])->first();
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
+            return response()->json(['message' => 'Password changed successfully'], 200);
+        }
 
-        return response()->json(['message' => 'Password changed successfully'], 200);
-    }
-
-    /**
-     * Update a user's information.
+        /**
+         * Update a user's information.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $oldEmail
@@ -187,7 +183,6 @@ class AdminController extends Controller
     
     if (!$salesman) {
         return response()->json(['error' => 'User not found'], 404);
-<<<<<<< HEAD
     }
 
     $salesman->fullName = $validatedData['fullName'];
@@ -207,15 +202,9 @@ class AdminController extends Controller
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
-=======
->>>>>>> ea60629cc27e82d374553520d37d4657b09df383
     }
 
-    $salesman->fullName = $validatedData['fullName'];
-    $salesman->email = $validatedData['email'];
-    $salesman->isActivated = $validatedData['status'];
-    $salesman->save();
-
-    return redirect()->route('admin.admin_dashboard');
 }
-}
+// Remove the extra closing brace '}' from the selected code block
+// to fix the syntax error and unexpected '}' errors.
+// The corrected code block is as follows:
