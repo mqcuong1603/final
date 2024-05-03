@@ -27,6 +27,10 @@ Route::prefix('admin_dashboard')->group(function () {
 //Sales routes
 Route::get('/sales/dashboard', 'SalesController@dashboard')->name('sales_dashboard');
 
+Route::get('/salesnew', function () {return view('sales.sales_new');});
+
+
+
 //products routes
 Route::get('/products/', [ProductController::class, 'index']) ->name('products.index');
 Route::get('/products/{productId}/edit', [ProductController::class, 'edit'])->name('products.edit');
