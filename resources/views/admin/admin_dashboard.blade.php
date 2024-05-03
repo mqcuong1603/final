@@ -3,6 +3,8 @@
 <html lang="en">
 
 <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
@@ -174,7 +176,55 @@
                 </tbody>
             </table>
         </div>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <!-- Admin Dropdown -->
+    @foreach ($salesmen as $salesman)
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <div class="form-group">
+                              <label for="name">Full Name</label>
+                              <input type="text" class="form-control" id="fullName" name="fullName"
+                                  value="{{ $salesman->fullName }}">
+                          </div>
+                          <div class="form-group">
+                              <label for="email">Email</label>
+                              <input type="email" class="form-control" id="email" name="email"
+                                  value="{{ $salesman->email }}">
+                          </div>
+                          <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="1" {{ $salesman->isActivated == 1 ? 'selected' : '' }}>
+                                    Activate</option>
+                                <option value="0" {{ $salesman->isActivated == 0 ? 'selected' : '' }}>
+                                    Inactivate</option>
+                            </select>
+                        </div>
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Admin Dropdown -->
     @foreach ($salesmen as $salesman)
         <!-- Edit Modal -->
@@ -238,8 +288,27 @@
         dropdownContent.addEventListener('click', function(event) {
             event.stopPropagation();
         });
+        const adminBox = document.getElementById('adminBox');
+        const dropdownContent = document.getElementById('dropdownContent');
+        adminBox.addEventListener('click', function() {
+            if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+            } else {
+                dropdownContent.style.display = 'block';
+            }
+        });
+        document.addEventListener('click', function(event) {
+            if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.style.display = 'none';
+            }
+        });
+        dropdownContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     </script>
 
+    <!-- Burger Dropdown -->
+    <script>
     <!-- Burger Dropdown -->
     <script>
         const dropdownBs = document.querySelectorAll('.dropdownB');
@@ -247,11 +316,21 @@
         dropdownBs.forEach((dropdownB) => {
             const dropbtnB = dropdownB.querySelector('.dropbtnB');
             const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
+        dropdownBs.forEach((dropdownB) => {
+            const dropbtnB = dropdownB.querySelector('.dropbtnB');
+            const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
 
             if (dropbtnB && dropdownContentB) {
                 // Hide the dropdown content by default
                 dropdownContentB.style.display = 'none';
+            if (dropbtnB && dropdownContentB) {
+                // Hide the dropdown content by default
+                dropdownContentB.style.display = 'none';
 
+                dropbtnB.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
+                        'block';
                 dropbtnB.addEventListener('click', (event) => {
                     event.stopPropagation();
                     dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
@@ -268,7 +347,21 @@
                 });
             }
         });
+                    // Close other dropdown menus
+                    dropdownBs.forEach((otherDropdownB) => {
+                        if (otherDropdownB !== dropdownB) {
+                            const otherDropdownContentB = otherDropdownB.querySelector(
+                                '.dropdown-contentB');
+                            otherDropdownContentB.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
 
+        function editSalesman(name) {
+            console.log(`Edit ${name}`);
+        }
         function editSalesman(name) {
             console.log(`Edit ${name}`);
         }
@@ -277,6 +370,16 @@
         function lockSalesman(email) {
             console.log(`Lock ${email}`);
         }
+        // Function to lock a salesman
+        function lockSalesman(email) {
+            console.log(`Lock ${email}`);
+        }
+
+        // Function to delete a salesman
+        function deleteSalesman(name) {
+            console.log(`Delete ${name}`);
+        }
+    </script>
 
         // Function to delete a salesman
         function deleteSalesman(name) {
@@ -292,7 +395,17 @@
             var salesmanId = $(this).data('salesman-id');
             var salesmanName = $(this).data('salesman-name');
             var salesmanEmail = $(this).data('salesman-email');
+        // Add an event listener to the edit button
+        $(document).on('click', '[data-toggle="modal"]', function(event) {
+            event.preventDefault();
+            var salesmanId = $(this).data('salesman-id');
+            var salesmanName = $(this).data('salesman-name');
+            var salesmanEmail = $(this).data('salesman-email');
 
+            // Populate the modal form with the salesman's information
+            $('#salesman_id').val(salesmanId);
+            $('#fullName').val(salesmanName);
+            $('#email').val(salesmanEmail);
             // Populate the modal form with the salesman's information
             $('#salesman_id').val(salesmanId);
             $('#fullName').val(salesmanName);
@@ -306,6 +419,8 @@
           element.style.height = window.innerHeight - 145 + "px";
         }
     </script>
+</body>
+
 </body>
 
 </html>
