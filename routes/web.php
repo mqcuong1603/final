@@ -17,8 +17,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 //admin routes
 Route::prefix('admin_dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.admin_dashboard');
-    Route::get('/lock/{email}', [AdminController::class, 'lock'])->name('admin.lock');
-    Route::get('/unlock/{email}', [AdminController::class, 'unlock'])->name('admin.unlock');
+    Route::put('/lock/{email}', [AdminController::class, 'changeLock'])->name('admin.changeLock');
     Route::get('/delete/{salesman}', [AdminController::class, 'delete'])->name('admin.delete');
     Route::put('/update/{email}', [AdminController::class, 'update'])->name('admin.update');
     Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');

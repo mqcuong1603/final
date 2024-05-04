@@ -29,25 +29,10 @@ class AdminController extends Controller
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function lock($email)
-    {   
-        $salesman = Salesman::findOrFail($email);
-        $salesman->isLocked = true;
-        $salesman->save();
-        return redirect()->route('admin.admin_dashboard');
-
-    }
-
-    /**
-     * Unlocks a user account.
-     *
-     * @param int $email The email of the user to unlock.
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function unlock($email)
+    public function changeLock($email)
     {
         $salesman = Salesman::findOrFail($email);
-        $salesman->isLocked = false;
+        $salesman->isLocked = !($salesman->isLocked);
         $salesman->save();
         return redirect()->route('admin.admin_dashboard');
     }
@@ -104,7 +89,7 @@ class AdminController extends Controller
      */
     public function sendActivationEmail(Salesman $salesman)
     {
-        Mail::to($salesman->email)->send(new SalesActivationEmail);
+        Mail::to($salesman->email)->send(new SalesActivationEmail());
     }
 
     /**
@@ -143,65 +128,63 @@ class AdminController extends Controller
      */
     public function delete($email)
     {
-            $salesman = Salesman::findOrFail($email);
-            $salesman->delete();
+        $salesman = Salesman::findOrFail($email);
+        $salesman->delete();
 
-            return redirect()->route('admin.index');
-        }
+        return redirect()->route('admin.index');
+    }
 
-        public function changePassword(Request $request)
-        {
-            $validatedData = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string|min:8',
-            ]);
+    public function changePassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
 
-            $user = User::where('email', $validatedData['email'])->first();
-            $user->password = bcrypt($validatedData['password']);
-            $user->save();
+        $user = User::where('email', $validatedData['email'])->first();
+        $user->password = bcrypt($validatedData['password']);
+        $user->save();
 
-            return response()->json(['message' => 'Password changed successfully'], 200);
-        }
+        return response()->json(['message' => 'Password changed successfully'], 200);
+    }
 
-        /**
-         * Update a user's information.
+    /**
+     * Update a user's information.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $oldEmail
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $oldEmail)
-{   
-    
-    $validatedData = $request->validate([
-        'fullName' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'status' => 'required|numeric|min:0|max:1'
-    ]);
+    {
+        $validatedData = $request->validate([
+            'fullName' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'status' => 'required|numeric|min:0|max:1',
+        ]);
 
-    $salesman = Salesman::where('email', $oldEmail)->first();
-    
-    if (!$salesman) {
-        return response()->json(['error' => 'User not found'], 404);
+        $salesman = Salesman::where('email', $oldEmail)->first();
+
+        if (!$salesman) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $salesman->fullName = $validatedData['fullName'];
+        $salesman->email = $validatedData['email'];
+        $salesman->isActivated = $validatedData['status'];
+        $salesman->save();
+
+        return redirect()->route('admin.admin_dashboard');
     }
-
-    $salesman->fullName = $validatedData['fullName'];
-    $salesman->email = $validatedData['email'];
-    $salesman->isActivated = $validatedData['status'];
-    $salesman->save();
-
-    return redirect()->route('admin.admin_dashboard');
-}
 
     public function searchSalesman(Request $request)
     {
         $validatedData = $request->validate([
-            'search' => 'required|string|max:255'
+            'search' => 'required|string|max:255',
         ]);
 
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
     }
-
 }
