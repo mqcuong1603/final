@@ -32,7 +32,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="/admin_dashboard" class="nav-link align-middle px-0">
+                        <a href="{{route('admin.admin_dashboard')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info" >Account Management</span>
                         </a>
                     </li>
@@ -42,18 +42,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/products" class="nav-link align-middle px-0">
+                        <a href="{{route('products.index')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Product Catalog</span>
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span> 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('products.create')}}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Add products</span> 
                         </a>
                     </li>
                     <li>
@@ -78,20 +73,16 @@
                 </div>
             </div>
       </div>
-      <div class=" py-3 col-auto col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
+      <div class=" py-3 col-auto col-md-9 col-xl-10 px-sm-10 container d-flex flex-column">
         <div>
           <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                         <div class="container-fluid">
                         <a class="navbar-brand" href="/admin_dashboard">List Of Salepersons</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                        Create Account
-                        </button>
                         <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                          <form class="d-flex" action="" method="GET">
-                              <button class="btn btn-primary" type="submit">Create Account</button>
-                          </form>
+                            <button data-bs-toggle="modal"
+                            data-bs-target="#addModal" class="btn btn-success" >Create Account</button>
                         </li>
                         </ul>
                         <form class="d-flex" action="{{ route('admin.search') }}" method="GET">
@@ -159,7 +150,7 @@
                                   ☰
                                   </button>
                                   <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
+                                    <li><a class="dropdown-item" data-bs-toggle="modal"
                                           data-bs-target="#editModal-{{ $salesman->id }}"
                                           data-salesman-id="{{ $salesman->id }}"
                                           data-salesman-name="{{ $salesman->fullName }}"
@@ -186,6 +177,7 @@
         </div>
     </div>
     <!-- Admin Dropdown -->
+    <!-- Modal to edit salemans -->
     @foreach ($salesmen as $salesman)
         <!-- Edit Modal -->
         <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
@@ -194,8 +186,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
@@ -230,38 +221,35 @@
     @endforeach
 
     <!-- Create Account Modal -->
-<!--     @foreach ($salesmen as $salesman)
-        <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+            aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
-                      <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
+                      <form action="#" method="POST">
                           @csrf
                           @method('PUT')
                           <div class="form-group">
                               <label for="name">Full Name</label>
                               <input type="text" class="form-control" id="fullName" name="fullName"
-                                  value="{{ $salesman->fullName }}">
+                                  value="">
                           </div>
                           <div class="form-group">
                               <label for="email">Email</label>
                               <input type="email" class="form-control" id="email" name="email"
-                                  value="{{ $salesman->email }}">
+                                  value="">
                           </div>
-                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                          <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
                       </form>
                   </div>
                 </div>
             </div>
         </div>
-    @endforeach -->
 
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -396,7 +384,7 @@
     <script>
         function setElementHeightToScreenHeight() {
           const element = document.getElementById("HTML_element");
-          element.style.height = window.innerHeight - 145 + "px";
+          element.style.height = window.innerHeight - 147 + "px";
         }
     </script>
 </body>
