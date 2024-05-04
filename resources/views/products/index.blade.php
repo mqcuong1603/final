@@ -18,7 +18,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="/admin_dashboard" class="nav-link align-middle px-0">
+                        <a href="{{ route('admin.admin_dashboard')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account Management</span>
                         </a>
                     </li>
@@ -35,11 +35,6 @@
                     <li>
                         <a href="#" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span> 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('products.create')}}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Add products</span> 
                         </a>
                     </li>
                     <li>
@@ -69,10 +64,13 @@
                 <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="javascript:void(0)">Product Catalog</a>
+                        <a href="" class="navbar-brand">
+                            <button class="btn btn-success">Create product</button>
+                        </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="mynavbar">
+                          <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
                         </ul>
                         <form class="d-flex">
@@ -123,6 +121,35 @@
             </div>
         </div>
     </div>
+            aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        {{-- <span aria-hidden="true">&times;</span> --}}
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="newFullName" name="fullName"
+                                value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="newEmail" name="email"
+                                value="">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Saleman</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
     
     <!-- Modal for editing products -->
@@ -132,8 +159,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProductModalLabel">Edit Product {{ $product->id }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">

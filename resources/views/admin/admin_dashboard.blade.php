@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,7 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="/admin_dashboard" class="nav-link align-middle px-0">
+                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Account
                                     Management</span>
                             </a>
@@ -45,7 +46,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/products" class="nav-link align-middle px-0">
+                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Product
                                     Catalog</span>
                             </a>
@@ -53,11 +54,6 @@
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('products.create') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Add products</span>
                             </a>
                         </li>
                         <li>
@@ -88,13 +84,13 @@
             </div>
             <div class=" col-auto col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
                 <div>
-                    <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
+                    <nav class="navbar navbar-expand-sm navbar-dark bg-dark my-3">
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{{ route('admin.admin_dashboard') }}">List Of Salespersons</a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#mynavbar">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
+                            <a href="#" class="navbar-brand">
+                                <button class="btn btn-success" data-bs-target="#addModal" data-bs-toggle="modal">Create
+                                    salesperson account</button>
+                            </a>
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <ul class="navbar-nav me-auto">
                                 </ul>
@@ -142,23 +138,6 @@
                                         Activate
                                     @endif
                                 <td>
-                                    <!-- <div class="dropdown">
-                                    <button class="btn" type="button" dropdown-toggle="dropdown">☰</button>
-                                    <ul class="dropdown-menu">
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Edit</a>
-                                      </li>
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Lock</a>
-                                      </li>
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Delete</a>
-                                      </li>
-                                    </ul>
-                                </div> -->
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-bs-toggle="dropdown">
@@ -170,16 +149,19 @@
                                                     data-salesman-id="{{ $salesman->id }}"
                                                     data-salesman-name="{{ $salesman->fullName }}"
                                                     data-salesman-email="{{ $salesman->email }}">Edit</a></li>
-                                            <li>
-                                                <a action="post" class="dropdown-item"
-                                                    href="{{ route('admin.changeLock', $salesman->email) }}">
-                                                    @if ($salesman->isLocked == 0)
-                                                        Lock
-                                                    @else
-                                                        Unlock
-                                                    @endif
-                                                </a>
-                                            </li>
+                                                    <li>
+                                                        <form method="POST" action="{{ route('admin.changeLock', ['email' => urlencode($salesman->email)]) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="dropdown-item">
+                                                                @if ($salesman->isLocked == 0)
+                                                                    Lock
+                                                                @else
+                                                                    Unlock
+                                                                @endif
+                                                            </button>
+                                                        </form>
+                                                    </li>
                                             <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
                                                     data-bs-target="#deleteModal-{{ $salesman->id }}"
                                                     data-salesman-id="{{ $salesman->id }}"
@@ -197,7 +179,7 @@
             </table>
         </div>
     </div>
-    <!-- Admin Dropdown -->
+
     @foreach ($salesmen as $salesman)
         <!-- Edit Modal -->
         <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
@@ -206,8 +188,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
                         </button>
                     </div>
                     <div class="modal-body">
@@ -240,97 +222,43 @@
             </div>
         </div>
     @endforeach
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Admin Dropdown -->
-    @foreach ($salesmen as $salesman)
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                                <label for="name">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName"
-                                    value="{{ $salesman->fullName }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    value="{{ $salesman->email }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status">
-                                    <option value="1" {{ $salesman->isActivated == 1 ? 'selected' : '' }}>
-                                        Activate</option>
-                                    <option value="0" {{ $salesman->isActivated == 0 ? 'selected' : '' }}>
-                                        Inactivate</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </form>
-                    </div>
+    <div class="modal fade " id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        {{-- <span aria-hidden="true">&times;</span> --}}
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.create') }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" name="fullName" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" value="">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Add Saleman</button>
+                    </form>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <!-- Burger Dropdown -->
-    <script>
-        const dropdownBs = document.querySelectorAll('.dropdownB');
-
-        dropdownBs.forEach((dropdownB) => {
-            const dropbtnB = dropdownB.querySelector('.dropbtnB');
-            const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
-
-            if (dropbtnB && dropdownContentB) {
-                // Hide the dropdown content by default
-                dropdownContentB.style.display = 'none';
-
-                dropbtnB.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
-                        'block';
-
-                    // Close other dropdown menus
-                    dropdownBs.forEach((otherDropdownB) => {
-                        if (otherDropdownB !== dropdownB) {
-                            const otherDropdownContentB = otherDropdownB.querySelector(
-                                '.dropdown-contentB');
-                            otherDropdownContentB.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
-
-        function editSalesman(name) {
-            console.log(`Edit ${name}`);
-        }
-
-        // Function to lock a salesman
-        function lockSalesman(email) {
-            console.log(`Lock ${email}`);
-        }
-
-        // Function to delete a salesman
-        function deleteSalesman(name) {
-            console.log(`Delete ${name}`);
-        }
-    </script>
+    
 
 
     <script>
@@ -349,6 +277,7 @@
             // Show the modal
             $('#editModal').modal('show');
         });
+
     </script>
     <script>
         function setElementHeightToScreenHeight() {

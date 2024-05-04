@@ -29,8 +29,9 @@ class AdminController extends Controller
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeLock($email)
+    public function changeLock(Request $request, $email)
     {
+        $email = urldecode($email);
         $salesman = Salesman::findOrFail($email);
         $salesman->isLocked = !($salesman->isLocked);
         $salesman->save();
@@ -42,10 +43,6 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create()
-    {
-        return view('admin.create');
-    }
 
     /**
      * Store a newly created user in storage.
@@ -53,20 +50,23 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function createSaleAccount(Request $request)
     {
         // Validate incoming request data
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'fullName' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:8',
             // Add more validation rules as needed
         ]);
 
         // Create the user
-        User::create($validatedData);
+        Salesman::create($validatedData);
 
-        return response()->json(['message' => 'User created successfully'], 201);
+        // Flash a success message to the session
+        session()->flash('success', 'Salesman created successfully.');
+
+        return redirect()->route('admin.admin_dashboard');
     }
 
     /**

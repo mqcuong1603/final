@@ -20,8 +20,8 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::put('/lock/{email}', [AdminController::class, 'changeLock'])->name('admin.changeLock');
     Route::get('/delete/{salesman}', [AdminController::class, 'delete'])->name('admin.delete');
     Route::put('/update/{email}', [AdminController::class, 'update'])->name('admin.update');
-    Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
     Route::get('/search', [AdminController::class, 'searchSalesman'])->name('admin.search');
+    Route::post('/create', [AdminController::class, 'createSaleAccount'])->name('admin.create');
 });
 
 //Sales routes
