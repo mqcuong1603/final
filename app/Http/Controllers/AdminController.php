@@ -7,8 +7,6 @@ use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
 use App\Models\Salesman; // Import the Salesman model
-use Illuminate\Support\Facades\Log;
-
 class AdminController extends Controller
 {
     /**
@@ -23,17 +21,20 @@ class AdminController extends Controller
 
         return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
+
+
     /**
      * Locks a user account.
      *
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeLock(Request $request, $email)
+
+    public function changeLock($email)
     {
         $email = urldecode($email);
         $salesman = Salesman::findOrFail($email);
-        $salesman->isLocked = !($salesman->isLocked);
+        $salesman->isLocked = !$salesman->isLocked;
         $salesman->save();
         return redirect()->route('admin.admin_dashboard');
     }
@@ -51,6 +52,7 @@ class AdminController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
+
     public function createSaleAccount(Request $request)
     {
         // Validate incoming request data
@@ -61,6 +63,10 @@ class AdminController extends Controller
         ]);
 
         // Create the user
+        Salesman::create($validatedData);
+
+        // Flash a success message to the session
+        session()->flash('success', 'Salesman created successfully.');
         Salesman::create($validatedData);
 
         // Flash a success message to the session
@@ -89,6 +95,7 @@ class AdminController extends Controller
      */
     public function sendActivationEmail(Salesman $salesman)
     {
+        Mail::to($salesman->email)->send(new SalesActivationEmail());
         Mail::to($salesman->email)->send(new SalesActivationEmail());
     }
 
@@ -130,6 +137,8 @@ class AdminController extends Controller
     {
         $salesman = Salesman::findOrFail($email);
         $salesman->delete();
+        $salesman = Salesman::findOrFail($email);
+        $salesman->delete();
 
         return redirect()->route('admin.index');
     }
@@ -144,10 +153,15 @@ class AdminController extends Controller
         $user = User::where('email', $validatedData['email'])->first();
         $user->password = bcrypt($validatedData['password']);
         $user->save();
+        $user = User::where('email', $validatedData['email'])->first();
+        $user->password = bcrypt($validatedData['password']);
+        $user->save();
 
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
 
+    /**
+     * Update a user's information.
     /**
      * Update a user's information.
      *
@@ -177,6 +191,7 @@ class AdminController extends Controller
         return redirect()->route('admin.admin_dashboard');
     }
 
+
     public function searchSalesman(Request $request)
     {
         $validatedData = $request->validate([
@@ -188,3 +203,5 @@ class AdminController extends Controller
         return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
     }
 }
+
+

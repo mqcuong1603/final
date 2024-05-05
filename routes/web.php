@@ -42,3 +42,8 @@ Route::get('/products/create', [ProductController::class, 'create'])->name('prod
 Route::post('/products',[ProductController::class, 'store'])->name('products.store');
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+//change password routes
+Route::get('/changePass', function () {
+    return view('admin.changePass');
+});

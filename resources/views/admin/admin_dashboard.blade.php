@@ -4,6 +4,9 @@
 
 <head>
 
+<<<<<<< HEAD
+<head>
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +21,22 @@
             .hold:hover {
                 color: white;
 
+=======
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+        <style>
+            .hold:hover {
+                color: white;
+
+>>>>>>> 90cd952cc999ff4a9e806ab0d082161b390fa3c9
             }
         </style>
     </head>
@@ -73,7 +92,11 @@
                             <span class="d-none d-sm-inline mx-1">admin</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+<<<<<<< HEAD
                             <li><a class="dropdown-item" href="#">Change password</a></li>
+=======
+                            <li><a class="dropdown-item" href="changePass.php">Change password</a></li>
+>>>>>>> 90cd952cc999ff4a9e806ab0d082161b390fa3c9
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -279,6 +302,10 @@
         });
 
     </script>
+<<<<<<< HEAD
+    <script>
+=======
+>>>>>>> 90cd952cc999ff4a9e806ab0d082161b390fa3c9
     <script>
         function setElementHeightToScreenHeight() {
             const element = document.getElementById("HTML_element");
@@ -293,5 +320,8 @@
         });
     </script>
 </body>
+<<<<<<< HEAD
+=======
 
+>>>>>>> 90cd952cc999ff4a9e806ab0d082161b390fa3c9
 </html>
