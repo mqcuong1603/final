@@ -160,7 +160,7 @@
                                           data-salesman-id="{{ $salesman->id }}"
                                           data-salesman-email="{{ $salesman->email }}">Lock</a></li>
                                     <li><a class="dropdown-item" data-bs-toggle="modal" href="#" 
-                                          data-bs-target="#deleteModal-{{ $salesman->id }}"
+                                          data-bs-target="#confirm-delete"
                                           data-salesman-id="{{ $salesman->id }}"
                                           data-salesman-name="{{ $salesman->fullName }}">Delete</a></li>
                                   </ul>
@@ -212,7 +212,7 @@
                                     Inactivate</option>
                             </select>
                         </div>
-                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                          <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
                       </form>
                   </div>
                 </div>
@@ -251,52 +251,28 @@
             </div>
         </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <!-- Admin Dropdown -->
-    @foreach ($salesmen as $salesman)
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
-                          @csrf
-                          @method('PUT')
-                          <div class="form-group">
-                              <label for="name">Full Name</label>
-                              <input type="text" class="form-control" id="fullName" name="fullName"
-                                  value="{{ $salesman->fullName }}">
-                          </div>
-                          <div class="form-group">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" id="email" name="email"
-                                  value="{{ $salesman->email }}">
-                          </div>
-                          <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="form-control" id="status" name="status">
-                                <option value="1" {{ $salesman->isActivated == 1 ? 'selected' : '' }}>
-                                    Activate</option>
-                                <option value="0" {{ $salesman->isActivated == 0 ? 'selected' : '' }}>
-                                    Inactivate</option>
-                            </select>
-                        </div>
-                          <button type="submit" class="btn btn-primary">Save Changes</button>
-                      </form>
-                  </div>
+    
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header h3">
+                    Delete Account
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this account
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Delete</a>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
