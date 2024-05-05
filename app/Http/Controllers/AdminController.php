@@ -61,15 +61,11 @@ class AdminController extends Controller
         // Validate incoming request data
         $validatedData = $request->validate([
             'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users|max:255',
+            'email' => 'required|email|unique:salesmen|max:255', // Ensure the email is unique in the 'salesmen' table
             // Add more validation rules as needed
         ]);
 
         // Create the user
-        Salesman::create($validatedData);
-
-        // Flash a success message to the session
-        session()->flash('success', 'Salesman created successfully.');
         Salesman::create($validatedData);
 
         // Flash a success message to the session
@@ -146,21 +142,36 @@ class AdminController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function changePassword(Request $request)
+    public function changePassword($user_email)
+    {   
+        
+        $user = User::where('email', $user_email)->first();
+        return view('admin.changePass', ['user' => $user]);
+    }
+
+    public function updatePassword(Request $request, $email)
     {
         $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
+            'currentPassword' => 'required|string|min:5',
+            'newPassword' => 'required|string|min:5',
+            'confirmPassword' => 'required|string|min:5',
         ]);
-
-        $user = User::where('email', $validatedData['email'])->first();
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
-        $user = User::where('email', $validatedData['email'])->first();
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
-
-        return response()->json(['message' => 'Password changed successfully'], 200);
+    
+        $user = User::where('email', $email)->first();
+        if(!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        else if($validatedData['newPassword'] != $validatedData['confirmPassword']) {
+            return response()->json(['error' => 'Passwords do not match'], 400);
+        }
+        else if(!password_verify($validatedData['currentPassword'], $user->password)) {
+            return response()->json(['error' => 'Incorrect password'], 400);
+        }
+        else {
+            $user->password = bcrypt($validatedData['newPassword']);
+            $user->save();
+            return redirect()->route('admin.admin_dashboard');
+        }
     }
 
     /**
@@ -193,15 +204,22 @@ class AdminController extends Controller
 
         return redirect()->route('admin.admin_dashboard');
     }
-
     public function searchSalesman(Request $request)
     {
         $validatedData = $request->validate([
             'search' => 'required|string|max:255',
         ]);
+    
+        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
+                            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+                            ->get();
+    
+        return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
+    }
 
-        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
-
-        return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
+    public function logout()
+    {
+        auth()->logout();
+        return redirect()->route('login');
     }
 }
