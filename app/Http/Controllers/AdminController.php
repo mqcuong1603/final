@@ -29,28 +29,13 @@ class AdminController extends Controller
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function lock(int $email)
+    public function changeLock(Request $request, $email)
     {
-        $user = User::findOrFail($email);
-        $user->isLocked = true;
-        $user->save();
-
-        return redirect()->route('admin.index');
-    }
-
-    /**
-     * Unlocks a user account.
-     *
-     * @param int $email The email of the user to unlock.
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function unlock(int $email)
-    {
-        $user = User::findOrFail($email);
-        $user->isLocked = false;
-        $user->save();
-
-        return redirect()->route('admin.index');
+        $email = urldecode($email);
+        $salesman = Salesman::findOrFail($email);
+        $salesman->isLocked = !($salesman->isLocked);
+        $salesman->save();
+        return redirect()->route('admin.admin_dashboard');
     }
 
     /**
@@ -58,10 +43,6 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create()
-    {
-        return view('admin.create');
-    }
 
     /**
      * Store a newly created user in storage.
@@ -69,20 +50,23 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function createSaleAccount(Request $request)
     {
         // Validate incoming request data
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'fullName' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:8',
             // Add more validation rules as needed
         ]);
 
         // Create the user
-        User::create($validatedData);
+        Salesman::create($validatedData);
 
-        return response()->json(['message' => 'User created successfully'], 201);
+        // Flash a success message to the session
+        session()->flash('success', 'Salesman created successfully.');
+
+        return redirect()->route('admin.admin_dashboard');
     }
 
     /**
@@ -91,7 +75,7 @@ class AdminController extends Controller
      * @param  int  $email The email of the user to display.
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(int $email)
+    public function show($email)
     {
         $user = User::findOrFail($email);
         return view('admin.show', ['user' => $user]);
@@ -105,7 +89,7 @@ class AdminController extends Controller
      */
     public function sendActivationEmail(Salesman $salesman)
     {
-        Mail::to($salesman->email)->send(new SalesActivationEmail);
+        Mail::to($salesman->email)->send(new SalesActivationEmail());
     }
 
     /**
@@ -142,9 +126,9 @@ class AdminController extends Controller
      * @param  \App\Models\Salesman  $salesman The salesman to delete.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete(Salesman $salesman)
+    public function delete($email)
     {
-
+        $salesman = Salesman::findOrFail($email);
         $salesman->delete();
 
         return redirect()->route('admin.index');
@@ -172,25 +156,35 @@ class AdminController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $oldEmail)
-{   
-    
-    $validatedData = $request->validate([
-        'fullName' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'status' => 'required|numeric|min:0|max:1'
-    ]);
+    {
+        $validatedData = $request->validate([
+            'fullName' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'status' => 'required|numeric|min:0|max:1',
+        ]);
 
-    $salesman = Salesman::where('email', $oldEmail)->first();
-    
-    if (!$salesman) {
-        return response()->json(['error' => 'User not found'], 404);
+        $salesman = Salesman::where('email', $oldEmail)->first();
+
+        if (!$salesman) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $salesman->fullName = $validatedData['fullName'];
+        $salesman->email = $validatedData['email'];
+        $salesman->isActivated = $validatedData['status'];
+        $salesman->save();
+
+        return redirect()->route('admin.admin_dashboard');
     }
 
-    $salesman->fullName = $validatedData['fullName'];
-    $salesman->email = $validatedData['email'];
-    $salesman->isActivated = $validatedData['status'];
-    $salesman->save();
+    public function searchSalesman(Request $request)
+    {
+        $validatedData = $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
 
-    return redirect()->route('admin.admin_dashboard');
-}
+        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
+
+        return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
+    }
 }

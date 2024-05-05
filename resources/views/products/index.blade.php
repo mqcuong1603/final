@@ -18,7 +18,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
+                        <a href="{{ route('admin.admin_dashboard')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account Management</span>
                         </a>
                     </li>
@@ -27,14 +27,14 @@
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers Management</span> 
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span> 
+                    <li class="nav-item">
+                        <a href="/products" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Product Catalog</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('products.create')}}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Add products</span> 
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span> 
                         </a>
                     </li>
                     <li>
@@ -50,7 +50,7 @@
                         <span class="d-none d-sm-inline mx-1">admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Change password</a></li>
+                        <li><a class="dropdown-item" href="admin/changePass.php">Change password</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -64,10 +64,13 @@
                 <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="javascript:void(0)">Product Catalog</a>
+                        <a href="" class="navbar-brand">
+                            <button class="btn btn-success">Create product</button>
+                        </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="mynavbar">
+                          <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
                         </ul>
                         <form class="d-flex">
@@ -118,6 +121,7 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
     
     <!-- Modal for editing products -->
@@ -127,8 +131,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProductModalLabel">Edit Product {{ $product->id }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">
