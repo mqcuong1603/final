@@ -22,7 +22,6 @@ class AdminController extends Controller
         return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
 
-
     /**
      * Locks a user account.
      *
@@ -30,13 +29,18 @@ class AdminController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function changeLock($email)
+    public function changeLock(Request $request, $email)
     {
         $email = urldecode($email);
-        $salesman = Salesman::findOrFail($email);
-        $salesman->isLocked = !$salesman->isLocked;
-        $salesman->save();
-        return redirect()->route('admin.admin_dashboard');
+        $salesman = Salesman::where('email', $email)->first();
+
+        if ($salesman) {
+            $salesman->isLocked = !$salesman->isLocked;
+            $salesman->save();
+            return redirect()->back()->with('success', 'Salesman lock status changed successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Salesman not found.');
     }
 
     /**
@@ -51,7 +55,6 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
-
 
     public function createSaleAccount(Request $request)
     {
@@ -191,7 +194,6 @@ class AdminController extends Controller
         return redirect()->route('admin.admin_dashboard');
     }
 
-
     public function searchSalesman(Request $request)
     {
         $validatedData = $request->validate([
@@ -203,5 +205,3 @@ class AdminController extends Controller
         return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
     }
 }
-
-
