@@ -18,7 +18,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="{{ route('admin.admin_dashboard')}}" class="nav-link align-middle px-0">
+                        <a href="/admin_dashboard" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account Management</span>
                         </a>
                     </li>
@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/products" class="nav-link align-middle px-0">
+                        <a href="{{route('products.index')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Product Catalog</span>
                         </a>
                     </li>
@@ -59,18 +59,15 @@
                 </div>
             </div>
         </div>
-        <div class="col py-3 container d-flex flex-column">
+        <div class="col-auto col-md-9 col-xl-10 px-sm-10 py-3 container d-flex flex-column">
             <div>
                 <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="javascript:void(0)">Product Catalog</a>
-                        <a href="" class="navbar-brand">
-                            <button class="btn btn-success">Create product</button>
-                        </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
                         </button>
-                          <div class="collapse navbar-collapse" id="mynavbar">
+                        <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
                         </ul>
                         <form class="d-flex">
@@ -158,7 +155,7 @@
                             <label for="category">Category</label>
                             <input type="text" class="form-control" id="category" name="category" value="{{ $product->category }}">
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Product</button>
+                        <button type="submit" class="btn btn-primary mt-3">Update Product</button>
                     </form>
                 </div>
             </div>
@@ -169,7 +166,7 @@
 <script>
     function setElementHeightToScreenHeight() {
         const element = document.getElementById("HTML_element");
-        element.style.height = window.innerHeight - 145 + "px";
+        element.style.height = window.innerHeight - 147 + "px";
     }
 </script>
 
