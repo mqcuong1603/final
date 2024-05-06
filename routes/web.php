@@ -32,6 +32,7 @@ Route::get('/sales/dashboard', 'SalesController@dashboard')->name('sales_dashboa
 Route::get('/sales/active', 'SalesController@active')->name('sales.active');
 
 
+
 Route::get('/salesnew', function () {return view('sales.sales_new');});
 
 
@@ -48,8 +49,7 @@ Route::prefix('products')->group(function () {
 });
 
 
-
-
+// logout route
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //change password routes
