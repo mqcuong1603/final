@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome Page</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 </head>
+
 <body onload="setElementHeightToScreenHeight()">
 <div class="container-fluid">
     <div class="row flex-nowrap">
@@ -18,7 +24,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="/admin_dashboard" class="nav-link align-middle px-0">
+                        <a href="{{ route('admin.admin_dashboard')}}" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account Management</span>
                         </a>
                     </li>
@@ -28,7 +34,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('products.index')}}" class="nav-link align-middle px-0">
+                        <a href="/products" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Product Catalog</span>
                         </a>
                     </li>
@@ -50,7 +56,7 @@
                         <span class="d-none d-sm-inline mx-1">admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="admin/changePass.php">Change password</a></li>
+                        <li><a class="dropdown-item" href="#">Change password</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -59,15 +65,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-auto col-md-9 col-xl-10 px-sm-10 py-3 container d-flex flex-column">
+        <div class="col py-3 container d-flex flex-column">
             <div>
                 <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="javascript:void(0)">Product Catalog</a>
+                        <a href="" class="navbar-brand">
+                            <button class="btn btn-success">Create product</button>
+                        </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="mynavbar">
+                          <div class="collapse navbar-collapse" id="mynavbar">
                         <ul class="navbar-nav me-auto">
                         </ul>
                         <form class="d-flex">
@@ -96,31 +105,62 @@
             <div id="HTML_element" style="overflow-y: auto;">
                 <table class="table table-hover table-striped">
                         @foreach ($products as $product)
-                        <tr>
-                            <td style="width: 4%;">{{ $product->id }}</td>
-                            <td style="width: 15%;">{{ $product->barcode }}</td>
-                            <td style="width: 21%;">{{ $product->product_name }}</td>
-                            <td style="width: 18%;">${{ number_format($product->import_price, 2) }}</td>
-                            <td style="width: 17%;">${{ number_format($product->retail_price, 2) }}</td>
-                            <td style="width: 13%;">{{ $product->category }}</td>
-                            <td>
-                                <!-- Edit button triggers modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td style="width: 4%;">{{ $product->id }}</td>
+                                <td style="width: 15%;">{{ $product->barcode }}</td>
+                                <td style="width: 21%;">{{ $product->product_name }}</td>
+                                <td style="width: 18%;">${{ number_format($product->import_price, 2) }}</td>
+                                <td style="width: 17%;">${{ number_format($product->retail_price, 2) }}</td>
+                                <td style="width: 13%;">{{ $product->category }}</td>
+                                <td>
+                                    <!-- Edit button triggers modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger delete-btn"
+                                            onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
                         @endforeach
                 </table>
             </div>
         </div>
     </div>
+            aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        {{-- <span aria-hidden="true">&times;</span> --}}
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="newFullName" name="fullName"
+                                value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="newEmail" name="email"
+                                value="">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Saleman</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-    
+
+
     <!-- Modal for editing products -->
     @foreach ($products as $product)
     <div class="modal fade" id="editProductModal-{{ $product->id }}" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
@@ -155,7 +195,7 @@
                             <label for="category">Category</label>
                             <input type="text" class="form-control" id="category" name="category" value="{{ $product->category }}">
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+                        <button type="submit" class="btn btn-primary">Update Product</button>
                     </form>
                 </div>
             </div>
@@ -166,9 +206,10 @@
 <script>
     function setElementHeightToScreenHeight() {
         const element = document.getElementById("HTML_element");
-        element.style.height = window.innerHeight - 147 + "px";
+        element.style.height = window.innerHeight - 145 + "px";
     }
 </script>
 
 </body>
+
 </html>

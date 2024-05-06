@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-
     public function adminIndex()
     {
         // Ensure the user is an admin
@@ -47,18 +46,18 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-    $request->validate([
-        'product_id' => 'numeric|required',
-        'product_barcode' => 'numeric',
-        'product_name' => 'string|required',
-        'import_price' => 'numeric',
-        'retail_price' => 'numeric',
-        'category' => 'string|required'
-    ]);
+        $request->validate([
+            'product_id' => 'numeric|required',
+            'barcode' => 'numeric',
+            'product_name' => 'string|required',
+            'import_price' => 'numeric',
+            'retail_price' => 'numeric',
+            'category' => 'string|required',
+        ]);
 
-    Products::create($request->all());
+        Products::create($request->all());
 
-    return redirect()->route('products.index')->with('success', 'Product added successfully.');
+        return redirect()->route('products.index')->with('success', 'Product added successfully.');
     }
 
     public function create()
@@ -74,7 +73,6 @@ class ProductController extends Controller
     }
     public function update(Request $request, $productId)
     {
-
         // $table->string('barcode')->unique();
         //     $table->string('product_name');
         //     $table->decimal('import_price', 8, 2);
@@ -84,7 +82,7 @@ class ProductController extends Controller
             'product_name' => 'string|required',
             'import_price' => 'numeric',
             'retail_price' => 'numeric',
-            'category' => 'string|required'
+            'category' => 'string|required',
         ]);
 
         $product = Products::findOrFail($productId);
@@ -99,4 +97,20 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
+
+    public function searchProduct(Request $request)
+    {
+        $validatedData = $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+
+        $products = Products::where('product_name', 'like', '%' . $validatedData['search'] . '%')
+            ->orWhere('barcode', 'like', '%' . $validatedData['search'] . '%')
+            ->orWhere('category', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
+
+        return view('products.index', ['products' => $products, 'search' => $validatedData['search']]);
+    }
+
+
 }

@@ -7,8 +7,6 @@ use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
 use App\Models\Salesman; // Import the Salesman model
-use Illuminate\Support\Facades\Log;
-
 class AdminController extends Controller
 {
     /**
@@ -23,19 +21,26 @@ class AdminController extends Controller
 
         return view('admin.admin_dashboard', ['users' => $users, 'salesmen' => $salesmen]);
     }
+
     /**
      * Locks a user account.
      *
      * @param int $email The email of the user to lock.
      * @return \Illuminate\Http\RedirectResponse
      */
+
     public function changeLock(Request $request, $email)
     {
         $email = urldecode($email);
-        $salesman = Salesman::findOrFail($email);
-        $salesman->isLocked = !($salesman->isLocked);
-        $salesman->save();
-        return redirect()->route('admin.admin_dashboard');
+        $salesman = Salesman::where('email', $email)->first();
+
+        if ($salesman) {
+            $salesman->isLocked = !$salesman->isLocked;
+            $salesman->save();
+            return redirect()->back()->with('success', 'Salesman lock status changed successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Salesman not found.');
     }
 
     /**
@@ -56,7 +61,7 @@ class AdminController extends Controller
         // Validate incoming request data
         $validatedData = $request->validate([
             'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users|max:255',
+            'email' => 'required|email|unique:salesmen|max:255', // Ensure the email is unique in the 'salesmen' table
             // Add more validation rules as needed
         ]);
 
@@ -89,6 +94,7 @@ class AdminController extends Controller
      */
     public function sendActivationEmail(Salesman $salesman)
     {
+        Mail::to($salesman->email)->send(new SalesActivationEmail());
         Mail::to($salesman->email)->send(new SalesActivationEmail());
     }
 
@@ -130,24 +136,46 @@ class AdminController extends Controller
     {
         $salesman = Salesman::findOrFail($email);
         $salesman->delete();
+        $salesman = Salesman::findOrFail($email);
+        $salesman->delete();
 
         return redirect()->route('admin.index');
     }
 
-    public function changePassword(Request $request)
-    {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ]);
-
-        $user = User::where('email', $validatedData['email'])->first();
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
-
-        return response()->json(['message' => 'Password changed successfully'], 200);
+    public function changePassword($user_email)
+    {   
+        
+        $user = User::where('email', $user_email)->first();
+        return view('admin.changePass', ['user' => $user]);
     }
 
+    public function updatePassword(Request $request, $email)
+    {
+        $validatedData = $request->validate([
+            'currentPassword' => 'required|string|min:5',
+            'newPassword' => 'required|string|min:5',
+            'confirmPassword' => 'required|string|min:5',
+        ]);
+    
+        $user = User::where('email', $email)->first();
+        if(!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        else if($validatedData['newPassword'] != $validatedData['confirmPassword']) {
+            return response()->json(['error' => 'Passwords do not match'], 400);
+        }
+        else if(!password_verify($validatedData['currentPassword'], $user->password)) {
+            return response()->json(['error' => 'Incorrect password'], 400);
+        }
+        else {
+            $user->password = bcrypt($validatedData['newPassword']);
+            $user->save();
+            return redirect()->route('admin.admin_dashboard');
+        }
+    }
+
+    /**
+     * Update a user's information.
     /**
      * Update a user's information.
      *
@@ -176,15 +204,22 @@ class AdminController extends Controller
 
         return redirect()->route('admin.admin_dashboard');
     }
-
     public function searchSalesman(Request $request)
     {
         $validatedData = $request->validate([
             'search' => 'required|string|max:255',
         ]);
+    
+        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
+                            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+                            ->get();
+    
+        return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
+    }
 
-        $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')->get();
-
-        return view('admin.admin_dashboard', ['salesmen' => $salesmen]);
+    public function logout()
+    {
+        auth()->logout();
+        return redirect()->route('login');
     }
 }

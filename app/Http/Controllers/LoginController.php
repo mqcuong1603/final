@@ -10,7 +10,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+    
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             if ($request->input('formType') === 'admin') {
@@ -20,7 +20,7 @@ class LoginController extends Controller
                 return redirect()->route('sales_dashboard');
             }
         }
-
+    
         // Authentication failed...
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
