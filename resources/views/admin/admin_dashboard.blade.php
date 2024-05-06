@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,23 +128,6 @@
                                 Activate
                               @endif
                             <td>
-                                <!-- <div class="dropdown">
-                                    <button class="btn" type="button" dropdown-toggle="dropdown">☰</button>
-                                    <ul class="dropdown-menu">
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Edit</a>
-                                      </li>
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Lock</a>
-                                      </li>
-                                      <li>
-                                        <a href="#" data-bs-toggle="modal" class="dropdown-item"
-                                          >Delete</a>
-                                      </li>
-                                    </ul>
-                                </div> -->
                                 <div class="dropdown">
                                   <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                                   ☰
