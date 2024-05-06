@@ -81,7 +81,7 @@
 
         <div class="form-productName">
             <label>Product Barcode:</label>
-            <input type="text" class="form-control" id="product_name" name="product_barcode" value="{{ $product->product_barcode  }}" required>
+            <input type="text" class="form-control" id="product_barcode" name="barcode" value="{{ $product->product_barcode  }}" required>
         </div>
 
         <div class="form-productName">

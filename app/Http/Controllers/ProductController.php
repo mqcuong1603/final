@@ -48,7 +48,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'product_id' => 'numeric|required',
-            'product_barcode' => 'numeric',
+            'barcode' => 'numeric',
             'product_name' => 'string|required',
             'import_price' => 'numeric',
             'retail_price' => 'numeric',
