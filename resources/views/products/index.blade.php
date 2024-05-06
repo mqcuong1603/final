@@ -19,7 +19,7 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{route('admin.admin_dashboard') }}"
+                    <a href=" {{ route('admin.admin_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
@@ -59,13 +59,15 @@
                     <div class="dropdown pb-4">
                         <a href="#"
                             class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false" style="position: fixed;">
                             <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                                 alt="hugenerd" width="30" height="30" class="rounded-circle">
                             <span class="d-none d-sm-inline mx-1">admin</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('admin.changePassword')}}">Change password</a></li>
+                            <li><a
+                                    class="dropdown-item"href="{{ route('admin.changePassword', ['email' => auth()->user()->email]) }}">Change
+                                    password</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
