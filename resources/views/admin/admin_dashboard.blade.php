@@ -43,22 +43,10 @@
                                         Management</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers
-                                        Management</span>
-                                </a>
-                            </li>
                             <li class="nav-item">
                                 <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
                                     <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Product
                                         Catalog</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-people"></i> <span
-                                        class="ms-1 d-none d-sm-inline">Transaction</span>
                                 </a>
                             </li>
                             <li>
@@ -79,7 +67,9 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
                                 aria-labelledby="dropdownUser1">
-                                <li><a class="dropdown-item" href="{{route('admin.changePassword', Auth::user()->email)}}">Change password</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
+                                        password</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -104,7 +94,7 @@
                                     </ul>
                                     <form action="{{ route('admin.search') }}" class="d-flex" method="GET">
                                         <input name="search" id="search" class="form-control me-2" type="text"
-                                               placeholder="Search" value="{{ $search ?? '' }}" autofocus>
+                                            placeholder="Search" value="{{ $search ?? '' }}" autofocus>
                                         <button class="btn btn-primary" type="submit">Search</button>
                                     </form>
                                 </div>
@@ -171,10 +161,13 @@
                                                         </button>
                                                     </form>
                                                 </li>
-                                                <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
-                                                        data-bs-target="#deleteModal-{{ $salesman->id }}"
+                                                <li>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" href="#"
+                                                        data-bs-target="#confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
+                                                        data-salesman-email="{{ $salesman->email }}"
                                                         data-salesman-id="{{ $salesman->id }}"
-                                                        data-salesman-name="{{ $salesman->fullName }}">Delete</a></li>
+                                                        data-salesman-name="{{ $salesman->fullName }}">Delete</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -230,7 +223,31 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Delete Account Modal -->
+            <div class="modal fade" id="confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
+                tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header h3">
+                            Delete Account
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this account
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+                            <form method="post" action="{{ route('admin.delete', $salesman->email) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endforeach
+
 
         <div class="modal fade " id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
             aria-hidden="true">
@@ -259,6 +276,81 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            const adminBox = document.getElementById('adminBox');
+            const dropdownContent = document.getElementById('dropdownContent');
+            adminBox.addEventListener('click', function() {
+                if (dropdownContent.style.display === 'block') {
+                    dropdownContent.style.display = 'none';
+                } else {
+                    dropdownContent.style.display = 'block';
+                }
+            });
+            document.addEventListener('click', function(event) {
+                if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.display = 'none';
+                }
+            });
+            dropdownContent.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        </script>
+
+        <!-- Burger Dropdown -->
+        <script>
+            const dropdownBs = document.querySelectorAll('.dropdownB');
+
+            dropdownBs.forEach((dropdownB) => {
+                const dropbtnB = dropdownB.querySelector('.dropbtnB');
+                const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
+
+                if (dropbtnB && dropdownContentB) {
+                    // Hide the dropdown content by default
+                    dropdownContentB.style.display = 'none';
+
+                    dropbtnB.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
+                            'block';
+
+                        // Close other dropdown menus
+                        dropdownBs.forEach((otherDropdownB) => {
+                            if (otherDropdownB !== dropdownB) {
+                                const otherDropdownContentB = otherDropdownB.querySelector(
+                                    '.dropdown-contentB');
+                                otherDropdownContentB.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            });
+
+            function editSalesman(name) {
+                console.log(`Edit ${name}`);
+            }
+
+            // Function to lock a salesman
+            function lockSalesman(email) {
+                console.log(`Lock ${email}`);
+            }
+
+            // Function to delete a salesman
+            function deleteSalesman(name) {
+                console.log(`Delete ${name}`);
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
@@ -311,6 +403,19 @@
                 input.setSelectionRange(len, len);
             }
         </script>
+    </body>
+
+    <script>
+        $(document).ready(function() {
+            $('#editModal').modal('show');
+        });
+    </script>
+    <script>
+        function setElementHeightToScreenHeight() {
+            const element = document.getElementById("HTML_element");
+            element.style.height = window.innerHeight - 147 + "px";
+        }
+    </script>
     </body>
 
 </html>

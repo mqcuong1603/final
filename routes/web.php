@@ -3,7 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\LoginController;
 // use Illuminate\Support\Facades\View;
 
@@ -18,7 +18,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::prefix('admin_dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.admin_dashboard');
     Route::put('/lock/{email}', [AdminController::class, 'changeLock'])->name('admin.changeLock');
-    Route::get('/delete/{salesman}', [AdminController::class, 'delete'])->name('admin.delete');
+    Route::delete('/delete/{email}', [AdminController::class, 'delete'])->name('admin.delete');
     Route::put('/update/{email}', [AdminController::class, 'update'])->name('admin.update');
     Route::get('/search', [AdminController::class, 'searchSalesman'])->name('admin.search');
     Route::post('/create', [AdminController::class, 'createSaleAccount'])->name('admin.create');
@@ -28,11 +28,12 @@ Route::prefix('admin_dashboard')->group(function () {
 });
 
 //Sales routes
-Route::get('/sales/dashboard', 'SalesController@dashboard')->name('sales_dashboard');
-Route::get('/sales/active', 'SalesController@active')->name('sales.active');
-
-
-Route::get('/salesnew', function () {return view('sales.sales_new');});
+//Sales routes
+Route::prefix('sales_dashboard')->group(function () {
+    Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard');
+    Route::get('/search', [SalesmanController::class, 'search'])->name('sales.search');
+    
+});
 
 
 

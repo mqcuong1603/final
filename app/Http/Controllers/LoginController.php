@@ -11,13 +11,13 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
     
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            if ($request->input('formType') === 'admin') {
+        if ($request->input('formType') === 'admin') {
+            if (Auth::guard('admin')->attempt($credentials)) {
                 return redirect()->route('admin.admin_dashboard');
-            } else {
-                // Redirect to a different page for non-admin users
-                return redirect()->route('sales_dashboard');
+            }
+        } else {
+            if (Auth::guard('salesman')->attempt($credentials)) {
+                return redirect()->route('sales.sales_dashboard');
             }
         }
     

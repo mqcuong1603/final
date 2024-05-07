@@ -65,11 +65,17 @@ class AdminController extends Controller
             // Add more validation rules as needed
         ]);
 
-        // Create the user
-        Salesman::create($validatedData);
+
+        // Generate a random password
+        $password = 123456;
+
+        // Create the salesman
+
+        Salesman::create(array_merge($validatedData, ['password' => bcrypt($password)]));
 
         // Flash a success message to the session
-        session()->flash('success', 'Salesman created successfully.');
+
+        session()->flash('success', 'Salesman created successfully. Password: ' . $password);
 
         return redirect()->route('admin.admin_dashboard');
     }
@@ -134,17 +140,13 @@ class AdminController extends Controller
      */
     public function delete($email)
     {
-        $salesman = Salesman::findOrFail($email);
+        $salesman = Salesman::where('email', $email)->firstOrFail();
         $salesman->delete();
-        $salesman = Salesman::findOrFail($email);
-        $salesman->delete();
-
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.admin_dashboard');
     }
 
     public function changePassword($user_email)
-    {   
-        
+    {
         $user = User::where('email', $user_email)->first();
         return view('admin.changePass', ['user' => $user]);
     }
@@ -156,18 +158,15 @@ class AdminController extends Controller
             'newPassword' => 'required|string|min:5',
             'confirmPassword' => 'required|string|min:5',
         ]);
-    
+
         $user = User::where('email', $email)->first();
-        if(!$user) {
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
-        }
-        else if($validatedData['newPassword'] != $validatedData['confirmPassword']) {
+        } elseif ($validatedData['newPassword'] != $validatedData['confirmPassword']) {
             return response()->json(['error' => 'Passwords do not match'], 400);
-        }
-        else if(!password_verify($validatedData['currentPassword'], $user->password)) {
+        } elseif (!password_verify($validatedData['currentPassword'], $user->password)) {
             return response()->json(['error' => 'Incorrect password'], 400);
-        }
-        else {
+        } else {
             $user->password = bcrypt($validatedData['newPassword']);
             $user->save();
             return redirect()->route('admin.admin_dashboard');
@@ -209,11 +208,11 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'search' => 'required|string|max:255',
         ]);
-    
+
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
-                            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
-                            ->get();
-    
+            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
+
         return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
     }
 

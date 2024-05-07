@@ -12,7 +12,7 @@ class SalesmanController extends Controller
      */
     public function index()
     {
-        //
+        return view('sales.sales_dashboard');
     }
 
     /**

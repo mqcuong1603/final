@@ -31,12 +31,6 @@
                                     Management</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers
-                                    Management</span>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Product
@@ -57,21 +51,21 @@
                     </ul>
                     <hr>
                     <div class="dropdown pb-4">
-                        <a href="#"
-                                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
-                                    alt="hugenerd" width="30" height="30" class="rounded-circle">
-                                <span class="d-none d-sm-inline mx-1">admin</span>
-                            </a>
+                        <a href="#" style="position:fixed; bottom:20px; left:20px;"
+                            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
+                                alt="hugenerd" width="30" height="30" class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1">admin</span>
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a
-                                    class="dropdown-item"href="{{ route('admin.changePassword', ['email' => auth()->user()->email]) }}">Change
+                            <li><a class="dropdown-item"
+                                    href="{{ route('admin.changePassword', Auth::user()->email) }}">Change
                                     password</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -195,7 +189,6 @@
         function setElementHeightToScreenHeight() {
             const element = document.getElementById("HTML_element");
             element.style.height = window.innerHeight - 147 + "px";
-            element.style.height = window.innerHeight - 147 + "px";
         }
     </script>
     {{-- // Search bar autofocus --}}
@@ -207,7 +200,6 @@
             input.setSelectionRange(len, len);
         }
     </script>
-
 </body>
 
 </html>
