@@ -25,7 +25,7 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers
                                     Management</span>
                             </a>
@@ -64,7 +64,7 @@
                         <div>
                             <nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
                                 <div class="container-fluid">
-                                    <a class="navbar-brand" href="#">Transaction</a>
+                                    <a class="navbar-brand" href="#">Product List</a>
                                     <div class="collapse navbar-collapse" id="mynavbar">
                                         <ul class="navbar-nav me-auto">
                                             <li class="nav-item">
@@ -99,147 +99,9 @@
                                         <td>{{ $product->product_name }}</td>
                                         <td>${{ number_format($product->retail_price, 2) }}</td>
                                         <td>
-                                            <a href="{{ route('#') }}">
+                                            <a href="#">
                                                 <button class="btn btn-primary">Add</button></a>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td><button class="btn btn-primary">Add</button></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -248,7 +110,7 @@
                     </div>
                     <div class="border border-4 col-12 col-sm-12 col-md-6 col-lg-6 position-relative">
                         <div>
-                            <h1>List of product(s)</h1>
+                            <h1>Transaction List</h1>
                         </div>
                         <div style="overflow-y: auto; height:690px">
                             <table class="table table-hover table-striped ">

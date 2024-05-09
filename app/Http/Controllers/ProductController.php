@@ -112,5 +112,7 @@ class ProductController extends Controller
         return view('products.index', ['products' => $products, 'search' => $validatedData['search']]);
     }
 
+    
+
 
 }

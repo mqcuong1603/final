@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Products;
 
 class SalesmanController extends Controller
 {
@@ -33,6 +34,12 @@ class SalesmanController extends Controller
         return view('sales.sales_dashboard', ['customers' => $customers]);
     }
 
+    public function transaction()
+    {
+        $products = Products::all();
+        return view('sales.sales_transaction', ['products' => $products]);
+    }
+
     public function createOrder(Request $request, Customer $customer)
     {
         $order = new Order($request->all());
@@ -40,4 +47,6 @@ class SalesmanController extends Controller
 
         return redirect()->back();
     }
+
+    
 }
