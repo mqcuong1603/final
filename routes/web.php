@@ -31,8 +31,8 @@ Route::prefix('admin_dashboard')->group(function () {
 //Sales routes
 Route::prefix('sales_dashboard')->group(function () {
     Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard');
-    Route::get('/search', [SalesmanController::class, 'search'])->name('sales.search');
-    
+    Route::get('/search', [SalesmanController::class, 'searchCustomer'])->name('sales.search');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('sales.logout');
 });
 
 

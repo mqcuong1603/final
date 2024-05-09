@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class SalesmanController extends Controller
 {
@@ -12,54 +14,30 @@ class SalesmanController extends Controller
      */
     public function index()
     {
-        return view('sales.sales_dashboard');
+        $customers = Customer::all();
+        return view('sales.sales_dashboard', ['customers' => $customers]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function searchCustomer(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+
+        $customers = Customer::where('fullName', 'like', '%' . $validatedData['search'] . '%')
+            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+            ->orWhere('phone', 'like', '%' . $validatedData['search'] . '%')
+            ->orWhere('address', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
+
+        return view('sales.sales_dashboard', ['customers' => $customers]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function createOrder(Request $request, Customer $customer)
     {
-        //
-    }
+        $order = new Order($request->all());
+        $customer->orders()->save($order);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->back();
     }
 }
