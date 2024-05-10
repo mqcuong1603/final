@@ -73,7 +73,6 @@
                                         <form class="d-flex" action="#" method="GET">
                                             <input class="form-control me-2" type="text" placeholder="Search"
                                                 name="search" id="search">
-                                            <button class="btn btn-primary" type="submit">Search</button>
                                         </form>
                                     </div>
                                 </div>
@@ -83,10 +82,10 @@
                             <table class="table table-hover table-striped ">
                                 <thead>
                                     <tr>
-                                        <th>Barcode</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Barcode</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Action</th>
                                         <th>
 
                                         </th>
@@ -94,15 +93,14 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($products as $product)
-                                    <tr>
-                                        <td>{{ $product->barcode }}</td>
-                                        <td>{{ $product->product_name }}</td>
-                                        <td>${{ number_format($product->retail_price, 2) }}</td>
-                                        <td>
-                                            <a href="#">
-                                                <button class="btn btn-primary">Add</button></a>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="text-center">{{ $product->barcode }}</td>
+                                            <td class="text-center">{{ $product->product_name }}</td>
+                                            <td class="text-center">${{ number_format($product->retail_price, 2) }}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-success addButton">Add</button>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -113,228 +111,25 @@
                             <h1>Transaction List</h1>
                         </div>
                         <div style="overflow-y: auto; height:690px">
-                            <table class="table table-hover table-striped ">
+                            <table id="transactionList" class="table table-hover table-striped ">
                                 <thead>
                                     <tr>
-                                        <th>Barcode</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th><label for="number">Quantity</label></th>
-                                        <th>Total price</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Barcode</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center"><label for="number">Quantity</label></th>
+                                        <th class="text-center">Total price</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>iPhone</td>
-                                        <td>700</td>
-                                        <td>
-                                            <input type="number" id="number" name="" value="">
-                                        </td>
-                                        <td>700</td>
-                                        <td>
-                                            <button type="" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <div style="width:50%" class="position-absolute bottom-0 start-0 display-6 mb-3">
-                            Total: 2800$
+                            <label for="total">Total</label>
+                            <input type="text" class="form-control" id="total" value="$0.00" readonly>
                         </div>
                         <div class="position-absolute bottom-0 end-0 d-grid gap-2 mx-3 mb-3">
                             <button data-bs-toggle="modal" href="#" data-bs-target="#addModal"
@@ -357,14 +152,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="{{ route('sales.checkCustomer') }}" method="POST">
+                    @method('POST')
+                    @csrf
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" value="">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="number" class="form-control" name="phone" value="">
+                        <input type="tel" class="form-control" name="phone" value="">
+                    </div>
+                    <div id="transactionData">
+                        <!-- Hidden input fields for the transaction list data will be added here -->
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Check</button>
                 </form>
@@ -376,6 +176,97 @@
             const element = document.getElementById("HTML_element");
             element.style.height = window.innerHeight - 90 + "px";
         }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.addButton').click(function() {
+                var row = $(this).closest('tr');
+                var barcode = row.find('td:eq(0)').text();
+                var product = row.find('td:eq(1)').text();
+                var priceText = row.find('td:eq(2)').text().replace('$', '');
+                var price = parseFloat(priceText.replace(',', ''));
+
+                // Append new row to the transaction list
+                var newRow = $('<tr><td class="text-center">' + barcode +
+                    '</td><td class="text-center">' + product + '</td><td class="product-price">' +
+                    price +
+                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="total-price">' +
+                    price +
+                    '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
+                );
+                $('#transactionList').append(newRow);
+
+                // Also add the product data to hidden input fields within the form
+                $('#transactionData').append('<input type="hidden" name="products[]" value="' + barcode +
+                    '">');
+                var quantityInput = $('<input type="hidden" name="quantity[]" value="1">');
+                $('#transactionData').append(quantityInput);
+
+                updateTotal();
+
+                // Add event listener for quantity change
+                newRow.find('.quantity').change(function() {
+                    var quantity = $(this).val();
+                    var price = newRow.find('.product-price').text();
+                    var totalPrice = quantity * price;
+                    newRow.find('.total-price').text(totalPrice);
+                    updateTotal();
+                    quantityInput.val(quantity);
+                });
+            });
+
+            $('#transactionList').on('input', '.quantity', function() {
+                // Get the current quantity and convert it to a number
+                var quantity = parseInt($(this).val());
+
+                // Get the price and convert it to a number
+                var price = parseFloat($(this).closest('tr').find('.product-price').text());
+
+                // Calculate the new total price
+                var totalPrice = quantity * price;
+
+                // Update the total price cell
+                $(this).closest('tr').find('.total-price').text(totalPrice.toFixed(2));
+
+                // Update the quantity in the hidden input field
+                $(this).closest('tr').find('input[name="quantities[]"]').val(quantity);
+
+                updateTotal();
+            });
+
+            //delete
+            $('#transactionList').on('click', '.deleteButton', function() {
+                $(this).closest('tr').remove();
+
+                updateTotal();
+            });
+
+            function updateTotal() {
+                var total = 0;
+
+                // Loop through all total prices and add them to the total
+                $('#transactionList .total-price').each(function() {
+                    total += parseFloat($(this).text().replace('$', ''));
+                });
+
+                // Update the total input field with the new total and increase the font size
+                $('#total').val('$' + total.toFixed(2)).css('font-size', '20px');
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
     </script>
 
 </html>

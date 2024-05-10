@@ -34,6 +34,9 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/search', [SalesmanController::class, 'searchCustomer'])->name('sales.search');
     Route::get('sales_transaction', [SalesmanController::class, 'transaction'])->name('sales.sales_transaction');
     Route::get('/logout', [LoginController::class, 'logout'])->name('sales.logout');
+    Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
+    Route::get('/detail/{customerId}', [SalesmanController::class, 'detail'])->name('sales.detail');
+    Route::post('/check_customer', [SalesmanController::class, 'checkCustomer'])->name('sales.checkCustomer');
 });
 
 

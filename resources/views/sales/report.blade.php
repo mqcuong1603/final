@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sale Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+    <title>Report & Analytics</title>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
                         id="menu">
                         <li class="nav-item">
                             <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Customer
+                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Customer
                                     Management</span>
                             </a>
                         </li>
@@ -36,8 +36,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
                                     Analytics</span>
                             </a>
                         </li>
@@ -62,8 +62,7 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">List of
-                                Customers</a>
+                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <ul class="navbar-nav me-auto">
                                 </ul>
@@ -71,73 +70,79 @@
                                     <input name="search" id="search" class="form-control me-2" type="text"
                                         placeholder="Search" value="" autofocus>
                                     <button class="btn btn-primary" type="submit">Search</button>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="align-middle me-5 text-white">From</div>
+                                        <input type="date" class="">
+                                        <div class="text-center me-5 text-white">To</div>
+                                        <input type="date" class="">
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </nav>
-                </div>
-                <div id="HTML_element" style="overflow-y: auto">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Purchase History</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($customers as $customer)
+                    <div id="HTML_element" style="overflow-y: auto">
+                        <table class="table table-hover table-striped position-relative">
+                            <thead>
                                 <tr>
-                                    <td>{{ $customer->fullName }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>{{ $customer->phone }}</td>
-                                    <td>{{ $customer->address }}</td>
-                                    <td>
-                                        <a href="#">
-                                            <button class="btn btn-primary">View more detail</button></a>
-                                    </td>
+                                    <th>Order Id</th>
+                                    <th>Customer Id</th>
+                                    <th>Order Date</th>
+                                    <th>Total price</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                @foreach ($orders as $order)
+                                    <tr>
+                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->customer_id }}</td>
+                                        <td>{{ $order->order_date }}</td>
+                                        <td>{{ $order->total_price }}</td>
+                                        <td>
+                                            <a href="{{ route('sales.detail', $order->id) }}"
+                                                class="btn btn-primary">Detail</a>
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <tr>
+                                <th>Total price</th>
+                                <th>Total order</th>
+                            </tr>
+                            <tbody>
+                                <td>$2000</td>
+                                <td>56</td>
+                            </tbody>
+                        </table>
+                    </div>
+                    </tbody>
                     </table>
                 </div>
-                </tbody>
-                </table>
+                @endforeach
+
+
             </div>
-        </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    window.addEventListener('resize', setElementHeightToScreenHeight);
+                    setElementHeightToScreenHeight();
+                });
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                window.addEventListener('resize', setElementHeightToScreenHeight);
-                setElementHeightToScreenHeight();
-            });
-        </script>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        {{-- // Search bar autofocus --}}
-        <script>
-            window.onload = function() {
-                const element = document.getElementById("HTML_element");
-                if (element) {
-                    element.style.height = window.innerHeight - 145 + "px";
+                function setElementHeightToScreenHeight() {
+                    const element = document.getElementById("HTML_element");
+                    if (element) {
+                        element.style.height = window.innerHeight - 145 + "px";
+                    }
                 }
-                var input = document.getElementById('search');
-                var len = input.value.length;
-                input.focus();
-                input.setSelectionRange(len, len);
-            }
-        </script>
+
+                window.onload = function() {
+                    const input = document.getElementById('search');
+                    input.focus();
+                    input.setSelectionRange(input.value.length, input.value.length);
+                };
+            </script>
 </body>
 
 </html>
