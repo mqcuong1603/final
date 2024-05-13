@@ -37,7 +37,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
                                     Analytics</span>
                             </a>
@@ -50,7 +50,7 @@
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                                 alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1">Name of Saleperson</span>
+                            <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
@@ -193,7 +193,7 @@
                 var newRow = $('<tr><td class="text-center">' + barcode +
                     '</td><td class="text-center">' + product + '</td><td class="product-price">' +
                     price +
-                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="total-price">' +
+                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
                     price +
                     '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
                 );

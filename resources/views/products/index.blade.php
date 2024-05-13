@@ -39,11 +39,6 @@
                         </li>
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
                                     Analytics</span>
                             </a>
@@ -60,7 +55,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item"
-                                    href="{{ route('admin.changePassword', Auth::user()->email) }}">Change
+                                    href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
                                     password</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -177,7 +172,6 @@
                                     value="{{ $product->category }}">
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">Update Product</button>
-                            <button type="submit" class="btn btn-primary mt-3">Update Product</button>
                         </form>
                     </div>
                 </div>
@@ -185,15 +179,11 @@
         </div>
     @endforeach
     </div>
-    <script>
-        function setElementHeightToScreenHeight() {
-            const element = document.getElementById("HTML_element");
-            element.style.height = window.innerHeight - 147 + "px";
-        }
-    </script>
     {{-- // Search bar autofocus --}}
     <script>
         window.onload = function() {
+            const element = document.getElementById("HTML_element");
+            element.style.height = window.innerHeight - 147 + "px";
             var input = document.getElementById('search');
             var len = input.value.length;
             input.focus();

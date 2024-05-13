@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +50,7 @@
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                                 alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1">salesman'name</span>
+                            <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             </li>
@@ -80,21 +81,21 @@
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Purchase History</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Phone Number</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">Purchase History</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
                                 <tr>
-                                    <td>{{ $customer->fullName }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>{{ $customer->phone }}</td>
-                                    <td>{{ $customer->address }}</td>
-                                    <td>
+                                    <td class="text-center">{{ $customer->fullName }}</td>
+                                    <td class="text-center">{{ $customer->email }}</td>
+                                    <td class="text-center">{{ $customer->phone }}</td>
+                                    <td class="text-center">{{ $customer->address }}</td>
+                                    <td class="text-center">
                                         <a href="#">
                                             <button class="btn btn-primary">View more detail</button></a>
                                     </td>

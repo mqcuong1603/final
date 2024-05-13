@@ -18,7 +18,7 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{ route('sales.sales_dashboard') }}"
+                    <a href=" {{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
@@ -49,7 +49,7 @@
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                                 alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1">salesman'name</span>
+                            <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             </li>
@@ -64,19 +64,16 @@
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
-                                <ul class="navbar-nav me-auto">
-                                </ul>
-                                <form action=" {{ route('sales.search') }}" class="d-flex" method="GET">
-                                    <input name="search" id="search" class="form-control me-2" type="text"
-                                        placeholder="Search" value="" autofocus>
-                                    <button class="btn btn-primary" type="submit">Search</button>
-                                    <div class="d-flex justify-content-center">
-                                        <div class="align-middle me-5 text-white">From</div>
-                                        <input type="date" class="">
-                                        <div class="text-center me-5 text-white">To</div>
-                                        <input type="date" class="">
-                                    </div>
-                                </form>
+                                <input name="search" id="search" class="form-control me-2 mx-5" type="text"
+                                    placeholder="Search" value="" autofocus>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="text-white me-2">From</span>
+                                    <input type="date" class="form-control me-2" id="fromDate">
+                                    <span class="text-white me-2">To</span>
+                                    <input type="date" class="form-control me-2" id="toDate">
+                                    <button class="btn btn-primary" type="button">Go</button>
+                                </div>
                             </div>
                         </div>
                     </nav>
@@ -84,46 +81,62 @@
                         <table class="table table-hover table-striped position-relative">
                             <thead>
                                 <tr>
-                                    <th>Order Id</th>
-                                    <th>Customer Id</th>
-                                    <th>Order Date</th>
-                                    <th>Total price</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Order Id</th>
+                                    <th class="text-center">Customer Id</th>
+                                    <th class="text-center">Order Date</th>
+                                    <th class="text-center">Total price</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($orders as $order)
                                     <tr>
-                                        <td>{{ $order->id }}</td>
-                                        <td>{{ $order->customer_id }}</td>
-                                        <td>{{ $order->order_date }}</td>
-                                        <td>{{ $order->total_price }}</td>
-                                        <td>
-                                            <a href="{{ route('sales.detail', $order->id) }}"
-                                                class="btn btn-primary">Detail</a>
+                                        <td class="text-center">{{ $order->id }}</td>
+                                        <td class="text-center">{{ $order->customer_id }}</td>
+                                        <td class="text-center">{{ $order->order_date }}</td>
+                                        <td class="text-center"> {{ $order->total_price }}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-customer-name="{{ $order->customer->fullName }}"
+                                                data-products=""
+                                                data-total-price="">
+                                                View more detail
+                                            </button>
                                         </td>
                                     </tr>
+                                @endforeach
                             </tbody>
                         </table>
-
-                        <table>
-                            <tr>
-                                <th>Total price</th>
-                                <th>Total order</th>
-                            </tr>
-                            <tbody>
-                                <td>$2000</td>
-                                <td>56</td>
-                            </tbody>
-                        </table>
+                        <div></div>
                     </div>
                     </tbody>
                     </table>
                 </div>
-                @endforeach
-
-
             </div>
+
+            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+                            <p><strong>Products:</strong></p>
+                            <ul id="productList"></ul>
+                            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     window.addEventListener('resize', setElementHeightToScreenHeight);
@@ -136,12 +149,44 @@
                         element.style.height = window.innerHeight - 145 + "px";
                     }
                 }
-
                 window.onload = function() {
                     const input = document.getElementById('search');
                     input.focus();
                     input.setSelectionRange(input.value.length, input.value.length);
                 };
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('#search').on('keyup', function() {
+                        var value = $(this).val().toLowerCase();
+                        $('table tbody tr').filter(function() {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('.view-order-button').click(function(event) {
+                        event.preventDefault();
+
+                        var customerName = $(this).data('customer-name');
+                        var products = JSON.parse($(this).data('products'));
+                        var totalPrice = $(this).data('total-price');
+
+                        $('#customerName').text(customerName);
+
+                        var productList = $('#productList');
+                        productList.empty();
+
+                        products.forEach(function(product) {
+                            var listItem = $('<li>').text(product.product.name + ' x' + product.quantity);
+                            productList.append(listItem);
+                        });
+
+                        $('#totalPrice').text(totalPrice);
+                    });
+                });
             </script>
 </body>
 

@@ -14,6 +14,6 @@ namespace App\Models;
 class Salesman extends User
 {
     protected $fillable = [
-        'fullName', 'email', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry'
+        'fullName', 'email', 'username', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry', 'is_first_login  => true',
     ];
 }
