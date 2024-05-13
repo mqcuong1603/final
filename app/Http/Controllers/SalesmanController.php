@@ -10,6 +10,7 @@ use App\Models\Products;
 use Illuminate\Support\Facades\DB;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Log;
+use App\Models\Salesman;
 
 class SalesmanController extends Controller
 {
@@ -19,7 +20,34 @@ class SalesmanController extends Controller
     public function index()
     {
         $customers = Customer::all();
+
         return view('sales.sales_dashboard', ['customers' => $customers]);
+    }
+
+    public function changePassword($email)
+    {
+        $salesman = Salesman::where('email', $email)->first();
+        return view('sales.changePassword', ['salesman' => $salesman]);
+    }
+
+    public function updatePassword(Request $request, $email)
+    {
+        $request->validate([
+            'newPassword' => 'required',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        $salesman = Salesman::where('email', $email)->first();
+
+        if ($salesman) {
+            $salesman->password = bcrypt($request->newPassword);
+            $salesman->is_first_login = false;
+            $salesman->save();
+
+            return redirect()->route('sales.sales_dashboard')->with('success', 'Password updated successfully');
+        }
+
+        return redirect()->route('sales.sales_dashboard')->with('error', 'Salesman not found');
     }
 
     public function searchCustomer(Request $request)

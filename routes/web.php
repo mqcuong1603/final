@@ -38,6 +38,8 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/detail/{customerId}', [SalesmanController::class, 'detail'])->name('sales.detail');
     Route::post('/check_customer', [SalesmanController::class, 'checkCustomer'])->name('sales.checkCustomer');
     Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
+    Route::get('/changePassword/{email}', [SalesmanController::class, 'changePassword'])->name('sales.changePassword');
+    Route::put('/changePassword/{email}', [SalesmanController::class, 'updatePassword'])->name('sales.updatePassword');
 });
 
 

@@ -18,7 +18,7 @@
             @csrf
             <h3>Admin Login</h3>
             <div class="form-wrapper">
-                <input required placeholder="Email" type="email" name="email" id="adminEmail" autocomplete="off">
+                <input required placeholder="Username" name="username" id="adminUsername" autocomplete="off">
             </div>
             <div class="form-wrapper">
                 <input required placeholder="Password" type="password" name="password" id="adminPassword" autocomplete="off">
@@ -30,7 +30,7 @@
             @csrf
             <h3>Salesperson Login</h3>
             <div class="form-wrapper">
-                <input required placeholder="Email" type="email" name="email" id="saleEmail" autocomplete="off">
+                <input required placeholder="Username" name="username" id="saleUsername" autocomplete="off">
             </div>
             <div class="form-wrapper">
                 <input required placeholder="Password" type="password" name="password" id="salePassword" autocomplete="off">
