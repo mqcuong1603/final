@@ -37,7 +37,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
                                     Analytics</span>
                             </a>
@@ -193,7 +193,7 @@
                 var newRow = $('<tr><td class="text-center">' + barcode +
                     '</td><td class="text-center">' + product + '</td><td class="product-price">' +
                     price +
-                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="total-price">' +
+                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
                     price +
                     '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
                 );

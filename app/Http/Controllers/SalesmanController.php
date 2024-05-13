@@ -48,7 +48,7 @@ class SalesmanController extends Controller
         $orders = Order::all();
         return view('sales.report', ['orders' => $orders]);
     }
-    
+
     public function createOrder(Request $request, Customer $customer)
     {
         // Start a database transaction
@@ -73,7 +73,7 @@ class SalesmanController extends Controller
                 'order_date' => now(),
                 'total_price' => $totalPrice,
             ]);
-        $customer->orders()->save($order);
+            $customer->orders()->save($order);
 
             // Loop through the products and create order items
             foreach ($request->products as $index => $barcode) {
@@ -104,30 +104,30 @@ class SalesmanController extends Controller
         }
     }
 
-public function checkCustomer(Request $request)
-{
-$email = $request->input('email');
-$phone = $request->input('phone');
+    public function checkCustomer(Request $request)
+    {
+        $email = $request->input('email');
+        $phone = $request->input('phone');
 
-$customer = Customer::where('email', $email)->orWhere('phone', $phone)->first();
+        $customer = Customer::where('email', $email)->orWhere('phone', $phone)->first();
 
-if ($customer) {
-Log::info('Customer found with email: ' . $email . ' and phone: ' . $phone);
+        if ($customer) {
+            Log::info('Customer found with email: ' . $email . ' and phone: ' . $phone);
 
-// If a customer is found, create an order and order items
-return $this->createOrder($request, $customer);
-} else {
-Log::info('No customer found with email: ' . $email . ' and phone: ' . $phone . '. Creating new customer.');
+            // If a customer is found, create an order and order items
+            return $this->createOrder($request, $customer);
+        } else {
+            Log::info('No customer found with email: ' . $email . ' and phone: ' . $phone . '. Creating new customer.');
 
-// If no customer is found, create a new customer
-$customer = new Customer([
-'email' => $email,
-'phone' => $phone,
-]);
-$customer->save();
+            // If no customer is found, create a new customer
+            $customer = new Customer([
+                'email' => $email,
+                'phone' => $phone,
+            ]);
+            $customer->save();
 
-// Then create an order and order items for the new customer
-return $this->createOrder($request, $customer);
-}
-}
+            // Then create an order and order items for the new customer
+            return $this->createOrder($request, $customer);
+        }
+    }
 }

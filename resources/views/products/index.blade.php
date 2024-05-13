@@ -60,9 +60,9 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item"
-                                    href="{{ route('admin.changePassword', Auth::user()->email) }}">Change
-                                    password</a></li>
-                            <li>
+                                href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
+                                password</a></li>
+                        <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
