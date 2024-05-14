@@ -20,7 +20,7 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
@@ -61,7 +61,7 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Customer's name history</a>
+                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">{{$customer->fullName}}'s oders</a>
                             <div class="d-flex">
                                 <span style="margin-top: 6px " class="text-white me-2">From</span>
                                 <input type="date" class="form-control me-2" id="fromDate">
@@ -81,7 +81,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orders as $order)
+                                @foreach ($customer->orders as $order)
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>

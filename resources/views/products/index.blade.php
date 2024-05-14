@@ -21,26 +21,26 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('admin.admin_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
-                                    Management</span></h5>
+                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h6><span class="ms-1 d-none d-sm-inline">Account
+                                    Management</span></h6>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
-                                    Catalog</span></h4>
+                            <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Product
+                                    Catalog</span></h5>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h5>
+                        <li class="nav-item">
+                            <a href="#" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -91,17 +91,17 @@
                         </div>
                     </nav>
                 </div>
-                <div id="HTML_element" style="overflow-y: auto;">
+                <div class="mt-3" id="HTML_element" style="overflow-y: auto;">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Barcode</th>
-                                <th class="text-center">Product Name</th>
-                                <th class="text-center">Import Price</th>
-                                <th class="text-center">Retail Price</th>
-                                <th class="text-center">Category</th>
-                                <th class="text-center">Actions</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">ID</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Barcode</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Product Name</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Import Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Retail Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Category</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         @foreach ($products as $product)
@@ -185,7 +185,7 @@
     <script>
         window.onload = function() {
             const element = document.getElementById("HTML_element");
-            element.style.height = window.innerHeight - 100 + "px";
+            element.style.height = window.innerHeight - 107 + "px";
             var input = document.getElementById('search');
             var len = input.value.length;
             input.focus();

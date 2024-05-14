@@ -20,25 +20,27 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Customer
-                                    Management</span>
+                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
+                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Transaction</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
-                                    Analytics</span>
+                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
+                                    Analytics</span></h5>
                             </a>
                         </li>
                     </ul>
@@ -93,8 +95,8 @@
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ $order->customer_id }}</td>
-                                        <td class="text-center">{{ $order->order_date }}</td>
-                                        <td class="text-center"> {{ $order->total_price }}</td>
+                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
+                                        <td class="text-center">{{"$" . $order->total_price }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
                                                 data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
