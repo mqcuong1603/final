@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report')}}" class="nav-link px-0 align-middle">
+                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
                                     Analytics</span>
                             </a>
@@ -96,8 +96,10 @@
                                         <td class="text-center">{{ $order->order_date }}</td>
                                         <td class="text-center"> {{ $order->total_price }}</td>
                                         <td class="text-center">
-                                            <a href="#">
-                                                <button class="btn btn-primary">View more detail</button></a>
+                                            <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
+                                                data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
+                                                View more detail
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -153,6 +155,41 @@
                         var value = $(this).val().toLowerCase();
                         $('table tbody tr').filter(function() {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('.view-order-button').click(function(event) {
+                        event.preventDefault();
+
+                        var orderId = $(this).data('order-id');
+
+                        $.ajax({
+                            url: '{{ route('sales.orderDetails', ['id' => '__ID__']) }}'.replace('__ID__',
+                                orderId),
+                            method: 'GET',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                $('#customerName').text(response.customerName);
+
+                                var productList = $('#productList');
+                                productList.empty();
+
+                                response.products.forEach(function(product) {
+                                    var listItem = $('<li>').text(product.name + ' x' + product
+                                        .quantity);
+                                    productList.append(listItem);
+                                });
+
+                                $('#totalPrice').text("$"+response.totalPrice);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error(textStatus, errorThrown);
+                            }
                         });
                     });
                 });

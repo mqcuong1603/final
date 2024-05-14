@@ -170,4 +170,22 @@ class SalesmanController extends Controller
         // Return the results. This is just an example, replace with your actual return logic.
         return view('sales.report', ['orders' => $orders]);
     }
+
+    public function showOrderDetails($id)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($id);
+
+        $products = $order->orderItems->map(function ($orderItem) {
+            return [
+                'name' => $orderItem->product->product_name,
+                'quantity' => $orderItem->quantity,
+            ];
+        });
+
+        return response()->json([
+            'customerName' => $order->customer->fullName,
+            'products' => $products,
+            'totalPrice' => $order->total_price,
+        ]);
+    }
 }

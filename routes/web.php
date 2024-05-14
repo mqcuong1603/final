@@ -41,6 +41,7 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/changePassword/{email}', [SalesmanController::class, 'changePassword'])->name('sales.changePassword');
     Route::put('/changePassword/{email}', [SalesmanController::class, 'updatePassword'])->name('sales.updatePassword');
     Route::get('/report/search', [SalesmanController::class, 'searchByDate'])->name('report.search');
+    Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('sales.orderDetails');
 });
 
 
