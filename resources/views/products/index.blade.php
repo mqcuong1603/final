@@ -27,25 +27,20 @@
                         id="menu">
                         <li class="nav-item">
                             <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account
-                                    Management</span>
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
+                                    Management</span></h5>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Product
-                                    Catalog</span>
+                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
+                                    Catalog</span></h4>
                             </a>
                         </li>
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span>
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h5>
                             </a>
                         </li>
                     </ul>
@@ -60,9 +55,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item"
+<<<<<<< HEAD
                                 href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
                                 password</a></li>
                         <li>
+=======
+                                    href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
+                                    password</a></li>
+                            <li>
+>>>>>>> 31c83fba91b90c0ef5ae0a3c94ebf5ead300433d
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
@@ -90,32 +91,28 @@
                         </div>
                     </nav>
                 </div>
-                <div>
+                <div id="HTML_element" style="overflow-y: auto;">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Barcode</th>
-                                <th>Product Name</th>
-                                <th>Import Price</th>
-                                <th>Retail Price</th>
-                                <th>Category</th>
-                                <th>Actions</th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Barcode</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Import Price</th>
+                                <th class="text-center">Retail Price</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-                    </table>
-                </div>
-                <div id="HTML_element" style="overflow-y: auto;">
-                    <table class="table table-hover table-striped">
                         @foreach ($products as $product)
                             <tr>
-                                <td style="width: 4%;">{{ $product->id }}</td>
-                                <td style="width: 15%;">{{ $product->barcode }}</td>
-                                <td style="width: 21%;">{{ $product->product_name }}</td>
-                                <td style="width: 18%;">${{ number_format($product->import_price, 2) }}</td>
-                                <td style="width: 17%;">${{ number_format($product->retail_price, 2) }}</td>
-                                <td style="width: 13%;">{{ $product->category }}</td>
-                                <td>
+                                <td class="text-center">{{ $product->id }}</td>
+                                <td class="text-center">{{ $product->barcode }}</td>
+                                <td class="text-center">{{ $product->product_name }}</td>
+                                <td class="text-center">${{ number_format($product->import_price, 2) }}</td>
+                                <td class="text-center">${{ number_format($product->retail_price, 2) }}</td>
+                                <td class="text-center"><span class="badge rounded-pill bg-secondary">{{ $product->category }}</span></td>
+                                <td class="text-center">
                                     <!-- Edit button triggers modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
@@ -177,7 +174,6 @@
                                     value="{{ $product->category }}">
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">Update Product</button>
-                            <button type="submit" class="btn btn-primary mt-3">Update Product</button>
                         </form>
                     </div>
                 </div>
@@ -185,15 +181,11 @@
         </div>
     @endforeach
     </div>
-    <script>
-        function setElementHeightToScreenHeight() {
-            const element = document.getElementById("HTML_element");
-            element.style.height = window.innerHeight - 147 + "px";
-        }
-    </script>
     {{-- // Search bar autofocus --}}
     <script>
         window.onload = function() {
+            const element = document.getElementById("HTML_element");
+            element.style.height = window.innerHeight - 100 + "px";
             var input = document.getElementById('search');
             var len = input.value.length;
             input.focus();

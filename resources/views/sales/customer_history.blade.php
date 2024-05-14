@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report')}}" class="nav-link px-0 align-middle">
+                            <a href="#" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
                                     Analytics</span>
                             </a>
@@ -57,23 +57,17 @@
                     </div>
                 </div>
             </div>
-            <div class=" col-auto col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
+            <div class="col col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.report') }}">Report & Analytics</a>
-                            <div class="collapse navbar-collapse" id="mynavbar">
-                                <input name="search" id="search" class="form-control me-2 mx-5" type="text"
-                                    placeholder="Search" value="" autofocus>
-                                <form action="{{ route('report.search') }}" method="GET">
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-white me-2">From</span>
-                                        <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
-                                        <span class="text-white me-2">To</span>
-                                        <input type="date" class="form-control me-2" id="toDate" name="toDate">
-                                        <button class="btn btn-primary" type="submit">Go</button>
-                                    </div>
-                                </form>
+                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Customer's name history</a>
+                            <div class="d-flex">
+                                <span style="margin-top: 6px " class="text-white me-2">From</span>
+                                <input type="date" class="form-control me-2" id="fromDate">
+                                <span style="margin-top: 6px " class="text-white me-2">To</span>
+                                <input type="date" class="form-control me-2" id="toDate">
+                                <button class="btn btn-primary" type="button">Go</button>
                             </div>
                         </div>
                     </nav>
@@ -82,81 +76,57 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">Order Id</th>
-                                    <th class="text-center">Customer Id</th>
                                     <th class="text-center">Order Date</th>
                                     <th class="text-center">Total price</th>
-                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($orders as $order)
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
-                                        <td class="text-center">{{ $order->customer_id }}</td>
-                                        <td class="text-center">{{ $order->order_date }}</td>
-                                        <td class="text-center"> {{ $order->total_price }}</td>
-                                        <td class="text-center">
-                                            <a href="#">
-                                                <button class="btn btn-primary">View more detail</button></a>
-                                        </td>
+                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
+                                        <td class="text-center">${{ $order->total_price }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <div></div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
-                            <p><strong>Products:</strong></p>
-                            <ul id="productList"></ul>
-                            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    window.addEventListener('resize', setElementHeightToScreenHeight);
-                    setElementHeightToScreenHeight();
-                });
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('resize', setElementHeightToScreenHeight);
+            setElementHeightToScreenHeight();
+        });
 
-                function setElementHeightToScreenHeight() {
-                    const element = document.getElementById("HTML_element");
-                    if (element) {
-                        element.style.height = window.innerHeight - 145 + "px";
-                    }
-                }
-                window.onload = function() {
-                    const input = document.getElementById('search');
-                    input.focus();
-                    input.setSelectionRange(input.value.length, input.value.length);
-                };
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('#search').on('keyup', function() {
-                        var value = $(this).val().toLowerCase();
-                        $('table tbody tr').filter(function() {
-                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                        });
-                    });
+        function setElementHeightToScreenHeight() {
+            const element = document.getElementById("HTML_element");
+            if (element) {
+                element.style.height = window.innerHeight - 145 + "px";
+            }
+        }
+
+        window.onload = function() {
+            const input = document.getElementById('search');
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        };
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
-            </script>
+            });
+        });
+    </script>
 </body>
 
 </html>

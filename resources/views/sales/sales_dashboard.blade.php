@@ -81,21 +81,21 @@
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Purchase History</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Phone Number</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">Purchase History</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
                                 <tr>
-                                    <td>{{ $customer->fullName }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>{{ $customer->phone }}</td>
-                                    <td>{{ $customer->address }}</td>
-                                    <td>
+                                    <td class="text-center">{{ $customer->fullName }}</td>
+                                    <td class="text-center">{{ $customer->email }}</td>
+                                    <td class="text-center">{{ $customer->phone }}</td>
+                                    <td class="text-center">{{ $customer->address }}</td>
+                                    <td class="text-center">
                                         <a href="#">
                                             <button class="btn btn-primary">View more detail</button></a>
                                     </td>

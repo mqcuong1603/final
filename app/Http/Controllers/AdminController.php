@@ -79,6 +79,7 @@ class AdminController extends Controller
 
         // Flash a success message to the session
         session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
+        session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
 
         return redirect()->route('admin.admin_dashboard');
     }
@@ -86,6 +87,7 @@ class AdminController extends Controller
     /**
      * Display the specified user.
      *
+     * @param int $email The email of the user to display.
      * @param int $email The email of the user to display.
      * @return \Illuminate\Contracts\View\View
      */
@@ -181,6 +183,8 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $oldEmail
+     * @param \Illuminate\Http\Request $request
+     * @param string $oldEmail
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $oldEmail)
@@ -211,8 +215,8 @@ class AdminController extends Controller
         ]);
 
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
-            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
-            ->get();
+        ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+        ->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
     }

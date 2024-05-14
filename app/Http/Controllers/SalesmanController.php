@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -141,7 +140,6 @@ class SalesmanController extends Controller
 
         if ($customer) {
             Log::info('Customer found with email: ' . $email . ' and phone: ' . $phone);
-
             // If a customer is found, create an order and order items
             return $this->createOrder($request, $customer);
         } else {
@@ -163,8 +161,6 @@ class SalesmanController extends Controller
     {
         $fromDate = $request->input('fromDate');
         $toDate = $request->input('toDate');
-
-        
 
         // Perform the search. This is just an example, replace with your actual search logic.
         $orders = DB::table('orders')
