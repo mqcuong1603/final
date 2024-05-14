@@ -20,25 +20,28 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Customer
-                                    Management</span>
+                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
+                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Transaction</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
-                                    Analytics</span>
+                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
+                                        Analytics</span></h5>
                             </a>
                         </li>
                     </ul>
@@ -97,10 +100,7 @@
                                         <td class="text-center"> {{ $order->total_price }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
-                                                data-bs-target="#orderModal"
-                                                data-customer-name="{{ $order->customer->fullName }}"
-                                                data-products=""
-                                                data-total-price="">
+                                                data-bs-target="#order-modal-{{ $order->id }}">
                                                 View more detail
                                             </button>
                                         </td>
@@ -115,27 +115,37 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="order-modal-{{ $order->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="order-modal-label" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <h5 class="modal-title" id="order-modal-label">Order #{{ $order->id }} Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
-                            <p><strong>Products:</strong></p>
-                            <ul id="productList"></ul>
-                            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                            <h6>Customer Information:</h6>
+                            <p>Full Name: {{ $order->customer_id->customer->fullName }}</p>
+                            <h6>Order Products:</h6>
+                            <ul>
+                                @foreach ($order->id->product_id->products as $product)
+                                    <li>
+                                        {{ $product->product_name }} ({{ $product->quantity }} x {{ $product->price }})
+                                        <span class="text-muted">Total:
+                                            {{ $product->quantity * $product->price }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
+
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -162,29 +172,6 @@
                         $('table tbody tr').filter(function() {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                         });
-                    });
-                });
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('.view-order-button').click(function(event) {
-                        event.preventDefault();
-
-                        var customerName = $(this).data('customer-name');
-                        var products = JSON.parse($(this).data('products'));
-                        var totalPrice = $(this).data('total-price');
-
-                        $('#customerName').text(customerName);
-
-                        var productList = $('#productList');
-                        productList.empty();
-
-                        products.forEach(function(product) {
-                            var listItem = $('<li>').text(product.product.name + ' x' + product.quantity);
-                            productList.append(listItem);
-                        });
-
-                        $('#totalPrice').text(totalPrice);
                     });
                 });
             </script>

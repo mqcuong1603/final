@@ -23,7 +23,7 @@
     </script>
 </head>
 
-<body style="background-color: rgb(17, 17, 17)">
+<body style="background-color: rgb(60, 60, 60)">
     <div class="container mt-3">
         <div class="row flex-nowrap">
             <div style="background-color: #2b2b2b; margin-top:15%; width:500px; height:350px" class="mx-auto border-none rounded-3">
