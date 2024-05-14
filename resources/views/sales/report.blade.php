@@ -100,7 +100,9 @@
                                         <td class="text-center"> {{ $order->total_price }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
-                                                data-bs-target="#order-modal-{{ $order->id }}">
+                                                data-bs-target="#orderModal"
+                                                data-customer-name="{{ $order->customer->fullName }}" data-products=""
+                                                data-total-price="">
                                                 View more detail
                                             </button>
                                         </td>
@@ -115,37 +117,27 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="order-modal-{{ $order->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="order-modal-label" aria-hidden="true">
+            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="order-modal-label">Order #{{ $order->id }} Details</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
                         <div class="modal-body">
-                            <h6>Customer Information:</h6>
-                            <p>Full Name: {{ $order->customer_id->customer->fullName }}</p>
-                            <h6>Order Products:</h6>
-                            <ul>
-                                @foreach ($order->id->product_id->products as $product)
-                                    <li>
-                                        {{ $product->product_name }} ({{ $product->quantity }} x {{ $product->price }})
-                                        <span class="text-muted">Total:
-                                            {{ $product->quantity * $product->price }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+                            <p><strong>Products:</strong></p>
+                            <ul id="productList"></ul>
+                            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
-
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -172,6 +164,29 @@
                         $('table tbody tr').filter(function() {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                         });
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('.view-order-button').click(function(event) {
+                        event.preventDefault();
+
+                        var customerName = $(this).data('customer-name');
+                        var products = JSON.parse($(this).data('products'));
+                        var totalPrice = $(this).data('total-price');
+
+                        $('#customerName').text(customerName);
+
+                        var productList = $('#productList');
+                        productList.empty();
+
+                        products.forEach(function(product) {
+                            var listItem = $('<li>').text(product.product.name + ' x' + product.quantity);
+                            productList.append(listItem);
+                        });
+
+                        $('#totalPrice').text(totalPrice);
                     });
                 });
             </script>
