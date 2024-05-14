@@ -27,7 +27,10 @@ class LoginController extends Controller
                         'username' => 'Your account has been locked. Please contact the administrator.',
                     ]);
                 } elseif ($salesman->is_first_login) {
-                    return redirect()->route('sales.changePassword', ['email' => $salesman->email]);
+                    Auth::logout();
+                    return back()->withErrors([
+                        'username' => 'Please change your password via link sent to your email.',
+                    ]);
                 } else {
                     return redirect()->route('sales.sales_dashboard');
                 }

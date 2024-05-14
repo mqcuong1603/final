@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SalesActivationEmail;
 use App\Models\Salesman;
+use Carbon\Carbon; // Import the Carbon class from the correct namespace
 class AdminController extends Controller
 {
     /**
@@ -55,21 +56,16 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function createSaleAccount(Request $request)
     {
-        // Validate incoming request data
         $validatedData = $request->validate([
-            'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:salesmen|max:255', // Ensure the email is unique in the 'salesmen' table
-            // Add more validation rules as needed
+            'fullName' => 'required|max:255',
+            'email' => 'required|email|unique:salesmen|max:255',
         ]);
 
-        // Extract username from email
         $username = strstr($validatedData['email'], '@', true);
 
-        // Create the salesman
-        Salesman::create([
+        $salesman = Salesman::create([
             'fullName' => $validatedData['fullName'],
             'email' => $validatedData['email'],
             'username' => $username,
@@ -77,13 +73,17 @@ class AdminController extends Controller
             'is_first_login' => true,
         ]);
 
-        // Flash a success message to the session
-        session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
-        session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
+        $token = $salesman->createToken('Login Token', ['login'])->plainTextToken;
+        $salesman->activation_token = $token;
+        $salesman->activation_token_expiry = Carbon::now()->addMinute();
+        $salesman->save();
+
+        Mail::to($salesman->email)->send(new SalesActivationEmail($salesman, $token));
+
+        session()->flash('success', 'Salesman created successfully. An email has been sent to ' . $salesman->email);
 
         return redirect()->route('admin.admin_dashboard');
     }
-
     /**
      * Display the specified user.
      *
@@ -103,11 +103,6 @@ class AdminController extends Controller
      * @param \App\Models\Salesman $salesman
      * @return void
      */
-    public function sendActivationEmail(Salesman $salesman)
-    {
-        Mail::to($salesman->email)->send(new SalesActivationEmail());
-        Mail::to($salesman->email)->send(new SalesActivationEmail());
-    }
 
     /**
      * Activate a salesman.
@@ -215,8 +210,8 @@ class AdminController extends Controller
         ]);
 
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
-        ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
-        ->get();
+            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
     }
