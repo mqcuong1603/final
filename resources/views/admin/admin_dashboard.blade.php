@@ -35,27 +35,26 @@
                             <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
                         </a>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-                            id="menu">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                    <i class="fs-4 bi-house"></i> <span
-                                        class="ms-1 d-none d-sm-inline text-info">Account
-                                        Management</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Product
-                                        Catalog</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
-                                        Analytics</span>
-                                </a>
-                            </li>
-                        </ul>
+                        id="menu">
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Account
+                                    Management</span></h4>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Product
+                                    Catalog</span></h5>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h5>
+                            </a>
+                        </li>
+                    </ul>
                         <hr>
                         <div class="dropdown pb-4">
                             <a href="#"
@@ -105,12 +104,12 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Image</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Lock</th>
-                                    <th class="text-center">Activate</th>
-                                    <th class="text-center">Edit</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Image</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Name</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Email</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Lock</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Activate</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Edit</th>
                                 </tr>
                             </thead>
                     <tbody>
@@ -132,7 +131,7 @@
                                     @else
                                         Activate
                                     @endif
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-bs-toggle="dropdown">
