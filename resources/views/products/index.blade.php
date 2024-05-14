@@ -29,16 +29,22 @@
                             <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
                                     Management</span></h5>
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
+                                    Management</span></h5>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
                                     Catalog</span></h4>
+                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
+                                    Catalog</span></h4>
                             </a>
                         </li>
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h5>
                                 <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
                                     Analytics</span></h5>
                             </a>
