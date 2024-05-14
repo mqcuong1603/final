@@ -93,11 +93,15 @@
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ $order->customer_id }}</td>
-                                        <td class="text-center">{{ $order->order_date }}</td>
-                                        <td class="text-center"> {{ $order->total_price }}</td>
+                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>                                        <td class="text-center"> {{ $order->total_price }}</td>
                                         <td class="text-center">
-                                            <a href="#">
-                                                <button class="btn btn-primary">View more detail</button></a>
+                                            <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-customer-name="{{ $order->customer->fullName }}"
+                                                data-products=""
+                                                data-total-price="">
+                                                View more detail
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -107,6 +111,28 @@
                     </div>
                     </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+                            <p><strong>Products:</strong></p>
+                            <ul id="productList"></ul>
+                            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -138,6 +164,47 @@
                     });
                 });
             </script>
+            <script>
+                $(document).ready(function() {
+                    $('.view-order-button').click(function(event) {
+                        event.preventDefault();
+
+                        var customerName = $(this).data('customer-name');
+                        var products = JSON.parse($(this).data('products'));
+                        var totalPrice = $(this).data('total-price');
+
+                        $('#customerName').text(customerName);
+
+                        var productList = $('#productList');
+                        productList.empty();
+
+                        products.forEach(function(product) {
+                            var listItem = $('<li>').text(product.product.name + ' x' + product.quantity);
+                            productList.append(listItem);
+                        });
+
+                        $('#totalPrice').text(totalPrice);
+                    });
+                });
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() 
+                {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+
+                    today = yyyy + '-' + mm + '-' + dd;
+
+                    var fromDate = document.getElementById('fromDate');
+                    var toDate = document.getElementById('toDate');
+
+                    fromDate.setAttribute('max', today);
+                    toDate.setAttribute('max', today);
+                });
+            </script>
+            
 </body>
 
 </html>

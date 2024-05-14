@@ -35,27 +35,26 @@
                             <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
                         </a>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-                            id="menu">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                    <i class="fs-4 bi-house"></i> <span
-                                        class="ms-1 d-none d-sm-inline text-info">Account
-                                        Management</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Product
-                                        Catalog</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
-                                        Analytics</span>
-                                </a>
-                            </li>
-                        </ul>
+                        id="menu">
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Account
+                                    Management</span></h4>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Product
+                                    Catalog</span></h5>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h5>
+                            </a>
+                        </li>
+                    </ul>
                         <hr>
                         <div class="dropdown pb-4">
                             <a href="#"
@@ -101,83 +100,77 @@
                             </div>
                         </nav>
                     </div>
-                    <div>
+                    <div id="HTML_element" style="overflow-y: auto">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Lock</th>
-                                    <th>Activate</th>
-                                    <th>Edit</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Image</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Name</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Email</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Lock</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Activate</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Edit</th>
                                 </tr>
                             </thead>
-                        </table>
-                    </div id="HTML_element" style="overflow-y: auto">
-                    <table class="table table-hover table-striped">
-                        <tbody>
-                            @foreach ($salesmen as $salesman)
-                                <tr>
-                                    <td style="width:17%">Placeholder Image</td>
-                                    <td style="width:14%">{{ $salesman->fullName }}</td>
-                                    <td style="width:19.5%">{{ $salesman->email }}</td>
-                                    <td style="width:15%">
-                                        @if ($salesman->isLocked == 0)
-                                            Unlock
-                                        @else
-                                            Lock
-                                        @endif
-                                    </td>
-                                    <td style="width:20.6%">
-                                        @if ($salesman->isActivated == 0)
-                                            Inactivate
-                                        @else
-                                            Activate
-                                        @endif
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                data-bs-toggle="dropdown">
-                                                ☰
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
-                                                        data-bs-target="#editModal-{{ $salesman->id }}"
-                                                        data-salesman-id="{{ $salesman->id }}"
-                                                        data-salesman-name="{{ $salesman->fullName }}"
-                                                        data-salesman-email="{{ $salesman->email }}">Edit</a></li>
-                                                <li>
-                                                    <form method="POST"
-                                                        action="{{ route('admin.changeLock', ['email' => urlencode($salesman->email)]) }}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="dropdown-item">
-                                                            @if ($salesman->isLocked == 0)
-                                                                Lock
-                                                            @else
-                                                                Unlock
-                                                            @endif
-                                                        </button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" data-bs-toggle="modal" href="#"
-                                                        data-bs-target="#confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
-                                                        data-salesman-email="{{ $salesman->email }}"
-                                                        data-salesman-id="{{ $salesman->id }}"
-                                                        data-salesman-name="{{ $salesman->fullName }}">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
+                    <tbody>
+                        @foreach ($salesmen as $salesman)
+                            <tr>
+                                <td class="text-center">Placeholder Image</td>
+                                <td class="text-center">{{ $salesman->fullName }}</td>
+                                <td class="text-center">{{ $salesman->email }}</td>
+                                <td class="text-center">
+                                    @if ($salesman->isLocked == 0)
+                                        <span class="badge bg-success">Unlock</span>
+                                    @else
+                                        <span class="badge bg-danger">Lock</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if ($salesman->isActivated == 0)
+                                        Inactivate
+                                    @else
+                                        Activate
+                                    @endif
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown">
+                                            ☰
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
+                                                    data-bs-target="#editModal-{{ $salesman->id }}"
+                                                    data-salesman-id="{{ $salesman->id }}"
+                                                    data-salesman-name="{{ $salesman->fullName }}"
+                                                    data-salesman-email="{{ $salesman->email }}">Edit</a></li>
+                                            <li>
+                                                <form method="POST"
+                                                    action="{{ route('admin.changeLock', ['email' => urlencode($salesman->email)]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="dropdown-item">
+                                                        @if ($salesman->isLocked == 0)
+                                                            Lock
+                                                        @else
+                                                            Unlock
+                                                        @endif
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" data-bs-toggle="modal" href="#"
+                                                    data-bs-target="#confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
+                                                    data-salesman-email="{{ $salesman->email }}"
+                                                    data-salesman-id="{{ $salesman->id }}"
+                                                    data-salesman-name="{{ $salesman->fullName }}">Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                     </table>
-                </div>
-                </tbody>
                 </table>
             </div>
         </div>
@@ -217,7 +210,7 @@
                                             Inactivate</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
                             </form>
                         </div>
                     </div>
@@ -259,7 +252,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('admin.create') }}" method="POST">
+                        <form action="{{ route('admin.create') }}" method="POST" id="addForm">
                             @csrf
                             @method('POST')
                             <div class="form-group">
@@ -270,24 +263,51 @@
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" name="email" value="">
                             </div>
-                            <button type="submit" class="btn btn-primary mt-2">Add Saleman</button>
+                            <button type="submit" class="btn btn-primary mt-3" id="addSalesman"
+                                data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                Add Salesman
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-
-
-
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirm Add Salesman</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to add this salesman?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary mt-3" id="confirmAdd">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            document.getElementById('addSalesman').addEventListener('click', function(event) {
+                event.preventDefault();
+                $('#confirmModal').modal('show');
+            });
+
+            document.getElementById('confirmAdd').addEventListener('click', function() {
+                document.getElementById('addForm').submit();
+            });
+        </script>
         <script>
             const adminBox = document.getElementById('adminBox');
             const dropdownContent = document.getElementById('dropdownContent');
@@ -397,6 +417,8 @@
         {{-- // Search bar autofocus --}}
         <script>
             window.onload = function() {
+                const element = document.getElementById("HTML_element");
+                element.style.height = window.innerHeight - 130 + "px";
                 var input = document.getElementById('search');
                 var len = input.value.length;
                 input.focus();
@@ -409,12 +431,6 @@
         $(document).ready(function() {
             $('#editModal').modal('show');
         });
-    </script>
-    <script>
-        function setElementHeightToScreenHeight() {
-            const element = document.getElementById("HTML_element");
-            element.style.height = window.innerHeight - 147 + "px";
-        }
     </script>
     </body>
 

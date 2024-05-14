@@ -8,18 +8,13 @@
 
     <!-- Add missing id attribute to the HTML element -->
     <style>
-        #HTML_element {
-            height: 100%;
+        .error-message {
+            color: red;
+            display: none;
         }
     </style>
 
     <!-- Add missing id attribute to the HTML element -->
-    <script>
-        function setElementHeightToScreenHeight() {
-            const element = document.getElementById("HTML_element");
-            element.style.height = window.innerHeight - 145 + "px";
-        }
-    </script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -28,21 +23,21 @@
     </script>
 </head>
 
-<body onload="setElementHeightToScreenHeight()">
-    <div class="container-fluid">
+<body style="background-color: rgb(17, 17, 17)">
+    <div class="container mt-3">
         <div class="row flex-nowrap">
-            <div class="px-3 pt-2">
+            <div style="background-color: #2b2b2b; margin-top:15%; width:500px; height:350px" class="mx-auto border-none rounded-3">
                 <!-- Add a new form for changing password -->
-                <h2>Personal Information</h2>
-                <h3 class="text-center">Welcome to the system for the first time</h3>
-                <form action="{{ route('sales.updatePassword', ['email' => $salesman->email]) }}" method="POST">
+                <h2 style="color: white" class="text-center mt-3">Reset Password</h2>
+                <form class="w-50" action="{{ route('sales.updatePassword', ['email' => $salesman->email]) }}" method="POST"
+                    onsubmit="return checkPasswordMatch();">
                     @csrf
                     @method('PUT')
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <div class="input-group">
+                    <div class="mb-3 mt-3">
+                        <label style="color: white" for="newPassword" class="form-label">New Password</label>
+                        <div style="width:475px" class="input-group">
                             <input type="password" class="form-control" name="newPassword" id="newPassword"
-                                placeholder="Enter new password">
+                                placeholder="Enter new password" required>
                             <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
                                 <i class="bi bi-eye">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -56,13 +51,13 @@
                             </button>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <div class="input-group">
+                    <div class="mb-3 mt-3">
+                        <label style="color: white" for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div style="width:475px" class="input-group">
                             <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
-                                placeholder="Confirm new password">
+                                placeholder="Confirm new password" required>
                             <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
-                                <i class="bi bi-eye">
+                                <i  class="bi bi-eye">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                         <path
@@ -73,8 +68,11 @@
                                 </i>
                             </button>
                         </div>
+                        <div style="width:475px" id="newPasswordError" class="error-message text-center mt-3">
+                            <span>New password and confirm password are not match.</span>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button style="width:475px" type="submit" class="btn btn-primary mt-3">Change Password</button>
                 </form>
             </div>
         </div>
@@ -97,7 +95,23 @@
             togglePassword('newPassword', 'toggleNewPassword');
             togglePassword('confirmPassword', 'toggleConfirmPassword');
         }
+
+        function checkPasswordMatch() {
+            var newPassword = document.getElementById('newPassword').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                document.getElementById('newPasswordError').style.display = 'block';
+                return false;
+            } else {
+                document.getElementById('newPasswordError').style.display = 'none';
+            }
+
+            return true;
+        }
     </script>
+
+
 </body>
 
 </html>
