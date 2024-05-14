@@ -33,6 +33,7 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard');
     Route::get('/search', [SalesmanController::class, 'searchCustomer'])->name('sales.search');
     Route::get('sales_transaction', [SalesmanController::class, 'transaction'])->name('sales.sales_transaction');
+    Route::get('sales_transaction/receipt/{orderId}', [SalesmanController::class, 'receipt'])->name('sales.receipt');
     Route::get('/logout', [LoginController::class, 'logout'])->name('sales.logout');
     Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
     Route::get('/detail/{customerId}', [SalesmanController::class, 'detail'])->name('sales.detail');
@@ -43,6 +44,7 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/report/search', [SalesmanController::class, 'searchByDate'])->name('report.search');
     Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('sales.orderDetails');
     Route::get('/customerHistory/{customerId}', [SalesmanController::class, 'customerHistory'])->name('sales.customerHistory');
+    Route::get('/customerHistory/{customerId}/search', [SalesmanController::class, 'searchOrder'])->name('sales.searchOrder');
 });
 
 

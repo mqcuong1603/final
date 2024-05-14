@@ -119,7 +119,8 @@ class SalesmanController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->back()->with('success', 'Order created successfully');
+            // Redirect to the receipt page
+            return redirect()->route('sales.receipt', ['orderId' => $order->id]);
         } catch (\Exception $e) {
             // An error occurred; cancel the transaction...
             DB::rollback();
@@ -155,6 +156,13 @@ class SalesmanController extends Controller
             // Then create an order and order items for the new customer
             return $this->createOrder($request, $customer);
         }
+    }
+
+    public function receipt($orderId)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($orderId);
+
+        return view('sales.receipt', ['order' => $order]);
     }
 
     public function searchByDate(Request $request)
@@ -195,4 +203,19 @@ class SalesmanController extends Controller
 
         return view('sales.customerHistory', ['customer' => $customer]);
     }
+
+    public function searchOrder(Request $request, $customerId)
+    {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+
+        // Perform the search. This is just an example, replace with your actual search logic.
+        $customer = Customer::with(['orders' => function ($query) use ($fromDate, $toDate) {
+            $query->whereBetween('order_date', [$fromDate, $toDate]);
+        }])->findOrFail($customerId);
+
+        return view('sales.customerHistory', ['customer' => $customer]);
+    }
+
+
 }

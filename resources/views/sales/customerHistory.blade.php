@@ -11,64 +11,42 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <title>Report & Analytics</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .full-height {
+            height: 100%;
+        }
+    </style>
 </head>
 
-<body>
+<body class="justify-content-center align-items-center full-height">
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{ route('sales.report') }}"
-                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
-                    </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-                        id="menu">
-                        <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Customer
-                                    Management</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
-                                    Analytics</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <hr>
-                    <div class="dropdown pb-4">
-                        <a href="#"
-                            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
-                                alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-9 col-xl-10 px-sm-10 d-flex flex-column">
+            <div class="d-flex flex-column">
                 <div>
-                    <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
+                    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">{{$customer->fullName}}'s oders</a>
-                            <div class="d-flex">
-                                <span style="margin-top: 6px " class="text-white me-2">From</span>
-                                <input type="date" class="form-control me-2" id="fromDate">
-                                <span style="margin-top: 6px " class="text-white me-2">To</span>
-                                <input type="date" class="form-control me-2" id="toDate">
-                                <button class="btn btn-primary" type="button">Go</button>
+                            <div class="d-flex align-items-center">
+                                <a class="navbar-brand">{{$customer->fullName}}'s orders</a>
+                                <a href="{{ route('sales.sales_dashboard') }}">
+                                    <button class="btn btn-success ms-2">Return</button>
+                                </a>
                             </div>
+                            <div style="margin-left: 15% ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                Total Orders: {{ $customer->orders->count() }}
+                            </div>
+                            <form action="{{ route('sales.searchOrder', $customer->id) }}" method="GET">
+                                <div class="d-flex align-items-center">
+                                    <span class="text-white me-2">From</span>
+                                    <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
+                                    <span class="text-white me-2">To</span>
+                                    <input type="date" class="form-control me-2" id="toDate" name="toDate">
+                                    <button class="btn btn-primary" type="submit">Go</button>
+                                </div>
+                            </form>
                         </div>
                     </nav>
                     <div id="HTML_element" style="overflow-y: auto">
@@ -78,6 +56,7 @@
                                     <th class="text-center">Order Id</th>
                                     <th class="text-center">Order Date</th>
                                     <th class="text-center">Total price</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,11 +65,39 @@
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
                                         <td class="text-center">${{ $order->total_price }}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
+                                                data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
+                                                View more detail
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                         <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+                        <p><strong>Products:</strong></p>
+                        <ul id="productList"></ul>
+                        <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -127,6 +134,56 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('.view-order-button').click(function(event) {
+                event.preventDefault();
+
+                var orderId = $(this).data('order-id');
+
+                $.ajax({
+                    url: '{{ route('sales.orderDetails', ['id' => '__ID__']) }}'.replace('__ID__', orderId),
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        $('#customerName').text(response.customerName);
+
+                        var productList = $('#productList');
+                        productList.empty();
+
+                        response.products.forEach(function(product) {
+                            var listItem = $('<li>').text(product.name + ' x' + product.quantity);
+                            productList.append(listItem);
+                        });
+
+                        $('#totalPrice').text("$" + response.totalPrice);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error(textStatus, errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+
+            var fromDate = document.getElementById('fromDate');
+            var toDate = document.getElementById('toDate');
+
+            fromDate.setAttribute('max', today);
+            toDate.setAttribute('max', today);
+        });
+    </script>
+
 </body>
 
 </html>

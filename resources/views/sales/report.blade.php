@@ -39,8 +39,9 @@
                         </li>
                         <li>
                             <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
-                                    Analytics</span></h5>
+                                <i class="fs-4 bi-people"></i>
+                                <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
+                                        Analytics</span></h5>
                             </a>
                         </li>
                     </ul>
@@ -65,9 +66,12 @@
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{{ route('sales.report') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
-                                <input name="search" id="search" class="form-control me-2 mx-5" type="text"
+                                <input style="width:20%" name="search" id="search" class="form-control me-2 mx-5" type="text"
                                     placeholder="Search" value="" autofocus>
-                                <form action="{{ route('report.search') }}" method="GET">
+                                <div style="margin-left: 15% ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                    Total Orders: {{ $orders->count() }}
+                                </div>
+                                <form style="margin-left: auto" action="{{ route('report.search') }}" method="GET">
                                     <div class="d-flex align-items-center">
                                         <span class="text-white me-2">From</span>
                                         <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
@@ -95,8 +99,9 @@
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ $order->customer_id }}</td>
-                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
-                                        <td class="text-center">{{"$" . $order->total_price }}</td>
+                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}
+                                        </td>
+                                        <td class="text-center">{{ "$" . $order->total_price }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
                                                 data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
@@ -187,7 +192,7 @@
                                     productList.append(listItem);
                                 });
 
-                                $('#totalPrice').text("$"+response.totalPrice);
+                                $('#totalPrice').text("$" + response.totalPrice);
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error(textStatus, errorThrown);
@@ -196,6 +201,23 @@
                     });
                 });
             </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+        
+                    today = yyyy + '-' + mm + '-' + dd;
+        
+                    var fromDate = document.getElementById('fromDate');
+                    var toDate = document.getElementById('toDate');
+        
+                    fromDate.setAttribute('max', today);
+                    toDate.setAttribute('max', today);
+                });
+            </script>
+
 </body>
 
 </html>
