@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; // Import the missing class
-use App\Models\User; // Import the User model
-use Illuminate\Support\Facades\Mail; // Import the Mail facade
-use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail Mailable
-use App\Models\Salesman; // Import the Salesman model
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SalesActivationEmail;
+use App\Models\Salesman;
 class AdminController extends Controller
 {
     /**
@@ -66,18 +66,15 @@ class AdminController extends Controller
         ]);
 
         // Extract username from email
-        $username = strstr($validatedData['email'],
-            '@',
-            true
-        );
+        $username = strstr($validatedData['email'], '@', true);
 
         // Create the salesman
         Salesman::create([
             'fullName' => $validatedData['fullName'],
             'email' => $validatedData['email'],
-            'username' => $username, // Set the username
-            'password' => bcrypt($username), // Use the username as the password
-            'is_first_login' => true, // Set is_first_login to true
+            'username' => $username,
+            'password' => bcrypt($username),
+            'is_first_login' => true,
         ]);
 
         // Flash a success message to the session
@@ -101,7 +98,7 @@ class AdminController extends Controller
     /**
      * Send activation email to a salesman.
      *
-     * @param \App\Models\Salesman $salesman The salesman to send the activation email to.
+     * @param \App\Models\Salesman $salesman
      * @return void
      */
     public function sendActivationEmail(Salesman $salesman)
@@ -113,7 +110,7 @@ class AdminController extends Controller
     /**
      * Activate a salesman.
      *
-     * @param \App\Models\Salesman $salesman The salesman to activate.
+     * @param \App\Models\Salesman $salesman
      * @return \Illuminate\Http\RedirectResponse
      */
     public function activateSalesman(Salesman $salesman)
@@ -127,7 +124,7 @@ class AdminController extends Controller
     /**
      * Deactivate a salesman.
      *
-     * @param \App\Models\Salesman $salesman The salesman to deactivate.
+     * @param \App\Models\Salesman $salesman
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deactivateSalesman(Salesman $salesman)
@@ -141,7 +138,7 @@ class AdminController extends Controller
     /**
      * Delete a salesman.
      *
-     * @param \App\Models\Salesman $salesman The salesman to delete.
+     * @param \App\Models\Salesman $salesman
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete($email)
@@ -180,9 +177,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Update a user's information.
-/**
-     * Update a user's information.
+     * Update a user's information
      *
      * @param \Illuminate\Http\Request $request
      * @param string $oldEmail
@@ -216,8 +211,8 @@ class AdminController extends Controller
         ]);
 
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
-        ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
-        ->get();
+            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
     }

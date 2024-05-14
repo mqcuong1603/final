@@ -158,4 +158,20 @@ class SalesmanController extends Controller
             return $this->createOrder($request, $customer);
         }
     }
+
+    public function searchByDate(Request $request)
+    {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+
+        
+
+        // Perform the search. This is just an example, replace with your actual search logic.
+        $orders = DB::table('orders')
+            ->whereBetween('order_date', [$fromDate, $toDate])
+            ->get();
+
+        // Return the results. This is just an example, replace with your actual return logic.
+        return view('sales.report', ['orders' => $orders]);
+    }
 }

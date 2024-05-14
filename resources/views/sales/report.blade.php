@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="{{ route('sales.report')}}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
                                     Analytics</span>
                             </a>
@@ -62,18 +62,19 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Report & Analytics</a>
+                            <a class="navbar-brand" href="{{ route('sales.report') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <input name="search" id="search" class="form-control me-2 mx-5" type="text"
                                     placeholder="Search" value="" autofocus>
-
-                                <div class="d-flex align-items-center">
-                                    <span class="text-white me-2">From</span>
-                                    <input type="date" class="form-control me-2" id="fromDate">
-                                    <span class="text-white me-2">To</span>
-                                    <input type="date" class="form-control me-2" id="toDate">
-                                    <button class="btn btn-primary" type="button">Go</button>
-                                </div>
+                                <form action="{{ route('report.search') }}" method="GET">
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-white me-2">From</span>
+                                        <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
+                                        <span class="text-white me-2">To</span>
+                                        <input type="date" class="form-control me-2" id="toDate" name="toDate">
+                                        <button class="btn btn-primary" type="submit">Go</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </nav>
