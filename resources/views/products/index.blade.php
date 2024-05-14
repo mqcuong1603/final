@@ -21,26 +21,26 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('admin.admin_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
-                                    Management</span></h5>
+                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h6><span class="ms-1 d-none d-sm-inline">Account
+                                    Management</span></h6>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
-                                    Catalog</span></h4>
+                            <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Product
+                                    Catalog</span></h5>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h5>
+                        <li class="nav-item">
+                            <a href="#" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -55,9 +55,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item"
+<<<<<<< HEAD
+                                href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
+                                password</a></li>
+                        <li>
+=======
                                     href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
                                     password</a></li>
                             <li>
+>>>>>>> 31c83fba91b90c0ef5ae0a3c94ebf5ead300433d
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
@@ -88,14 +94,14 @@
                 <div class="mt-3" id="HTML_element" style="overflow-y: auto;">
                     <table class="table table-hover table-striped">
                         <thead>
-                            <tr class="">
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">ID</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Barcode</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Product Name</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Import Price</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Retail Price</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Category</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Actions</th>
+                            <tr>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">ID</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Barcode</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Product Name</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Import Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Retail Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Category</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         @foreach ($products as $product)
@@ -107,6 +113,7 @@
                                 <td class="text-center">${{ number_format($product->retail_price, 2) }}</td>
                                 <td class="text-center"><span class="badge rounded-pill bg-secondary">{{ $product->category }}</span></td>
                                 <td class="text-center">
+                                    <!-- Edit button triggers modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -173,6 +180,7 @@
         </div>
     @endforeach
     </div>
+    {{-- // Search bar autofocus --}}
     <script>
         window.onload = function() {
             const element = document.getElementById("HTML_element");

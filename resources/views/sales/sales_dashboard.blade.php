@@ -21,25 +21,25 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('sales.sales_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-info">Customer
-                                    Management</span>
+                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Customer
+                                    Management</span></h5>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
+                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Transaction</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span>
+                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -77,26 +77,26 @@
                         </div>
                     </nav>
                 </div>
-                <div id="HTML_element" style="overflow-y: auto">
+                <div class="mt-3" id="HTML_element" style="overflow-y: auto">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Purchase History</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Name</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Email</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Phone Number</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Address</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Purchase History</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
                                 <tr>
-                                    <td>{{ $customer->fullName }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>{{ $customer->phone }}</td>
-                                    <td>{{ $customer->address }}</td>
-                                    <td>
-                                        <a href="#">
+                                    <td class="text-center">{{ $customer->fullName }}</td>
+                                    <td class="text-center">{{ $customer->email }}</td>
+                                    <td class="text-center">{{ $customer->phone }}</td>
+                                    <td class="text-center">{{ $customer->address }}</td>
+                                    <td class="text-center">
+                                        <a href="{{route('sales.customerHistory', $customer->id)}}">
                                             <button class="btn btn-primary">View more detail</button></a>
                                     </td>
                                 </tr>
@@ -131,7 +131,7 @@
             window.onload = function() {
                 const element = document.getElementById("HTML_element");
                 if (element) {
-                    element.style.height = window.innerHeight - 145 + "px";
+                    element.style.height = window.innerHeight - 100 + "px";
                 }
                 var input = document.getElementById('search');
                 var len = input.value.length;

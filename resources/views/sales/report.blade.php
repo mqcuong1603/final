@@ -20,25 +20,27 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Customer
-                                    Management</span>
+                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Transaction</span>
+                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Transaction</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline text-info">Report &
-                                    Analytics</span>
+                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
+                                    Analytics</span></h5>
                             </a>
                         </li>
                     </ul>
@@ -52,7 +54,6 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            </li>
                             <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
                         </ul>
                     </div>
@@ -62,18 +63,19 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Report & Analytics</a>
+                            <a class="navbar-brand" href="{{ route('sales.report') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <input name="search" id="search" class="form-control me-2 mx-5" type="text"
                                     placeholder="Search" value="" autofocus>
-
-                                <div class="d-flex align-items-center">
-                                    <span class="text-white me-2">From</span>
-                                    <input type="date" class="form-control me-2" id="fromDate">
-                                    <span class="text-white me-2">To</span>
-                                    <input type="date" class="form-control me-2" id="toDate">
-                                    <button class="btn btn-primary" type="button">Go</button>
-                                </div>
+                                <form action="{{ route('report.search') }}" method="GET">
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-white me-2">From</span>
+                                        <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
+                                        <span class="text-white me-2">To</span>
+                                        <input type="date" class="form-control me-2" id="toDate" name="toDate">
+                                        <button class="btn btn-primary" type="submit">Go</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </nav>
@@ -93,13 +95,11 @@
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ $order->customer_id }}</td>
-                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>                                        <td class="text-center"> {{ $order->total_price }}</td>
+                                        <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
+                                        <td class="text-center">{{"$" . $order->total_price }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
-                                                data-bs-target="#orderModal"
-                                                data-customer-name="{{ $order->customer->fullName }}"
-                                                data-products=""
-                                                data-total-price="">
+                                                data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
                                                 View more detail
                                             </button>
                                         </td>
@@ -107,10 +107,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div></div>
                     </div>
-                    </tbody>
-                    </table>
                 </div>
             </div>
 
@@ -169,42 +166,36 @@
                     $('.view-order-button').click(function(event) {
                         event.preventDefault();
 
-                        var customerName = $(this).data('customer-name');
-                        var products = JSON.parse($(this).data('products'));
-                        var totalPrice = $(this).data('total-price');
+                        var orderId = $(this).data('order-id');
 
-                        $('#customerName').text(customerName);
+                        $.ajax({
+                            url: '{{ route('sales.orderDetails', ['id' => '__ID__']) }}'.replace('__ID__',
+                                orderId),
+                            method: 'GET',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                $('#customerName').text(response.customerName);
 
-                        var productList = $('#productList');
-                        productList.empty();
+                                var productList = $('#productList');
+                                productList.empty();
 
-                        products.forEach(function(product) {
-                            var listItem = $('<li>').text(product.product.name + ' x' + product.quantity);
-                            productList.append(listItem);
+                                response.products.forEach(function(product) {
+                                    var listItem = $('<li>').text(product.name + ' x' + product
+                                        .quantity);
+                                    productList.append(listItem);
+                                });
+
+                                $('#totalPrice').text("$"+response.totalPrice);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error(textStatus, errorThrown);
+                            }
                         });
-
-                        $('#totalPrice').text(totalPrice);
                     });
                 });
             </script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() 
-                {
-                    var today = new Date();
-                    var dd = String(today.getDate()).padStart(2, '0');
-                    var mm = String(today.getMonth() + 1).padStart(2, '0');
-                    var yyyy = today.getFullYear();
-
-                    today = yyyy + '-' + mm + '-' + dd;
-
-                    var fromDate = document.getElementById('fromDate');
-                    var toDate = document.getElementById('toDate');
-
-                    fromDate.setAttribute('max', today);
-                    toDate.setAttribute('max', today);
-                });
-            </script>
-            
 </body>
 
 </html>

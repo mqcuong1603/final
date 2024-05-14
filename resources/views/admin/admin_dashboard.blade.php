@@ -32,26 +32,26 @@
                         class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                         <a href=" {{ route('admin.admin_dashboard') }}"
                             class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                            <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                            <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                         </a>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
-                        <li class="nav-item mt-2">
-                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Account
-                                    Management</span></h4>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Account
+                                    Management</span></h5>
                             </a>
                         </li>
-                        <li class="nav-item mt-2">
-                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Product
-                                    Catalog</span></h5>
+                        <li class="nav-item">
+                            <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <h6><span class="ms-1 d-none d-sm-inline">Product
+                                    Catalog</span></h6>
                             </a>
                         </li>
-                        <li class="nav-item mt-2">
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h5>
+                        <li class="nav-item">
+                            <a href="#" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                    Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
