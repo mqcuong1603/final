@@ -25,24 +25,29 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::get('/admin/changePassword/{email}', [AdminController::class, 'changePassword'])->name('admin.changePassword');
     Route::put('/admin/changePassword/{email}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::get('/report', [AdminController::class, 'report'])->name('admin.admin_report');
+    Route::get('/resend_activation/{email}', [AdminController::class, 'resendActivation'])->name('admin.resendActivation');
+    Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('admin.orderDetails');
 });
 
 //Sales routes
-//Sales routes
 Route::prefix('sales_dashboard')->group(function () {
-    Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard');
+    Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard')->middleware('auth:salesman');
     Route::get('/search', [SalesmanController::class, 'searchCustomer'])->name('sales.search');
     Route::get('sales_transaction', [SalesmanController::class, 'transaction'])->name('sales.sales_transaction');
+    Route::get('sales_transaction/receipt/{orderId}', [SalesmanController::class, 'receipt'])->name('sales.receipt');
     Route::get('/logout', [LoginController::class, 'logout'])->name('sales.logout');
     Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
     Route::get('/detail/{customerId}', [SalesmanController::class, 'detail'])->name('sales.detail');
     Route::post('/check_customer', [SalesmanController::class, 'checkCustomer'])->name('sales.checkCustomer');
     Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
-    Route::get('/changePassword/{email}', [SalesmanController::class, 'changePassword'])->name('sales.changePassword');
-    Route::put('/changePassword/{email}', [SalesmanController::class, 'updatePassword'])->name('sales.updatePassword');
+    Route::get('/changePassword/{token}', [SalesmanController::class, 'changePassword'])->name('sales.changePassword');
+    Route::put('/changePassword/{token}', [SalesmanController::class, 'updatePassword'])->name('sales.updatePassword');
+    Route::get('/resendActivation/{email}', [SalesmanController::class, 'resendActivation'])->name('sales.resendActivation');
     Route::get('/report/search', [SalesmanController::class, 'searchByDate'])->name('report.search');
     Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('sales.orderDetails');
     Route::get('/customerHistory/{customerId}', [SalesmanController::class, 'customerHistory'])->name('sales.customerHistory');
+    Route::get('/customerHistory/{customerId}/search', [SalesmanController::class, 'searchOrder'])->name('sales.searchOrder');
 });
 
 
@@ -58,12 +63,13 @@ Route::prefix('products')->group(function () {
     Route::get('/search', [ProductController::class, 'searchProduct'])->name('product.search');
 });
 
+Route::get('/close-tab', function () {
+    return view('closeTab');
+})->name('closeTab');
 
+Route::get('/password-updated', function () {
+    return view('passwordUpdated');
+})->name('passwordUpdated');
 
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-//change password routes
-Route::get('/changePass', function () {
-    return view('admin.changePass');
-});

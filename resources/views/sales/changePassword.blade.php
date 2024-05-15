@@ -29,7 +29,7 @@
             <div style="background-color: #2b2b2b; margin-top:15%; width:500px; height:350px" class="mx-auto border-none rounded-3">
                 <!-- Add a new form for changing password -->
                 <h2 style="color: white" class="text-center mt-3">Reset Password</h2>
-                <form class="w-50" action="{{ route('sales.updatePassword', ['email' => $salesman->email]) }}" method="POST"
+                <form class="w-50" action="{{ route('sales.updatePassword', ['token' => $token]) }}" method="POST"
                     onsubmit="return checkPasswordMatch();">
                     @csrf
                     @method('PUT')

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Auth\Middleware\Authenticate;
 
 // Remove unnecessary use directives
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,9 +12,17 @@ namespace App\Models;
  *
  * This model extends the User model and inherits its properties and methods.
  */
-class Salesman extends User
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class Salesman extends Authenticatable
 {
-    protected $fillable = [
-        'fullName', 'email', 'username', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry', 'is_first_login  => true',
-    ];
+    use HasApiTokens;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['fullName', 'email', 'username', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry', 'is_first_login'];
 }

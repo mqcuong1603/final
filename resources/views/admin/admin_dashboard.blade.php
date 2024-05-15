@@ -35,26 +35,29 @@
                             <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                         </a>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-                        id="menu">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Account
-                                    Management</span></h5>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h6><span class="ms-1 d-none d-sm-inline">Product
-                                    Catalog</span></h6>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="mt-3 nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h6>
-                            </a>
-                        </li>
-                    </ul>
+                            id="menu">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i>
+                                    <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Account
+                                            Management</span></h5>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i>
+                                    <h6><span class="ms-1 d-none d-sm-inline">Product
+                                            Catalog</span></h6>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.admin_report')}}" class="mt-3 nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-people"></i>
+                                    <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                            Analytics</span></h6>
+                                </a>
+                            </li>
+                        </ul>
                         <hr>
                         <div class="dropdown pb-4">
                             <a href="#"
@@ -112,319 +115,337 @@
                                     <th style="background-color: rgb(168, 168, 168)" class="text-center">Edit</th>
                                 </tr>
                             </thead>
-                    <tbody>
-                        @foreach ($salesmen as $salesman)
-                            <tr>
-                                <td class="text-center">Placeholder Image</td>
-                                <td class="text-center">{{ $salesman->fullName }}</td>
-                                <td class="text-center">{{ $salesman->email }}</td>
-                                <td class="text-center">
-                                    @if ($salesman->isLocked == 0)
-                                        <span class="badge bg-success">Unlock</span>
-                                    @else
-                                        <span class="badge bg-danger">Lock</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    @if ($salesman->isActivated == 0)
-                                        Inactivate
-                                    @else
-                                        Activate
-                                    @endif
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-bs-toggle="dropdown">
-                                            ☰
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" data-bs-toggle="modal" href="#"
-                                                    data-bs-target="#editModal-{{ $salesman->id }}"
-                                                    data-salesman-id="{{ $salesman->id }}"
-                                                    data-salesman-name="{{ $salesman->fullName }}"
-                                                    data-salesman-email="{{ $salesman->email }}">Edit</a></li>
-                                            <li>
-                                                <form method="POST"
-                                                    action="{{ route('admin.changeLock', ['email' => urlencode($salesman->email)]) }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" class="dropdown-item">
-                                                        @if ($salesman->isLocked == 0)
-                                                            Lock
-                                                        @else
-                                                            Unlock
-                                                        @endif
-                                                    </button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" data-bs-toggle="modal" href="#"
-                                                    data-bs-target="#confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
-                                                    data-salesman-email="{{ $salesman->email }}"
-                                                    data-salesman-id="{{ $salesman->id }}"
-                                                    data-salesman-name="{{ $salesman->fullName }}">Delete</a>
-                                            </li>
-                                        </ul>
+                            <tbody>
+                                @foreach ($salesmen as $salesman)
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="{{ asset('storage/' . $salesman->profilePicture) }}"
+                                                alt="Salesman Image"
+                                                style="width: 100px; height: 100px; object-fit: cover;">
+                                        </td>
+                                        <td class="text-center">{{ $salesman->fullName }}</td>
+                                        <td class="text-center">{{ $salesman->email }}</td>
+                                        <td class="text-center">
+                                            @if ($salesman->isLocked == 0)
+                                                <span class="badge bg-success">Unlock</span>
+                                            @else
+                                                <span class="badge bg-danger">Lock</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($salesman->isActivated == 0)
+                                                Inactivate
+                                            @else
+                                                Activate
+                                            @endif
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown">
+                                                    ☰
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" data-bs-toggle="modal"
+                                                            href="#"
+                                                            data-bs-target="#editModal-{{ $salesman->id }}"
+                                                            data-salesman-id="{{ $salesman->id }}"
+                                                            data-salesman-name="{{ $salesman->fullName }}"
+                                                            data-salesman-email="{{ $salesman->email }}">Edit</a></li>
+                                                    <li>
+                                                        <form method="POST"
+                                                            action="{{ route('admin.changeLock', ['email' => urlencode($salesman->email)]) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="dropdown-item">
+                                                                @if ($salesman->isLocked == 0)
+                                                                    Lock
+                                                                @else
+                                                                    Unlock
+                                                                @endif
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            href="#"
+                                                            data-bs-target="#confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
+                                                            data-salesman-email="{{ $salesman->email }}"
+                                                            data-salesman-id="{{ $salesman->id }}"
+                                                            data-salesman-name="{{ $salesman->fullName }}">Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </table>
+                    </div>
+                </div>
+
+                @foreach ($salesmen as $salesman)
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Salesman
+                                        {{ $salesman->fullName }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('admin.update', $salesman->email) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="form-group">
+                                            <label for="name">Full Name</label>
+                                            <input type="text" class="form-control" id="fullName"
+                                                name="fullName" value="{{ $salesman->fullName }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                value="{{ $salesman->email }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="form-control" id="status" name="status">
+                                                <option value="1"
+                                                    {{ $salesman->isActivated == 1 ? 'selected' : '' }}>
+                                                    Activate</option>
+                                                <option value="0"
+                                                    {{ $salesman->isActivated == 0 ? 'selected' : '' }}>
+                                                    Inactivate</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            <input type="file" class="form-control" id="image"
+                                                name="image">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account Modal -->
+                    <div class="modal fade" id="confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
+                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header h3">
+                                    Delete Account
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this account
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <form method="post" action="{{ route('admin.delete', $salesman->email) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+
+                <div class="modal fade " id="addModal" tabindex="-1" role="dialog"
+                    aria-labelledby="addModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('admin.create') }}" method="POST" id="addForm">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="form-group">
+                                        <label for="name">Full Name</label>
+                                        <input type="text" class="form-control" name="fullName" value="">
                                     </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    </table>
-                </table>
-            </div>
-        </div>
-
-        @foreach ($salesmen as $salesman)
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal-{{ $salesman->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="editModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Salesman {{ $salesman->fullName }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('admin.update', $salesman->email) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" name="fullName"
-                                        value="{{ $salesman->fullName }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ $salesman->email }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="form-control" id="status" name="status">
-                                        <option value="1" {{ $salesman->isActivated == 1 ? 'selected' : '' }}>
-                                            Activate</option>
-                                        <option value="0" {{ $salesman->isActivated == 0 ? 'selected' : '' }}>
-                                            Inactivate</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Delete Account Modal -->
-            <div class="modal fade" id="confirm-delete-{{ str_replace(['@', '.'], '_', $salesman->email) }}"
-                tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header h3">
-                            Delete Account
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this account
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-                            <form method="post" action="{{ route('admin.delete', $salesman->email) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-
-
-        <div class="modal fade " id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Add Salesman</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('admin.create') }}" method="POST" id="addForm">
-                            @csrf
-                            @method('POST')
-                            <div class="form-group">
-                                <label for="name">Full Name</label>
-                                <input type="text" class="form-control" name="fullName" value="">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" name="email" value="">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-3" id="addSalesman"
+                                        data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                        Add Salesman
+                                    </button>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm Add Salesman</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                </button>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3" id="addSalesman"
-                                data-bs-toggle="modal" data-bs-target="#confirmModal">
-                                Add Salesman
-                            </button>
-                        </form>
+                            <div class="modal-body">
+                                Are you sure you want to add this salesman?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary mt-3"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary mt-3" id="confirmAdd">Confirm</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Confirm Add Salesman</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to add this salesman?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary mt-3" id="confirmAdd">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script>
-            document.getElementById('addSalesman').addEventListener('click', function(event) {
-                event.preventDefault();
-                $('#confirmModal').modal('show');
-            });
-
-            document.getElementById('confirmAdd').addEventListener('click', function() {
-                document.getElementById('addForm').submit();
-            });
-        </script>
-        <script>
-            const adminBox = document.getElementById('adminBox');
-            const dropdownContent = document.getElementById('dropdownContent');
-            adminBox.addEventListener('click', function() {
-                if (dropdownContent.style.display === 'block') {
-                    dropdownContent.style.display = 'none';
-                } else {
-                    dropdownContent.style.display = 'block';
-                }
-            });
-            document.addEventListener('click', function(event) {
-                if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
-                    dropdownContent.style.display = 'none';
-                }
-            });
-            dropdownContent.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        </script>
-
-        <!-- Burger Dropdown -->
-        <script>
-            const dropdownBs = document.querySelectorAll('.dropdownB');
-
-            dropdownBs.forEach((dropdownB) => {
-                const dropbtnB = dropdownB.querySelector('.dropbtnB');
-                const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
-
-                if (dropbtnB && dropdownContentB) {
-                    // Hide the dropdown content by default
-                    dropdownContentB.style.display = 'none';
-
-                    dropbtnB.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
-                            'block';
-
-                        // Close other dropdown menus
-                        dropdownBs.forEach((otherDropdownB) => {
-                            if (otherDropdownB !== dropdownB) {
-                                const otherDropdownContentB = otherDropdownB.querySelector(
-                                    '.dropdown-contentB');
-                                otherDropdownContentB.style.display = 'none';
-                            }
-                        });
+                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+                <script>
+                    document.getElementById('addSalesman').addEventListener('click', function(event) {
+                        event.preventDefault();
+                        $('#confirmModal').modal('show');
                     });
-                }
-            });
 
-            function editSalesman(name) {
-                console.log(`Edit ${name}`);
-            }
+                    document.getElementById('confirmAdd').addEventListener('click', function() {
+                        document.getElementById('addForm').submit();
+                    });
+                </script>
+                <script>
+                    const adminBox = document.getElementById('adminBox');
+                    const dropdownContent = document.getElementById('dropdownContent');
+                    adminBox.addEventListener('click', function() {
+                        if (dropdownContent.style.display === 'block') {
+                            dropdownContent.style.display = 'none';
+                        } else {
+                            dropdownContent.style.display = 'block';
+                        }
+                    });
+                    document.addEventListener('click', function(event) {
+                        if (!adminBox.contains(event.target) && !dropdownContent.contains(event.target)) {
+                            dropdownContent.style.display = 'none';
+                        }
+                    });
+                    dropdownContent.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                    });
+                </script>
 
-            // Function to lock a salesman
-            function lockSalesman(email) {
-                console.log(`Lock ${email}`);
-            }
+                <!-- Burger Dropdown -->
+                <script>
+                    const dropdownBs = document.querySelectorAll('.dropdownB');
 
-            // Function to delete a salesman
-            function deleteSalesman(name) {
-                console.log(`Delete ${name}`);
-            }
-        </script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+                    dropdownBs.forEach((dropdownB) => {
+                        const dropbtnB = dropdownB.querySelector('.dropbtnB');
+                        const dropdownContentB = dropdownB.querySelector('.dropdown-contentB');
+
+                        if (dropbtnB && dropdownContentB) {
+                            // Hide the dropdown content by default
+                            dropdownContentB.style.display = 'none';
+
+                            dropbtnB.addEventListener('click', (event) => {
+                                event.stopPropagation();
+                                dropdownContentB.style.display = (dropdownContentB.style.display === 'block') ? 'none' :
+                                    'block';
+
+                                // Close other dropdown menus
+                                dropdownBs.forEach((otherDropdownB) => {
+                                    if (otherDropdownB !== dropdownB) {
+                                        const otherDropdownContentB = otherDropdownB.querySelector(
+                                            '.dropdown-contentB');
+                                        otherDropdownContentB.style.display = 'none';
+                                    }
+                                });
+                            });
+                        }
+                    });
+
+                    function editSalesman(name) {
+                        console.log(`Edit ${name}`);
+                    }
+
+                    // Function to lock a salesman
+                    function lockSalesman(email) {
+                        console.log(`Lock ${email}`);
+                    }
+
+                    // Function to delete a salesman
+                    function deleteSalesman(name) {
+                        console.log(`Delete ${name}`);
+                    }
+                </script>
+                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
 
 
-        <script>
-            // Add an event listener to the edit button
-            $(document).on('click', '[data-toggle="modal"]', function(event) {
-                event.preventDefault();
-                var salesmanId = $(this).data('salesman-id');
-                var salesmanName = $(this).data('salesman-name');
-                var salesmanEmail = $(this).data('salesman-email');
+                <script>
+                    // Add an event listener to the edit button
+                    $(document).on('click', '[data-toggle="modal"]', function(event) {
+                        event.preventDefault();
+                        var salesmanId = $(this).data('salesman-id');
+                        var salesmanName = $(this).data('salesman-name');
+                        var salesmanEmail = $(this).data('salesman-email');
 
-                // Populate the modal form with the salesman's information
-                $('#salesman_id').val(salesmanId);
-                $('#fullName').val(salesmanName);
-                $('#email').val(salesmanEmail);
+                        // Populate the modal form with the salesman's information
+                        $('#salesman_id').val(salesmanId);
+                        $('#fullName').val(salesmanName);
+                        $('#email').val(salesmanEmail);
 
-                // Show the modal
-                $('#editModal').modal('show');
-            });
-        </script>
-        <script>
-            function setElementHeightToScreenHeight() {
-                const element = document.getElementById("HTML_element");
-                if (element) {
-                    element.style.height = window.innerHeight - 145 + "px";
-                }
-            }
+                        // Show the modal
+                        $('#editModal').modal('show');
+                    });
+                </script>
+                <script>
+                    function setElementHeightToScreenHeight() {
+                        const element = document.getElementById("HTML_element");
+                        if (element) {
+                            element.style.height = window.innerHeight - 145 + "px";
+                        }
+                    }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                window.addEventListener('resize', setElementHeightToScreenHeight);
-                setElementHeightToScreenHeight();
-            });
-        </script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        window.addEventListener('resize', setElementHeightToScreenHeight);
+                        setElementHeightToScreenHeight();
+                    });
+                </script>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-        {{-- // Search bar autofocus --}}
-        <script>
-            window.onload = function() {
-                const element = document.getElementById("HTML_element");
-                element.style.height = window.innerHeight - 130 + "px";
-                var input = document.getElementById('search');
-                var len = input.value.length;
-                input.focus();
-                input.setSelectionRange(len, len);
-            }
-        </script>
+                {{-- // Search bar autofocus --}}
+                <script>
+                    window.onload = function() {
+                        const element = document.getElementById("HTML_element");
+                        element.style.height = window.innerHeight - 130 + "px";
+                        var input = document.getElementById('search');
+                        var len = input.value.length;
+                        input.focus();
+                        input.setSelectionRange(len, len);
+                    }
+                </script>
     </body>
 
     <script>

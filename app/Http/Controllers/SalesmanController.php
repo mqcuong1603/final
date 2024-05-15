@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Log;
 use App\Models\Salesman;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail class
+use Illuminate\Support\Facades\Auth; // Import the Auth class
 
 class SalesmanController extends Controller
 {
@@ -19,34 +22,66 @@ class SalesmanController extends Controller
     public function index()
     {
         $customers = Customer::all();
+        $salesman = Auth::guard('salesman')->user();
 
-        return view('sales.sales_dashboard', ['customers' => $customers]);
+        return view('sales.sales_dashboard', ['customers' => $customers, 'salesman' => $salesman]);
     }
 
-    public function changePassword($email)
+    public function createToken($length)
+    {
+        return bin2hex(random_bytes($length));
+    }
+
+    public function changePassword($token)
+    {
+        $salesman = Salesman::where('activation_token', $token)->first();
+        if (!$salesman) {
+            return redirect()->route('login')->with('error', 'Salesman not found');
+        } elseif ($salesman->activation_token_expiry < now()) {
+            return redirect()->route('login')->with('error', 'Activation token expired');
+        } elseif ($salesman->isActivated) {
+            return redirect()->route('login')->with('error', 'Salesman already activated');
+        }
+
+        return view('sales.changePassword', ['token' => $token]);
+    }
+
+    public function resendActivation($email)
     {
         $salesman = Salesman::where('email', $email)->first();
-        return view('sales.changePassword', ['salesman' => $salesman]);
+
+        if ($salesman) {
+            $token = $salesman->createToken('Login Token', ['login'])->plainTextToken;
+            $salesman->activation_token = $token;
+            $salesman->activation_token_expiry = now()->addMinutes();
+            $salesman->save();
+
+            Mail::to($salesman->email)->send(new SalesActivationEmail($salesman, $token));
+        }
+
+        return redirect()->route('closeTab');
     }
 
-    public function updatePassword(Request $request, $email)
+    public function updatePassword(Request $request, $token)
     {
         $request->validate([
             'newPassword' => 'required',
             'confirmPassword' => 'required|same:newPassword',
         ]);
 
-        $salesman = Salesman::where('email', $email)->first();
+        $salesman = Salesman::where('activation_token', $token)->first();
 
         if ($salesman) {
             $salesman->password = bcrypt($request->newPassword);
+            $salesman->isActivated = true;
             $salesman->is_first_login = false;
+            $salesman->activation_token = null;
             $salesman->save();
 
-            return redirect()->route('sales.sales_dashboard')->with('success', 'Password updated successfully');
+            return redirect()->route('passwordUpdated');
         }
 
-        return redirect()->route('sales.sales_dashboard')->with('error', 'Salesman not found');
+        return redirect()->route('login')->with('error', 'Salesman not found');
     }
 
     public function searchCustomer(Request $request)
@@ -119,7 +154,8 @@ class SalesmanController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->back()->with('success', 'Order created successfully');
+            // Redirect to the receipt page
+            return redirect()->route('sales.receipt', ['orderId' => $order->id]);
         } catch (\Exception $e) {
             // An error occurred; cancel the transaction...
             DB::rollback();
@@ -157,6 +193,13 @@ class SalesmanController extends Controller
         }
     }
 
+    public function receipt($orderId)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($orderId);
+
+        return view('sales.receipt', ['order' => $order]);
+    }
+
     public function searchByDate(Request $request)
     {
         $fromDate = $request->input('fromDate');
@@ -192,6 +235,21 @@ class SalesmanController extends Controller
     public function customerHistory($customerId)
     {
         $customer = Customer::with('orders')->findOrFail($customerId);
+
+        return view('sales.customerHistory', ['customer' => $customer]);
+    }
+
+    public function searchOrder(Request $request, $customerId)
+    {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+
+        // Perform the search. This is just an example, replace with your actual search logic.
+        $customer = Customer::with([
+            'orders' => function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('order_date', [$fromDate, $toDate]);
+            },
+        ])->findOrFail($customerId);
 
         return view('sales.customerHistory', ['customer' => $customer]);
     }
