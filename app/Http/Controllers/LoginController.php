@@ -11,12 +11,11 @@ class LoginController extends Controller
         $password = $request->input('password');
 
         if ($request->input('formType') === 'admin') {
-            $admin = User::where('username', $username)->first();
-            if ($admin && Auth::guard('admin')->attempt(['username' => $username, 'password' => $password])) {
+            if (Auth::guard('admin')->attempt(['username' => $username, 'password' => $password])) {
                 return redirect()->route('admin.admin_dashboard');
             } else {
                 return back()->withErrors([
-                    'username' => $errorMessage,
+                    'username' => 'Authentication failed',
                 ]);
             }
         } else {
@@ -34,7 +33,7 @@ class LoginController extends Controller
                 }
             } else {
                 return back()->withErrors([
-                    'username' => 'Invalid password or email',
+                    'username' => 'Authentication failed',
                 ]);
             }
         }

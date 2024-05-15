@@ -18,9 +18,9 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{ route('sales.report') }}"
+                    <a href="{{ route('sales.report') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
@@ -61,8 +61,13 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">Customer's name history</a>
-                            <div class="d-flex">
+                            <div class="d-flex align-items-center">
+                                <a class="navbar-brand" href="{{ route('sales.sales_dashboard') }}">{{$customer->fullName}}'s orders</a>
+                                <a href="{{ route('sales.sales_dashboard') }}">
+                                    <button class="btn btn-success ms-2" type="button">Return</button>
+                                 </a>
+                            </div>
+                            <div class="d-flex ms-auto">
                                 <span style="margin-top: 6px " class="text-white me-2">From</span>
                                 <input type="date" class="form-control me-2" id="fromDate">
                                 <span style="margin-top: 6px " class="text-white me-2">To</span>
@@ -81,7 +86,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orders as $order)
+                                @foreach ($customer->orders as $order)
                                     <tr>
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}</td>
@@ -127,6 +132,24 @@
             });
         });
     </script>
-</body>
+    <script>
+                document.addEventListener('DOMContentLoaded', function() 
+                {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
 
+                    today = yyyy + '-' + mm + '-' + dd;
+
+                    var fromDate = document.getElementById('fromDate');
+                    var toDate = document.getElementById('toDate');
+
+                    fromDate.setAttribute('max', today);
+                    toDate.setAttribute('max', today);
+                });
+    </script>
+</body>
 </html>
+
+

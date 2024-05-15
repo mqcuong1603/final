@@ -188,4 +188,11 @@ class SalesmanController extends Controller
             'totalPrice' => $order->total_price,
         ]);
     }
+
+    public function customerHistory($customerId)
+    {
+        $customer = Customer::with('orders')->findOrFail($customerId);
+
+        return view('sales.customerHistory', ['customer' => $customer]);
+    }
 }
