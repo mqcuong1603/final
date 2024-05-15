@@ -182,12 +182,14 @@ class AdminController extends Controller
      * @param string $oldEmail
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function update(Request $request, $oldEmail)
     {
         $validatedData = $request->validate([
             'fullName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'status' => 'required|numeric|min:0|max:1',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $salesman = Salesman::where('email', $oldEmail)->first();
@@ -199,6 +201,12 @@ class AdminController extends Controller
         $salesman->fullName = $validatedData['fullName'];
         $salesman->email = $validatedData['email'];
         $salesman->isActivated = $validatedData['status'];
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('salesmen_images', 'public');
+            $salesman->profilePicture = $path;
+        }
+
         $salesman->save();
 
         return redirect()->route('admin.admin_dashboard');

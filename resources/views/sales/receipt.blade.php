@@ -47,7 +47,7 @@
                                         </td>
                                         <td>{{ $item->product->barcode }}</td>
                                         <td>{{ $item->quantity }}</td>
-                                        <td>{{ $item->quantity * $item->product->retail_price }}</td>
+                                        <td>${{ $item->quantity * $item->product->retail_price }}</td>
                                     </tr>
                                 @endforeach
                                 <tr>
@@ -56,7 +56,8 @@
                                         <h5 class="text-success text-center "><strong>Grand Total</strong></h5>
                                     </td>
                                     <td>
-                                        <h5 class="text-success text-center "><strong>{{ $order->total_price }}</strong>
+                                        <h5 class="text-success text-center ">
+                                            <strong>${{ $order->total_price }}</strong>
                                         </h5>
                                     </td>
                                 </tr>
@@ -73,8 +74,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
             <a href="#" role="button" class="btn btn-outline-success btn-lg" id="print-btn"
                 type="button">Print</a>
-            <a role="button" class="btn btn-outline-danger btn-lg" id="delete-btn"
-                type="button">Return</a>
+            <a role="button" class="btn btn-outline-danger btn-lg" id="delete-btn" type="button">Return</a>
         </div>
 
         <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -90,7 +90,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <a href="{{route('sales.sales_transaction')}}"><button type="button" class="btn btn-success" id="confirm-btn">Confirm</button></a>
+                        <a href="{{ route('sales.sales_transaction') }}"><button type="button" class="btn btn-success"
+                                id="confirm-btn">Confirm</button></a>
                     </div>
                 </div>
             </div>
@@ -102,6 +103,7 @@
         const deleteBtn = document.getElementById('delete-btn');
         const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
         const confirmBtn = document.getElementById('confirm-btn');
+        let isPrint = false;
 
         function generatePDF() {
             const element = document.querySelector('section');
@@ -111,15 +113,20 @@
         }
 
         printBtn.addEventListener('click', () => {
+            isPrint = true;
             confirmModal.show();
         });
 
         deleteBtn.addEventListener('click', () => {
+            isPrint = false;
             confirmModal.show();
         });
 
-        confirmBtn.addEventListener('click', () => {
-            generatePDF();
+        confirmBtn.addEventListener('click', (event) => {
+            if (isPrint) {
+                event.preventDefault();
+                generatePDF();
+            }
         });
     </script>
 </body>

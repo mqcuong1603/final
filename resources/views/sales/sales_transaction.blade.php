@@ -26,19 +26,22 @@
                         id="menu">
                         <li class="nav-item">
                             <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h6><span class="ms-1 d-none d-sm-inline">Customer
-                                    Management</span></h6>
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Transaction</span></h5>
+                                <i class="fs-4 bi-people"></i>
+                                <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Transaction</span></h5>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h6>
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                        Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -188,33 +191,46 @@
                 var priceText = row.find('td:eq(2)').text().replace('$', '');
                 var price = parseFloat(priceText.replace(',', ''));
 
-                // Append new row to the transaction list
-                var newRow = $('<tr><td class="text-center">' + barcode +
-                    '</td><td class="text-center">' + product + '</td><td class="product-price">' +
-                    price +
-                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
-                    price +
-                    '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
-                );
-                $('#transactionList').append(newRow);
-
-                // Also add the product data to hidden input fields within the form
-                $('#transactionData').append('<input type="hidden" name="products[]" value="' + barcode +
-                    '">');
-                var quantityInput = $('<input type="hidden" name="quantity[]" value="1">');
-                $('#transactionData').append(quantityInput);
-
-                updateTotal();
-
-                // Add event listener for quantity change
-                newRow.find('.quantity').change(function() {
-                    var quantity = $(this).val();
-                    var price = newRow.find('.product-price').text();
-                    var totalPrice = quantity * price;
-                    newRow.find('.total-price').text(totalPrice);
-                    updateTotal();
-                    quantityInput.val(quantity);
+                // Check if a row with the same barcode already exists in the transaction list
+                var existingRow = $('#transactionList tr').filter(function() {
+                    return $(this).find('td:eq(0)').text() === barcode;
                 });
+
+                if (existingRow.length > 0) {
+                    // If the product already exists in the transaction list, increment its quantity
+                    var quantityInput = existingRow.find('.quantity');
+                    var quantity = parseInt(quantityInput.val()) + 1;
+                    quantityInput.val(quantity).change();
+                } else {
+                    // If the product doesn't exist in the transaction list, add a new row
+                    var newRow = $('<tr><td class="text-center">' + barcode +
+                        '</td><td class="text-center">' + product + '</td><td class="product-price">' +
+                        price +
+                        '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
+                        price +
+                        '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
+                    );
+                    $('#transactionList').append(newRow);
+
+                    // Also add the product data to hidden input fields within the form
+                    $('#transactionData').append('<input type="hidden" name="products[]" value="' +
+                        barcode +
+                        '">');
+                    var quantityInput = $('<input type="hidden" name="quantity[]" value="1">');
+                    $('#transactionData').append(quantityInput);
+
+                    updateTotal();
+
+                    // Add event listener for quantity change
+                    newRow.find('.quantity').change(function() {
+                        var quantity = $(this).val();
+                        var price = newRow.find('.product-price').text();
+                        var totalPrice = quantity * price;
+                        newRow.find('.total-price').text(totalPrice);
+                        updateTotal();
+                        quantityInput.val(quantity);
+                    });
+                }
             });
 
             $('#transactionList').on('input', '.quantity', function() {
