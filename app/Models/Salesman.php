@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Auth\Middleware\Authenticate;
 
 // Remove unnecessary use directives
 // use Illuminate\Database\Eloquent\Factories\HasFactory;

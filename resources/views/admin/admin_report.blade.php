@@ -25,20 +25,20 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i>
-                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                <h6><span class="ms-1 d-none d-sm-inline">Account
                                         Management</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                            <a href="{{ route('products.index') }}" class="mt-3 nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i>
-                                <h6><span class="ms-1 d-none d-sm-inline">Transaction</span></h6>
+                                <h6><span class="ms-1 d-none d-sm-inline">Product Catalog</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                            <a href="{{ route('admin.admin_report') }}" class="mt-3 nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i>
                                 <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Report &
                                         Analytics</span></h5>
@@ -52,10 +52,17 @@
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                                 alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
+                            <span class="d-none d-sm-inline mx-1">admin</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+                            aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item"
+                                    href="{{ route('admin.changePassword', Auth::guard('admin')->user()->email) }}">Change
+                                    password</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -64,14 +71,17 @@
                 <div>
                     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="{{ route('sales.report') }}">Report & Analytics</a>
+                            <a class="navbar-brand" href="{{ route('admin.admin_report') }}">Report & Analytics</a>
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <input style="width:20%" name="search" id="search" class="form-control me-2 mx-5" type="text"
                                     placeholder="Search" value="" autofocus>
-                                <div style="margin-left: 15% ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                <div style="margin-left: 9% ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
                                     Total Orders: {{ $orders->count() }}
                                 </div>
-                                <form style="margin-left: auto" action="{{ route('report.search') }}" method="GET">
+                                <div style="margin-left:10px; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                    Total Profits: xxx
+                                </div>
+                                <form style="margin-left: auto" action="#" method="GET">
                                     <div class="d-flex align-items-center">
                                         <span class="text-white me-2">From</span>
                                         <input type="date" class="form-control me-2" id="fromDate" name="fromDate">

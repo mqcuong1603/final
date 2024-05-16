@@ -25,7 +25,9 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::get('/admin/changePassword/{email}', [AdminController::class, 'changePassword'])->name('admin.changePassword');
     Route::put('/admin/changePassword/{email}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::get('/report', [AdminController::class, 'report'])->name('admin.admin_report');
     Route::get('/resend_activation/{email}', [AdminController::class, 'resendActivation'])->name('admin.resendActivation');
+    Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('admin.orderDetails');
 });
 
 //Sales routes

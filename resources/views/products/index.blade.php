@@ -38,7 +38,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="mt-3 nav-link px-0 align-middle">
+                            <a href="{{ route('admin.admin_report')}}" class="mt-3 nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <h6><span class="ms-1 d-none d-sm-inline">Report &
                                     Analytics</span></h6>
                             </a>
@@ -133,7 +133,6 @@
     </div>
 
 
-    <!-- Modal for editing products -->
     @foreach ($products as $product)
         <div class="modal fade" id="editProductModal-{{ $product->id }}" tabindex="-1" role="dialog"
             aria-labelledby="editProductModalLabel" aria-hidden="true">

@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SalesActivationEmail;
 use App\Models\Salesman;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon; // Import the Carbon class from the correct namespace
 class AdminController extends Controller
 {
@@ -228,5 +230,29 @@ class AdminController extends Controller
     {
         auth()->logout();
         return redirect()->route('login');
+    }
+
+    public function report()
+    {
+        $orders = Order::all();
+        return view('admin.admin_report', ['orders' => $orders]);
+    }
+
+    public function showOrderDetails($id)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($id);
+
+        $products = $order->orderItems->map(function ($orderItem) {
+            return [
+                'name' => $orderItem->product->product_name,
+                'quantity' => $orderItem->quantity,
+            ];
+        });
+
+        return response()->json([
+            'customerName' => $order->customer->fullName,
+            'products' => $products,
+            'totalPrice' => $order->total_price,
+        ]);
     }
 }
