@@ -4,8 +4,14 @@
     <title>Check Email</title>
 </head>
 <body>
-    <h1>Please check your email again!</h1>
-    <p id="countdown">This tab will close in <span id="seconds">5</span> seconds.</p>
+    <div style="margin-top: 100px" class="container">
+        <div class="border rounded-3">
+            <h1 class="text-center text-success">Notice</h1>
+            <h4 class="text-center mt-3">A email has been sent to you</h4>
+            <p class="text-center mt-3" id="countdown">This tab will be close in <span
+                    style="font-weight: bold" id="seconds">5</span> seconds.</p>
+        </div>
+    </div>
 
     <script type="text/javascript">
         var seconds = 5;

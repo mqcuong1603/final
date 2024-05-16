@@ -51,7 +51,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="mt-3 nav-link px-0 align-middle">
+                                <a href="{{ route('admin.admin_report')}}" class="mt-3 nav-link px-0 align-middle">
                                     <i class="fs-4 bi-people"></i>
                                     <h6><span class="ms-1 d-none d-sm-inline">Report &
                                             Analytics</span></h6>
@@ -208,12 +208,12 @@
                                             <input type="text" class="form-control" id="fullName"
                                                 name="fullName" value="{{ $salesman->fullName }}">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mt-3">
                                             <label for="email">Email</label>
                                             <input type="email" class="form-control" id="email" name="email"
                                                 value="{{ $salesman->email }}">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mt-3">
                                             <label for="status">Status</label>
                                             <select class="form-control" id="status" name="status">
                                                 <option value="1"
@@ -224,12 +224,12 @@
                                                     Inactivate</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mt-3">
                                             <label for="image">Image</label>
                                             <input type="file" class="form-control" id="image"
                                                 name="image">
                                         </div>
-                                        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                                        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
                                     </form>
                                 </div>
                             </div>
