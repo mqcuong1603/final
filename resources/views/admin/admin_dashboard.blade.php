@@ -225,6 +225,16 @@
                                             </select>
                                         </div>
                                         <div class="form-group mt-3">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                value="{{$salesman->phone}}">
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="address">Address</label>
+                                            <input type="address" class="form-control" id="address" name="address"
+                                                value="{{$salesman->address}}">
+                                        </div>
+                                        <div class="form-group mt-3">
                                             <label for="image">Image</label>
                                             <input type="file" class="form-control" id="image"
                                                 name="image">
@@ -454,4 +464,5 @@
         });
     </script>
     </body>
+
 </html>

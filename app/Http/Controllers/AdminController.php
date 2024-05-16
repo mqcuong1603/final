@@ -192,6 +192,8 @@ class AdminController extends Controller
             'email' => 'required|email|max:255',
             'status' => 'required|numeric|min:0|max:1',
             'image' => 'nullable|image|max:2048',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
         ]);
 
         $salesman = Salesman::where('email', $oldEmail)->first();
@@ -203,6 +205,8 @@ class AdminController extends Controller
         $salesman->fullName = $validatedData['fullName'];
         $salesman->email = $validatedData['email'];
         $salesman->isActivated = $validatedData['status'];
+        $salesman->phone = $validatedData['phone'];
+        $salesman->address = $validatedData['address'];
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('salesmen_images', 'public');
@@ -235,6 +239,9 @@ class AdminController extends Controller
     public function report()
     {
         $orders = Order::all();
+
+        foreach ($orders as $order) {
+        }
         return view('admin.admin_report', ['orders' => $orders]);
     }
 
@@ -253,6 +260,31 @@ class AdminController extends Controller
             'customerName' => $order->customer->fullName,
             'products' => $products,
             'totalPrice' => $order->total_price,
+            'totalProfit' => $order->total_profit,
         ]);
+    }
+
+    public function searchByDate(Request $request)
+    {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+    
+        // Validate input dates
+        $fromDate = Carbon::parse($fromDate);
+        $toDate = Carbon::parse($toDate);
+    
+        if (!$fromDate || !$toDate) {
+            // Handle invalid date input
+            return redirect()->back()->withErrors(['Invalid date input']);
+        }
+    
+        // Perform the search
+        $orders = DB::table('orders')
+            ->whereDate('order_date', '>=', $fromDate)
+            ->whereDate('order_date', '<=', $toDate)
+            ->get();
+    
+        // Return the results
+        return view('admin.admin_report', ['orders' => $orders]);
     }
 }

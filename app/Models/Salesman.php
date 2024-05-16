@@ -23,5 +23,5 @@ class Salesman extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['fullName', 'email', 'username', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry', 'is_first_login'];
+    protected $fillable = ['fullName', 'email', 'username', 'isAdmin', 'isLocked', 'isActivated', 'profilePicture', 'password', 'activation_token', 'reset_token', 'reset_token_expiry', 'activation_token_expiry', 'is_first_login', 'phone', 'address'];
 }

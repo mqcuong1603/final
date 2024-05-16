@@ -18,7 +18,7 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="#"
+                    <a href=" {{ route('sales.sales_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
@@ -55,7 +55,7 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                         </ul>
                     </div>
                 </div>

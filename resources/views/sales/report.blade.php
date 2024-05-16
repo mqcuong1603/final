@@ -18,7 +18,7 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{ route('sales.report') }}"
+                    <a href=" {{ route('sales.sales_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
@@ -55,6 +55,7 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
                         </ul>
                     </div>
@@ -73,6 +74,17 @@
                                 </div>
                                 <form style="margin-left: auto" action="{{ route('report.search') }}" method="GET">
                                     <div class="d-flex align-items-center">
+                                    <div style="margin-right: 10px" class="dropdown ms-2">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dateOptions" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Options
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dateOptions">
+                                            <li><a class="dropdown-item" href="#" onclick="setDateRange('today')">Today</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="setDateRange('yesterday')">Yesterday</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="setDateRange('last7days')">Last 7 Days</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="setDateRange('last30days')">Last 30 Days</a></li>
+                                        </ul>
+                                    </div>
                                         <span class="text-white me-2">From</span>
                                         <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
                                         <span class="text-white me-2">To</span>
@@ -216,8 +228,41 @@
                     fromDate.setAttribute('max', today);
                     toDate.setAttribute('max', today);
                 });
-            </script>
 
+                function setDateRange(option) {
+                    var today = new Date();
+                    var fromDate = document.getElementById('fromDate');
+                    var toDate = document.getElementById('toDate');
+
+                    if (option === 'today') {
+                        fromDate.value = formatDate(today);
+                        toDate.value = formatDate(today);
+                    } else if (option === 'yesterday') {
+                        var yesterday = new Date(today);
+                        yesterday.setDate(today.getDate() - 1);
+                        fromDate.value = formatDate(yesterday);
+                        toDate.value = formatDate(yesterday);
+                    } else if (option === 'last7days') {
+                        var last7days = new Date(today);
+                        last7days.setDate(today.getDate() - 7);
+                        fromDate.value = formatDate(last7days);
+                        toDate.value = formatDate(today);
+                    } else if (option === 'last30days') {
+                        var last30days = new Date(today);
+                        last30days.setDate(today.getDate() - 30);
+                        fromDate.value = formatDate(last30days);
+                        toDate.value = formatDate(today);
+                    }
+                }function formatDate(date) {
+                    var dd = String(date.getDate()).padStart(2, '0');
+                    var mm = String(date.getMonth() + 1).padStart(2, '0');
+                    var yyyy = date.getFullYear();
+
+                    return yyyy + '-' + mm + '-' + dd;
+                }
+
+                
+            </script>
 </body>
 
 </html>

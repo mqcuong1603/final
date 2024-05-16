@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Salesman;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail class
-use Illuminate\Support\Facades\Auth; // Import the Auth class
+use Illuminate\Contracts\Support\ValidatedData;
+use Illuminate\Support\Facades\Auth; 
+use Carbon\Carbon;
+
+use Override;// Import the Auth class
 
 class SalesmanController extends Controller
 {
@@ -119,11 +123,13 @@ class SalesmanController extends Controller
         try {
             // Calculate the total price
             $totalPrice = 0;
+            $totalProfit = 0;
             foreach ($request->products as $index => $barcode) {
                 $product = Products::where('barcode', $barcode)->first();
                 if ($product) {
                     $productPrice = $product->retail_price; // Corrected here
                     $totalPrice += $productPrice * $request->quantity[$index];
+                    $totalProfit += ($product->retail_price - $product->import_price) * $request->quantity[$index];
                 } else {
                     Log::error('Product not found with barcode: ' . $barcode);
                 }
@@ -134,6 +140,7 @@ class SalesmanController extends Controller
                 'customer_id' => $customer->id,
                 'order_date' => now(),
                 'total_price' => $totalPrice,
+                'total_profit' => $totalProfit,
             ]);
             $customer->orders()->save($order);
 
@@ -184,7 +191,7 @@ class SalesmanController extends Controller
             // If no customer is found, create a new customer
             $customer = new Customer([
                 'email' => $email,
-                'phone' => $phone,
+                'phone' => $phone, 
             ]);
             $customer->save();
 
@@ -204,13 +211,23 @@ class SalesmanController extends Controller
     {
         $fromDate = $request->input('fromDate');
         $toDate = $request->input('toDate');
-
-        // Perform the search. This is just an example, replace with your actual search logic.
+    
+        // Validate input dates
+        $fromDate = Carbon::parse($fromDate);
+        $toDate = Carbon::parse($toDate);
+    
+        if (!$fromDate || !$toDate) {
+            // Handle invalid date input
+            return redirect()->back()->withErrors(['Invalid date input']);
+        }
+    
+        // Perform the search
         $orders = DB::table('orders')
-            ->whereBetween('order_date', [$fromDate, $toDate])
+            ->whereDate('order_date', '>=', $fromDate)
+            ->whereDate('order_date', '<=', $toDate)
             ->get();
-
-        // Return the results. This is just an example, replace with your actual return logic.
+    
+        // Return the results
         return view('sales.report', ['orders' => $orders]);
     }
 
@@ -253,4 +270,26 @@ class SalesmanController extends Controller
 
         return view('sales.customerHistory', ['customer' => $customer]);
     }
+
+    public function salesInfo ($email)
+    {
+        $salesman = Salesman::where('email', $email)->first();
+        return view('sales.salesInfo', ['salesman' => $salesman]);
+    }
+
+    public function editPassword(Request $request, $email)
+    {
+        $salesman = Salesman::where('email', $email)->first();
+        $request->validate([
+            'newPassword' => 'required',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        $salesman->password = bcrypt($request->newPassword);
+        $salesman->save();
+
+        return redirect()->route('sales.salesInfo', ['email' => $email])->with('success', 'Password updated successfully');
+    }
+
+    
 }

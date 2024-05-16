@@ -53,7 +53,7 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            </li>
+                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
                         </ul>
                     </div>

@@ -18,7 +18,7 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href=" {{ route('sales.report') }}"
+                    <a href=" {{ route('admin.admin_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
@@ -75,33 +75,44 @@
                             <div class="collapse navbar-collapse" id="mynavbar">
                                 <input style="width:20%" name="search" id="search" class="form-control me-2 mx-5" type="text"
                                     placeholder="Search" value="" autofocus>
-                                <div style="margin-left: 9% ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                <div style="margin-left: 2px ; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
                                     Total Orders: {{ $orders->count() }}
                                 </div>
-                                <div style="margin-left:10px; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
-                                    Total Profits: xxx
+                                <div style="margin-left:7px; font-size:20px" class=" navbar-text badge rounded-pill bg-secondary">
+                                    Total Profits: {{"$" . $orders->sum('total_profit')}}
                                 </div>
-                                <form style="margin-left: auto" action="#" method="GET">
+                                <form style="margin-left: auto" action="{{ route('admin.reportSearch') }}" method="GET">
                                     <div class="d-flex align-items-center">
-                                        <span class="text-white me-2">From</span>
-                                        <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
-                                        <span class="text-white me-2">To</span>
-                                        <input type="date" class="form-control me-2" id="toDate" name="toDate">
-                                        <button class="btn btn-primary" type="submit">Go</button>
-                                    </div>
+                                        <div style="margin-right: 10px" class="dropdown ms-2">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dateOptions" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Options
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dateOptions">
+                                                <li><a class="dropdown-item" href="#" onclick="setDateRange('today')">Today</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="setDateRange('yesterday')">Yesterday</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="setDateRange('last7days')">Last 7 Days</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="setDateRange('last30days')">Last 30 Days</a></li>
+                                            </ul>
+                                        </div>
+                                            <span class="text-white me-2">From</span>
+                                            <input type="date" class="form-control me-2" id="fromDate" name="fromDate">
+                                            <span class="text-white me-2">To</span>
+                                            <input type="date" class="form-control me-2" id="toDate" name="toDate">
+                                            <button class="btn btn-primary" type="submit">Go</button>
+                                        </div>
                                 </form>
                             </div>
                         </div>
                     </nav>
-                    <div id="HTML_element" style="overflow-y: auto">
+                    <div class="mt-3" id="HTML_element" style="overflow-y: auto">
                         <table class="table table-hover table-striped position-relative">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Order Id</th>
-                                    <th class="text-center">Customer Id</th>
-                                    <th class="text-center">Order Date</th>
-                                    <th class="text-center">Total price</th>
-                                    <th class="text-center">Action</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Order Id</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Customer Id</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Order Date</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Total price</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,6 +151,7 @@
                             <p><strong>Products:</strong></p>
                             <ul id="productList"></ul>
                             <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+                            <p><strong>Total Profit:</strong><span id="totalProfit"></span></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -184,7 +196,7 @@
                         var orderId = $(this).data('order-id');
 
                         $.ajax({
-                            url: '{{ route('sales.orderDetails', ['id' => '__ID__']) }}'.replace('__ID__',
+                            url: '{{ route('admin.orderDetails', ['id' => '__ID__']) }}'.replace('__ID__',
                                 orderId),
                             method: 'GET',
                             headers: {
@@ -203,6 +215,7 @@
                                 });
 
                                 $('#totalPrice').text("$" + response.totalPrice);
+                                $('#totalProfit').text("$" + response.totalProfit);
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error(textStatus, errorThrown);
@@ -226,6 +239,38 @@
                     fromDate.setAttribute('max', today);
                     toDate.setAttribute('max', today);
                 });
+                function setDateRange(option) {
+                    var today = new Date();
+                    var fromDate = document.getElementById('fromDate');
+                    var toDate = document.getElementById('toDate');
+
+                    if (option === 'today') {
+                        fromDate.value = formatDate(today);
+                        toDate.value = formatDate(today);
+                    } else if (option === 'yesterday') {
+                        var yesterday = new Date(today);
+                        yesterday.setDate(today.getDate() - 1);
+                        fromDate.value = formatDate(yesterday);
+                        toDate.value = formatDate(yesterday);
+                    } else if (option === 'last7days') {
+                        var last7days = new Date(today);
+                        last7days.setDate(today.getDate() - 7);
+                        fromDate.value = formatDate(last7days);
+                        toDate.value = formatDate(today);
+                    } else if (option === 'last30days') {
+                        var last30days = new Date(today);
+                        last30days.setDate(today.getDate() - 30);
+                        fromDate.value = formatDate(last30days);
+                        toDate.value = formatDate(today);
+                    }
+                }
+                function formatDate(date) {
+                    var dd = String(date.getDate()).padStart(2, '0');
+                    var mm = String(date.getMonth() + 1).padStart(2, '0');
+                    var yyyy = date.getFullYear();
+
+                    return yyyy + '-' + mm + '-' + dd;
+                }
             </script>
 
 </body>

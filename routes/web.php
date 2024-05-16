@@ -27,7 +27,8 @@ Route::prefix('admin_dashboard')->group(function () {
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/report', [AdminController::class, 'report'])->name('admin.admin_report');
     Route::get('/resend_activation/{email}', [AdminController::class, 'resendActivation'])->name('admin.resendActivation');
-    Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('admin.orderDetails');
+    Route::get('/report/order/{id}', [AdminController::class, 'showOrderDetails'])->name('admin.orderDetails');
+    Route::get('/report/search', [AdminController::class, 'searchByDate'])->name('admin.reportSearch');
 });
 
 //Sales routes
@@ -48,6 +49,8 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('sales.orderDetails');
     Route::get('/customerHistory/{customerId}', [SalesmanController::class, 'customerHistory'])->name('sales.customerHistory');
     Route::get('/customerHistory/{customerId}/search', [SalesmanController::class, 'searchOrder'])->name('sales.searchOrder');
+    Route::get('/salesinfo/{email}', [SalesmanController::class,'salesInfo'])->name('sales.salesInfo');
+    Route::put('/salesinfo/{email}/edit', [SalesmanController::class,'editPassword'])->name('sales.editPassword');
 });
 
 
