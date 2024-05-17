@@ -192,8 +192,8 @@ class AdminController extends Controller
             'email' => 'required|email|max:255',
             'status' => 'required|numeric|min:0|max:1',
             'image' => 'nullable|image|max:2048',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
         ]);
 
         $salesman = Salesman::where('email', $oldEmail)->first();
