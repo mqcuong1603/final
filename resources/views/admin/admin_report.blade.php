@@ -112,6 +112,7 @@
                                     <th style="background-color: rgb(168, 168, 168)" class="text-center">Customer Id</th>
                                     <th style="background-color: rgb(168, 168, 168)" class="text-center">Order Date</th>
                                     <th style="background-color: rgb(168, 168, 168)" class="text-center">Total price</th>
+                                    <th style="background-color: rgb(168, 168, 168)" class="text-center">Total profit</th>
                                     <th style="background-color: rgb(168, 168, 168)" class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -123,6 +124,7 @@
                                         <td class="text-center">{{ date('H:i d F Y', strtotime($order->order_date)) }}
                                         </td>
                                         <td class="text-center">{{ "$" . $order->total_price }}</td>
+                                        <td class="text-center">{{ "$" . $order->total_profit }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
                                                 data-bs-target="#orderModal" data-order-id="{{ $order->id }}">

@@ -51,6 +51,7 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/customerHistory/{customerId}/search', [SalesmanController::class, 'searchOrder'])->name('sales.searchOrder');
     Route::get('/salesinfo/{email}', [SalesmanController::class,'salesInfo'])->name('sales.salesInfo');
     Route::put('/salesinfo/{email}/edit', [SalesmanController::class,'editPassword'])->name('sales.editPassword');
+    Route::post('/salesman/updateProfilePicture', [SalesmanController::class, 'updateProfilePicture'])->name('salesman.updateProfilePicture');
 });
 
 

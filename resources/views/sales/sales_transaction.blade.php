@@ -158,17 +158,25 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" value="">
+                        <label for="fullName">Fullname</label>
+                        <input type="text" class="form-control" name="fullName" value="">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="tel" class="form-control" name="phone" value="">
                     </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" name="address" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" value="">
+                    </div>
                     <div id="transactionData">
                         <!-- Hidden input fields for the transaction list data will be added here -->
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">Check</button>
+                    <button type="submit" class="btn btn-success mt-2">Check</button>
                 </form>
             </div>
         </div>

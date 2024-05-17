@@ -13,10 +13,10 @@ use App\Models\Salesman;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SalesActivationEmail; // Import the SalesActivationEmail class
 use Illuminate\Contracts\Support\ValidatedData;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-use Override;// Import the Auth class
+use Override; // Import the Auth class
 
 class SalesmanController extends Controller
 {
@@ -178,6 +178,8 @@ class SalesmanController extends Controller
     {
         $email = $request->input('email');
         $phone = $request->input('phone');
+        $fullName = $request->input('fullName');
+        $address = $request->input('address');
 
         $customer = Customer::where('email', $email)->orWhere('phone', $phone)->first();
 
@@ -191,7 +193,9 @@ class SalesmanController extends Controller
             // If no customer is found, create a new customer
             $customer = new Customer([
                 'email' => $email,
-                'phone' => $phone, 
+                'phone' => $phone,
+                'fullName' => $fullName,
+                'address' => $address,
             ]);
             $customer->save();
 
@@ -211,22 +215,21 @@ class SalesmanController extends Controller
     {
         $fromDate = $request->input('fromDate');
         $toDate = $request->input('toDate');
-    
+
         // Validate input dates
         $fromDate = Carbon::parse($fromDate);
         $toDate = Carbon::parse($toDate);
-    
+
         if (!$fromDate || !$toDate) {
             // Handle invalid date input
-            return redirect()->back()->withErrors(['Invalid date input']);
+            return redirect()
+                ->back()
+                ->withErrors(['Invalid date input']);
         }
-    
+
         // Perform the search
-        $orders = DB::table('orders')
-            ->whereDate('order_date', '>=', $fromDate)
-            ->whereDate('order_date', '<=', $toDate)
-            ->get();
-    
+        $orders = DB::table('orders')->whereDate('order_date', '>=', $fromDate)->whereDate('order_date', '<=', $toDate)->get();
+
         // Return the results
         return view('sales.report', ['orders' => $orders]);
     }
@@ -271,7 +274,7 @@ class SalesmanController extends Controller
         return view('sales.customerHistory', ['customer' => $customer]);
     }
 
-    public function salesInfo ($email)
+    public function salesInfo($email)
     {
         $salesman = Salesman::where('email', $email)->first();
         return view('sales.salesInfo', ['salesman' => $salesman]);
@@ -288,8 +291,28 @@ class SalesmanController extends Controller
         $salesman->password = bcrypt($request->newPassword);
         $salesman->save();
 
-        return redirect()->route('sales.salesInfo', ['email' => $email])->with('success', 'Password updated successfully');
+        return redirect()
+            ->route('sales.salesInfo', ['email' => $email])
+            ->with('success', 'Password updated successfully');
     }
 
-    
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profilePicture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'email' => 'required|email',
+        ]);
+
+        $salesman = Salesman::where('email', $request->email)->first();
+
+        if ($salesman && $request->hasFile('profilePicture')) {
+            $path = $request->file('profilePicture')->store('salesmen_images', 'public');
+            $salesman->profilePicture = $path;
+            $salesman->save();
+
+            return response()->json(['success' => true, 'image' => $path, 'message' => 'Profile picture updated successfully']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Salesman not found or no image provided']);
+    }
 }

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Personal Information</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -22,7 +23,6 @@
             max-width: 400px;
             margin: 0 auto;
             height: 300px;
-            /* Adjust the height as needed */
             background-size: cover;
             background-position: center;
             display: flex;
@@ -55,6 +55,13 @@
 
         .avatar-container:hover .overlay {
             opacity: 1;
+        }
+
+        .info-box {
+            border: 1px solid #ced4da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -101,7 +108,9 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a>
+                            </li>
                             <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
                         </ul>
                     </div>
@@ -113,36 +122,39 @@
                     <h3 class="text-center">Personal Information</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <form id="personalInfoForm">
-                                <div class="mb-3">
-                                    <label for="fullName" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" name="fullName" required
-                                        value="{{ $salesman->fullName }}">
+                            <div id="personalInfoForm">
+                                <div class="mb-3 info-box">
+                                    <label for="fullName" class="form-label fw-bold">Full Name:</label>
+                                    <p id="fullName">{{ $salesman->fullName }}</p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required
-                                        value="{{ $salesman->email }}">
+                                <div class="mb-3 info-box">
+                                    <label for="email" class="form-label fw-bold">Email:</label>
+                                    <p id="email">{{ $salesman->email }}</p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" required
-                                        value="{{ $salesman->phone }}">
+                                <div class="mb-3 info-box">
+                                    <label for="phone" class="form-label fw-bold">Phone:</label>
+                                    <p id="phone">{{ $salesman->phone }}</p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" required
-                                        value="{{ $salesman->address }}">
+                                <div class="mb-3 info-box">
+                                    <label for="address" class="form-label fw-bold">Address:</label>
+                                    <p id="address">{{ $salesman->address }}</p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#changePasswordModal">Change Password</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="col-md-6 d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $salesman->profilePicture) }}" alt="Salesman Image"
-                                style="width: 300px; height: 300px; object-fit: cover; margin-left:170px" class="rounded-3">
+                            <div class="image-container"
+                                style="position: relative; width: 300px; height: 300px; margin-left:170px">
+                                <img src="{{ asset('storage/' . $salesman->profilePicture) }}" alt="Salesman Image"
+                                    style="width: 100%; height: 100%; object-fit: cover;" class="rounded-3">
+                                <div class="overlay">
+                                    <span style="color: white; font-size: 20px;">Change Profile Picture</span>
+                                </div>
+                            </div>
+                            <input type="file" id="profilePicture" style="display: none;">
                         </div>
                     </div>
                 </div>
@@ -184,9 +196,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="messageModalLabel">Message</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="messageModalBody">
+                  <!-- Message will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
         function setElementHeightToScreenHeight() {
@@ -206,6 +237,50 @@
             }
             reader.readAsDataURL(event.target.files[0]);
         }
+    </script>
+
+    <script>
+        document.querySelector('.image-container').addEventListener('mouseover', function() {
+            this.querySelector('.overlay').style.opacity = '1';
+            this.querySelector('.overlay').style.cursor = 'pointer';
+        });
+
+        document.querySelector('.image-container').addEventListener('mouseout', function() {
+            this.querySelector('.overlay').style.opacity = '0';
+        });
+
+        document.querySelector('.image-container').addEventListener('click', function() {
+            document.getElementById('profilePicture').click();
+            $(document).ready(function() {
+                $('#profilePicture').change(function() {
+                    var file = this.files[0];
+                    var formData = new FormData();
+                    formData.append('profilePicture', file);
+
+                    var email = '{{ Auth::guard('salesman')->user()->email }}';
+                    formData.append('email', email);
+
+                    $.ajax({
+                        url: '{{ route('salesman.updateProfilePicture') }}',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                location.reload();
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        }
+                    });
+                });
+            });
+        });
     </script>
 </body>
 
