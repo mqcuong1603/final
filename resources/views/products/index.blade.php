@@ -21,32 +21,29 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href=" {{ route('admin.admin_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('admin.admin_dashboard') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
-                                    Management</span></h5>
-                                <i class="fs-4 bi-house"></i> <h5><span class="ms-1 d-none d-sm-inline">Account
-                                    Management</span></h5>
+                            <a href="{{ route('admin.admin_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Account
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
-                                    Catalog</span></h4>
-                                <i class="fs-4 bi-house"></i> <h4><span class="ms-1 d-none d-sm-inline badge bg-info">Product
-                                    Catalog</span></h4>
+                            <a href="{{ route('products.index') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Product
+                                        Catalog</span></h5>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h5>
-                                <i class="fs-4 bi-people"></i> <h5><span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span></h5>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.admin_report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                        Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -94,25 +91,25 @@
                 <div class="mt-3" id="HTML_element" style="overflow-y: auto;">
                     <table class="table table-hover table-striped">
                         <thead>
-                            <tr class="">
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">ID</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Barcode</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Product Name</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Import Price</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Retail Price</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Category</th>
-                                <th class="text-center" style="background-color: rgb(168, 168, 168)">Actions</th>
+                            <tr>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Barcode</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Product Name</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Import Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Retail Price</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Category</th>
+                                <th style="background-color: rgb(168, 168, 168)" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         @foreach ($products as $product)
                             <tr>
-                                <td class="text-center">{{ $product->id }}</td>
                                 <td class="text-center">{{ $product->barcode }}</td>
                                 <td class="text-center">{{ $product->product_name }}</td>
                                 <td class="text-center">${{ number_format($product->import_price, 2) }}</td>
                                 <td class="text-center">${{ number_format($product->retail_price, 2) }}</td>
-                                <td class="text-center"><span class="badge rounded-pill bg-secondary">{{ $product->category }}</span></td>
+                                <td class="text-center"><span
+                                        class="badge rounded-pill bg-secondary">{{ $product->category }}</span></td>
                                 <td class="text-center">
+                                    <!-- Edit button triggers modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editProductModal-{{ $product->id }}">Edit</button>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -171,7 +168,7 @@
                                 <input type="text" class="form-control" id="category" name="category"
                                     value="{{ $product->category }}">
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+                            <button type="submit" class="btn btn-success mt-3">Update Product</button>
                         </form>
                     </div>
                 </div>
@@ -179,6 +176,7 @@
         </div>
     @endforeach
     </div>
+    {{-- // Search bar autofocus --}}
     <script>
         window.onload = function() {
             const element = document.getElementById("HTML_element");

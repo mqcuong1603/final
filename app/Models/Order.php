@@ -9,7 +9,7 @@ class Order extends Model
 {
 
     protected $fillable = [
-        'customer_id', 'order_date', 'total_price'
+        'customer_id', 'order_date', 'total_price', 'total_profit'
     ];
 
     public function customer()

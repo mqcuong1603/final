@@ -49,8 +49,8 @@
         }
 
         .form-button button:hover {
-            background: white;
-            color: #0077B2;
+            background: #4CAF50;
+            color: white;
         }
 
         .active-button {
@@ -62,14 +62,14 @@
             padding: 20px;
             display: none;
             opacity: 0;
-            transform: scale(0.95);
+            transform: translateX(100%);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .form-container.active {
             display: block;
             opacity: 1;
-            transform: scale(1);
+            transform: translateX(0);
         }
 
         .form-wrapper {
@@ -203,7 +203,7 @@
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        {{ $error }}
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -212,37 +212,62 @@
 
     <script>
         function showForm(type) {
-            var forms = document.querySelectorAll('.form-container');
-            forms.forEach(function (form) {
-                form.classList.remove('active');
-            });
-            setTimeout(function() {
-                document.getElementById(type + '-form').classList.add('active');
-            }, 100);  // Slight delay for smoother transition
+            var activeForm = document.querySelector('.form-container.active');
+            if (activeForm) {
+                activeForm.classList.remove('active');
+                setTimeout(function() {
+                    activeForm.style.display = 'none';
+                    var newForm = document.getElementById(type + '-form');
+                    newForm.style.display = 'block';
+                    setTimeout(function() {
+                        newForm.classList.add('active');
+                    }, 10);
+                }, 300); // Adjust this duration to match the transition time
+            } else {
+                var newForm = document.getElementById(type + '-form');
+                newForm.style.display = 'block';
+                setTimeout(function() {
+                    newForm.classList.add('active');
+                }, 10);
+            }
 
             var buttons = document.querySelectorAll('.form-button button');
-            buttons.forEach(function (button) {
+            buttons.forEach(function(button) {
                 button.classList.remove('active-button');
             });
             document.querySelector('.' + type + '-button').classList.add('active-button');
         }
 
-        document.getElementById('openButton').addEventListener('click', function () {
+        document.getElementById('openButton').addEventListener('click', function() {
             var present = document.getElementById('present');
             var loginWrapper = document.getElementById('loginWrapper');
             var presentWrapper = document.getElementById('presentWrapper');
 
             present.style.top = '-200px';
-            setTimeout(function () {
+            setTimeout(function() {
                 presentWrapper.style.display = 'none';
                 loginWrapper.style.display = 'block';
-                setTimeout(function () {
+                setTimeout(function() {
                     loginWrapper.style.opacity = '1';
                     loginWrapper.style.transform = 'scale(1)';
-                }, 10); // Slight delay for smoother transition
+                }, 10);
                 showForm('admin');
             }, 500);
         });
+
+        window.onload = function() {
+            var hasErrors = document.querySelector('.alert');
+            if (hasErrors) {
+                document.getElementById('presentWrapper').style.display = 'none';
+                var loginWrapper = document.getElementById('loginWrapper');
+                loginWrapper.style.display = 'block';
+                setTimeout(function() {
+                    loginWrapper.style.opacity = '1';
+                    loginWrapper.style.transform = 'scale(1)';
+                }, 10);
+                showForm('admin');
+            }
+        };
     </script>
 </body>
 

@@ -53,7 +53,7 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            </li>
+                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('sales.logout') }}">Logout</a></li>
                         </ul>
                     </div>
@@ -97,7 +97,7 @@
                                     <td class="text-center">{{ $customer->address }}</td>
                                     <td class="text-center">
                                         <a href="{{route('sales.customerHistory', $customer->id)}}">
-                                            <button class="btn btn-primary">View more detail</button></a>
+                                            <button class="btn btn-primary">View</button></a>
                                     </td>
                                 </tr>
                             @endforeach

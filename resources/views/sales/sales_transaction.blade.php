@@ -18,28 +18,30 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="#"
+                    <a href=" {{ route('sales.sales_dashboard') }}"
                         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Point of Sale</span>
+                        <span style="margin-left:44px" class="fs-5 d-none d-sm-inline">Point of Sale</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
-                        <li>
-                            <a href="{{ route('sales.sales_dashboard') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers
-                                    Management</span>
+                        <li class="nav-item">
+                            <a href="{{ route('sales.sales_dashboard') }}" class="mt-3 nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Customer
+                                        Management</span></h6>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span
-                                    class="ms-1 d-none d-sm-inline text-info">Transaction</span>
+                            <a href="{{ route('sales.sales_transaction') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h5><span class="ms-1 d-none d-sm-inline badge bg-info">Transaction</span></h5>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('sales.report') }}" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Report &
-                                    Analytics</span>
+                            <a href="{{ route('sales.report') }}" class="mt-3 nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i>
+                                <h6><span class="ms-1 d-none d-sm-inline">Report &
+                                        Analytics</span></h6>
                             </a>
                         </li>
                     </ul>
@@ -53,7 +55,7 @@
                             <span class="d-none d-sm-inline mx-1">{{ Auth::guard('salesman')->user()->username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{{ route('sales.salesInfo', Auth::guard('salesman')->user()->email) }}">Profile</a></li>                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -79,7 +81,7 @@
                             </nav>
                         </div>
                         <div id="HTML_element" style="overflow-inline: auto; overflow-y:auto">
-                            <table class="table table-hover table-striped ">
+                            <table id="productList" class="table table-hover table-striped ">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Barcode</th>
@@ -118,7 +120,7 @@
                                         <th class="text-center">Name</th>
                                         <th class="text-center">Price</th>
                                         <th class="text-center"><label for="number">Quantity</label></th>
-                                        <th class="text-center">Total price</th>
+                                        <th class="text-center">Subtotal</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -127,8 +129,8 @@
                             </table>
                         </div>
 
-                        <div style="width:50%" class="position-absolute bottom-0 start-0 display-6 mb-3">
-                            <label for="total">Total</label>
+                        <div style="width:50%" class="position-absolute bottom-0 start-0 display-6 mb-3 ml-3">
+                            <label for="total">GRAND TOTAL</label>
                             <input type="text" class="form-control" id="total" value="$0.00" readonly>
                         </div>
                         <div class="position-absolute bottom-0 end-0 d-grid gap-2 mx-3 mb-3">
@@ -156,17 +158,29 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" value="">
+                        <label for="fullName">Fullname</label>
+                        <input type="text" class="form-control" name="fullName" value="">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="tel" class="form-control" name="phone" value="">
                     </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" name="address" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="moneyReceived">Money Received</label>
+                        <input type="number" class="form-control" name="moneyReceived" value="">
+                    </div>
                     <div id="transactionData">
                         <!-- Hidden input fields for the transaction list data will be added here -->
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">Check</button>
+                    <button type="submit" class="btn btn-success mt-2">Check</button>
                 </form>
             </div>
         </div>
@@ -189,33 +203,46 @@
                 var priceText = row.find('td:eq(2)').text().replace('$', '');
                 var price = parseFloat(priceText.replace(',', ''));
 
-                // Append new row to the transaction list
-                var newRow = $('<tr><td class="text-center">' + barcode +
-                    '</td><td class="text-center">' + product + '</td><td class="product-price">' +
-                    price +
-                    '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
-                    price +
-                    '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
-                );
-                $('#transactionList').append(newRow);
-
-                // Also add the product data to hidden input fields within the form
-                $('#transactionData').append('<input type="hidden" name="products[]" value="' + barcode +
-                    '">');
-                var quantityInput = $('<input type="hidden" name="quantity[]" value="1">');
-                $('#transactionData').append(quantityInput);
-
-                updateTotal();
-
-                // Add event listener for quantity change
-                newRow.find('.quantity').change(function() {
-                    var quantity = $(this).val();
-                    var price = newRow.find('.product-price').text();
-                    var totalPrice = quantity * price;
-                    newRow.find('.total-price').text(totalPrice);
-                    updateTotal();
-                    quantityInput.val(quantity);
+                // Check if a row with the same barcode already exists in the transaction list
+                var existingRow = $('#transactionList tr').filter(function() {
+                    return $(this).find('td:eq(0)').text() === barcode;
                 });
+
+                if (existingRow.length > 0) {
+                    // If the product already exists in the transaction list, increment its quantity
+                    var quantityInput = existingRow.find('.quantity');
+                    var quantity = parseInt(quantityInput.val()) + 1;
+                    quantityInput.val(quantity).change();
+                } else {
+                    // If the product doesn't exist in the transaction list, add a new row
+                    var newRow = $('<tr><td class="text-center">' + barcode +
+                        '</td><td class="text-center">' + product + '</td><td class="product-price">' +
+                        price +
+                        '</td><td class="text-center"><input type="number" value="1" min="1" class="quantity" style="width: 50%;"></td><td class="text-center total-price">' +
+                        price +
+                        '</td><td class="text-center"><button class="btn btn-danger deleteButton">Delete</button></td></tr>'
+                    );
+                    $('#transactionList').append(newRow);
+
+                    // Also add the product data to hidden input fields within the form
+                    $('#transactionData').append('<input type="hidden" name="products[]" value="' +
+                        barcode +
+                        '">');
+                    var quantityInput = $('<input type="hidden" name="quantity[]" value="1">');
+                    $('#transactionData').append(quantityInput);
+
+                    updateTotal();
+
+                    // Add event listener for quantity change
+                    newRow.find('.quantity').change(function() {
+                        var quantity = $(this).val();
+                        var price = newRow.find('.product-price').text();
+                        var totalPrice = quantity * price;
+                        newRow.find('.total-price').text(totalPrice);
+                        updateTotal();
+                        quantityInput.val(quantity);
+                    });
+                }
             });
 
             $('#transactionList').on('input', '.quantity', function() {
@@ -262,7 +289,7 @@
         $(document).ready(function() {
             $('#search').on('keyup', function() {
                 var value = $(this).val().toLowerCase();
-                $('table tbody tr').filter(function() {
+                $('#productList tbody tr').filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SalesActivationEmail;
 use App\Models\Salesman;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon; // Import the Carbon class from the correct namespace
 class AdminController extends Controller
 {
     /**
@@ -55,21 +58,16 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request The HTTP request object.
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function createSaleAccount(Request $request)
     {
-        // Validate incoming request data
         $validatedData = $request->validate([
-            'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:salesmen|max:255', // Ensure the email is unique in the 'salesmen' table
-            // Add more validation rules as needed
+            'fullName' => 'required|max:255',
+            'email' => 'required|email|unique:salesmen|max:255',
         ]);
 
-        // Extract username from email
         $username = strstr($validatedData['email'], '@', true);
 
-        // Create the salesman
-        Salesman::create([
+        $salesman = Salesman::create([
             'fullName' => $validatedData['fullName'],
             'email' => $validatedData['email'],
             'username' => $username,
@@ -77,13 +75,17 @@ class AdminController extends Controller
             'is_first_login' => true,
         ]);
 
-        // Flash a success message to the session
-        session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
-        session()->flash('success', 'Salesman created successfully. Username and Password: ' . $username);
+        $token = $salesman->createToken('Login Token', ['login'])->plainTextToken;
+        $salesman->activation_token = $token;
+        $salesman->activation_token_expiry = Carbon::now()->addMinute();
+        $salesman->save();
+
+        Mail::to($salesman->email)->send(new SalesActivationEmail($salesman, $token));
+
+        session()->flash('success', 'Salesman created successfully. An email has been sent to ' . $salesman->email);
 
         return redirect()->route('admin.admin_dashboard');
     }
-
     /**
      * Display the specified user.
      *
@@ -103,11 +105,6 @@ class AdminController extends Controller
      * @param \App\Models\Salesman $salesman
      * @return void
      */
-    public function sendActivationEmail(Salesman $salesman)
-    {
-        Mail::to($salesman->email)->send(new SalesActivationEmail());
-        Mail::to($salesman->email)->send(new SalesActivationEmail());
-    }
 
     /**
      * Activate a salesman.
@@ -187,12 +184,16 @@ class AdminController extends Controller
      * @param string $oldEmail
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function update(Request $request, $oldEmail)
     {
         $validatedData = $request->validate([
             'fullName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'status' => 'required|numeric|min:0|max:1',
+            'image' => 'nullable|image|max:2048',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
         ]);
 
         $salesman = Salesman::where('email', $oldEmail)->first();
@@ -204,6 +205,14 @@ class AdminController extends Controller
         $salesman->fullName = $validatedData['fullName'];
         $salesman->email = $validatedData['email'];
         $salesman->isActivated = $validatedData['status'];
+        $salesman->phone = $validatedData['phone'];
+        $salesman->address = $validatedData['address'];
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('salesmen_images', 'public');
+            $salesman->profilePicture = $path;
+        }
+
         $salesman->save();
 
         return redirect()->route('admin.admin_dashboard');
@@ -215,8 +224,8 @@ class AdminController extends Controller
         ]);
 
         $salesmen = Salesman::where('fullName', 'like', '%' . $validatedData['search'] . '%')
-        ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
-        ->get();
+            ->orWhere('email', 'like', '%' . $validatedData['search'] . '%')
+            ->get();
 
         return view('admin.admin_dashboard', ['salesmen' => $salesmen, 'search' => $validatedData['search']]);
     }
@@ -225,5 +234,57 @@ class AdminController extends Controller
     {
         auth()->logout();
         return redirect()->route('login');
+    }
+
+    public function report()
+    {
+        $orders = Order::all();
+
+        foreach ($orders as $order) {
+        }
+        return view('admin.admin_report', ['orders' => $orders]);
+    }
+
+    public function showOrderDetails($id)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($id);
+
+        $products = $order->orderItems->map(function ($orderItem) {
+            return [
+                'name' => $orderItem->product->product_name,
+                'quantity' => $orderItem->quantity,
+            ];
+        });
+
+        return response()->json([
+            'customerName' => $order->customer->fullName,
+            'products' => $products,
+            'totalPrice' => $order->total_price,
+            'totalProfit' => $order->total_profit,
+        ]);
+    }
+
+    public function searchByDate(Request $request)
+    {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+    
+        // Validate input dates
+        $fromDate = Carbon::parse($fromDate);
+        $toDate = Carbon::parse($toDate);
+    
+        if (!$fromDate || !$toDate) {
+            // Handle invalid date input
+            return redirect()->back()->withErrors(['Invalid date input']);
+        }
+    
+        // Perform the search
+        $orders = DB::table('orders')
+            ->whereDate('order_date', '>=', $fromDate)
+            ->whereDate('order_date', '<=', $toDate)
+            ->get();
+    
+        // Return the results
+        return view('admin.admin_report', ['orders' => $orders]);
     }
 }
