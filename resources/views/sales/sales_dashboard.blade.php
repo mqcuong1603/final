@@ -97,7 +97,7 @@
                                     <td class="text-center">{{ $customer->address }}</td>
                                     <td class="text-center">
                                         <a href="{{route('sales.customerHistory', $customer->id)}}">
-                                            <button class="btn btn-primary">View more detail</button></a>
+                                            <button class="btn btn-primary">View</button></a>
                                     </td>
                                 </tr>
                             @endforeach

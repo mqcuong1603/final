@@ -56,7 +56,7 @@
                                     <th class="text-center">Order Id</th>
                                     <th class="text-center">Order Date</th>
                                     <th class="text-center">Total price</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Details</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,7 +68,7 @@
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
                                                 data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
-                                                View more detail
+                                                View
                                             </button>
                                         </td>
                                     </tr>

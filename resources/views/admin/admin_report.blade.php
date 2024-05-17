@@ -128,7 +128,7 @@
                                         <td class="text-center">
                                             <button class="btn btn-primary view-order-button" data-bs-toggle="modal"
                                                 data-bs-target="#orderModal" data-order-id="{{ $order->id }}">
-                                                View more detail
+                                                View order detail
                                             </button>
                                         </td>
                                     </tr>

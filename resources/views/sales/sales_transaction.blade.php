@@ -81,7 +81,7 @@
                             </nav>
                         </div>
                         <div id="HTML_element" style="overflow-inline: auto; overflow-y:auto">
-                            <table class="table table-hover table-striped ">
+                            <table id="productList" class="table table-hover table-striped ">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Barcode</th>
@@ -120,7 +120,7 @@
                                         <th class="text-center">Name</th>
                                         <th class="text-center">Price</th>
                                         <th class="text-center"><label for="number">Quantity</label></th>
-                                        <th class="text-center">Total price</th>
+                                        <th class="text-center">Subtotal</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -129,8 +129,8 @@
                             </table>
                         </div>
 
-                        <div style="width:50%" class="position-absolute bottom-0 start-0 display-6 mb-3">
-                            <label for="total">Total</label>
+                        <div style="width:50%" class="position-absolute bottom-0 start-0 display-6 mb-3 ml-3">
+                            <label for="total">GRAND TOTAL</label>
                             <input type="text" class="form-control" id="total" value="$0.00" readonly>
                         </div>
                         <div class="position-absolute bottom-0 end-0 d-grid gap-2 mx-3 mb-3">
@@ -289,7 +289,7 @@
         $(document).ready(function() {
             $('#search').on('keyup', function() {
                 var value = $(this).val().toLowerCase();
-                $('table tbody tr').filter(function() {
+                $('#productList tbody tr').filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
