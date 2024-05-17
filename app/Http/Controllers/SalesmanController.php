@@ -321,3 +321,4 @@ class SalesmanController extends Controller
         return response()->json(['success' => false, 'message' => 'Salesman not found or no image provided']);
     }
 }
+
