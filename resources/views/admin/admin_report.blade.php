@@ -156,7 +156,7 @@
                             <p><strong>Total Profit:</strong><span id="totalProfit"></span></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                                 });
 
                                 $('#totalPrice').text("$" + response.totalPrice);
-                                $('#totalProfit').text("$" + response.totalProfit);
+                                $('#totalProfit').text(" " + "$" + response.totalProfit);
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error(textStatus, errorThrown);

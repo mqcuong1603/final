@@ -92,7 +92,6 @@
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th style="background-color: rgb(168, 168, 168)" class="text-center">ID</th>
                                 <th style="background-color: rgb(168, 168, 168)" class="text-center">Barcode</th>
                                 <th style="background-color: rgb(168, 168, 168)" class="text-center">Product Name</th>
                                 <th style="background-color: rgb(168, 168, 168)" class="text-center">Import Price</th>
@@ -103,7 +102,6 @@
                         </thead>
                         @foreach ($products as $product)
                             <tr>
-                                <td class="text-center">{{ $product->id }}</td>
                                 <td class="text-center">{{ $product->barcode }}</td>
                                 <td class="text-center">{{ $product->product_name }}</td>
                                 <td class="text-center">${{ number_format($product->import_price, 2) }}</td>
@@ -170,7 +168,7 @@
                                 <input type="text" class="form-control" id="category" name="category"
                                     value="{{ $product->category }}">
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+                            <button type="submit" class="btn btn-success mt-3">Update Product</button>
                         </form>
                     </div>
                 </div>

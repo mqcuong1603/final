@@ -85,7 +85,7 @@
                         <nav class="navbar navbar-expand-sm navbar-dark bg-dark my-3">
                             <div class="container-fluid">
                                 <a class="navbar-brand" href="{{ route('admin.admin_dashboard') }}">List Of
-                                    Salespersons</a>
+                                    Salesmen</a>
                                 <a href="#" class="navbar-brand">
                                     <button class="btn btn-success" data-bs-target="#addModal"
                                         data-bs-toggle="modal">Create

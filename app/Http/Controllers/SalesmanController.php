@@ -124,6 +124,7 @@ class SalesmanController extends Controller
             // Calculate the total price
             $totalPrice = 0;
             $totalProfit = 0;
+            $moneyReceived = $request->input('moneyReceived');
             foreach ($request->products as $index => $barcode) {
                 $product = Products::where('barcode', $barcode)->first();
                 if ($product) {
@@ -133,6 +134,10 @@ class SalesmanController extends Controller
                 } else {
                     Log::error('Product not found with barcode: ' . $barcode);
                 }
+            }
+            $moneyGiveBack = $moneyReceived - $totalPrice;
+            if($moneyGiveBack < 0){
+                return redirect()->back()->with('error', 'Money received is less than total price');
             }
 
             // Create a new order
@@ -162,7 +167,7 @@ class SalesmanController extends Controller
             DB::commit();
 
             // Redirect to the receipt page
-            return redirect()->route('sales.receipt', ['orderId' => $order->id]);
+            return redirect()->route('sales.receipt', ['orderId' => $order->id, 'moneyReceived' => $moneyReceived, 'moneyGiveBack' => $moneyGiveBack]);
         } catch (\Exception $e) {
             // An error occurred; cancel the transaction...
             DB::rollback();
@@ -204,11 +209,11 @@ class SalesmanController extends Controller
         }
     }
 
-    public function receipt($orderId)
+    public function receipt($orderId, $moneyGiveBack, $moneyReceived)
     {
         $order = Order::with(['customer', 'orderItems.product'])->findOrFail($orderId);
 
-        return view('sales.receipt', ['order' => $order]);
+        return view('sales.receipt', ['order' => $order, 'moneyGiveBack' => $moneyGiveBack, 'moneyReceived' => $moneyReceived]);
     }
 
     public function searchByDate(Request $request)

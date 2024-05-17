@@ -173,6 +173,10 @@
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" value="">
                     </div>
+                    <div class="form-group">
+                        <label for="moneyReceived">Money Received</label>
+                        <input type="number" class="form-control" name="moneyReceived" value="">
+                    </div>
                     <div id="transactionData">
                         <!-- Hidden input fields for the transaction list data will be added here -->
                     </div>

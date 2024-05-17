@@ -1,5 +1,7 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 </head>
+
 <body>
     <main class="container mt-5">
         <section>
@@ -39,7 +42,9 @@
                             <tbody>
                                 @foreach ($order->orderItems as $item)
                                     <tr>
-                                        <td>{{ $item->product->product_name }}</td>
+                                        <td>
+                                            {{ $item->product->product_name }}
+                                        </td>
                                         <td>{{ $item->product->barcode }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>${{ $item->quantity * $item->product->retail_price }}</td>
@@ -49,10 +54,18 @@
                                     <td>&nbsp;</td>
                                     <td colspan="2">
                                         <h5 class="text-success text-center "><strong>Grand Total</strong></h5>
+                                        <h6 class="text-success text-center "><strong>Money Received</strong></h3>
+                                        <h6 class="text-success text-center "><strong>Exchange</strong></h3>
                                     </td>
                                     <td>
                                         <h5 class="text-success text-center ">
                                             <strong>${{ $order->total_price }}</strong>
+                                        </h5>
+                                        <h5 class="text-success text-center ">
+                                            <strong>${{$moneyGiveBack }}</strong>
+                                        </h5>
+                                        <h5 class="text-success text-center ">
+                                            <strong>${{ $moneyReceived }}</strong>
                                         </h5>
                                     </td>
                                 </tr>
@@ -125,4 +138,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -7,7 +7,6 @@ use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\LoginController;
 // use Illuminate\Support\Facades\View;
 
-
 //Login routes
 Route::get('/login', function () {
     return view('login');
@@ -33,10 +32,12 @@ Route::prefix('admin_dashboard')->group(function () {
 
 //Sales routes
 Route::prefix('sales_dashboard')->group(function () {
-    Route::get('/', [SalesmanController::class, 'index'])->name('sales.sales_dashboard')->middleware('auth:salesman');
+    Route::get('/', [SalesmanController::class, 'index'])
+        ->name('sales.sales_dashboard')
+        ->middleware('auth:salesman');
     Route::get('/search', [SalesmanController::class, 'searchCustomer'])->name('sales.search');
     Route::get('sales_transaction', [SalesmanController::class, 'transaction'])->name('sales.sales_transaction');
-    Route::get('sales_transaction/receipt/{orderId}', [SalesmanController::class, 'receipt'])->name('sales.receipt');
+    Route::get('sales_transaction/receipt/{orderId}/{moneyReceived}/{moneyGiveBack}', [SalesmanController::class, 'receipt'])->name('sales.receipt');
     Route::get('/logout', [LoginController::class, 'logout'])->name('sales.logout');
     Route::get('/report', [SalesmanController::class, 'report'])->name('sales.report');
     Route::get('/detail/{customerId}', [SalesmanController::class, 'detail'])->name('sales.detail');
@@ -49,12 +50,10 @@ Route::prefix('sales_dashboard')->group(function () {
     Route::get('/report/order/{id}', [SalesmanController::class, 'showOrderDetails'])->name('sales.orderDetails');
     Route::get('/customerHistory/{customerId}', [SalesmanController::class, 'customerHistory'])->name('sales.customerHistory');
     Route::get('/customerHistory/{customerId}/search', [SalesmanController::class, 'searchOrder'])->name('sales.searchOrder');
-    Route::get('/salesinfo/{email}', [SalesmanController::class,'salesInfo'])->name('sales.salesInfo');
-    Route::put('/salesinfo/{email}/edit', [SalesmanController::class,'editPassword'])->name('sales.editPassword');
+    Route::get('/salesinfo/{email}', [SalesmanController::class, 'salesInfo'])->name('sales.salesInfo');
+    Route::put('/salesinfo/{email}/edit', [SalesmanController::class, 'editPassword'])->name('sales.editPassword');
     Route::post('/salesman/updateProfilePicture', [SalesmanController::class, 'updateProfilePicture'])->name('salesman.updateProfilePicture');
 });
-
-
 
 //products routes
 Route::prefix('products')->group(function () {
@@ -74,6 +73,5 @@ Route::get('/close-tab', function () {
 Route::get('/password-updated', function () {
     return view('passwordUpdated');
 })->name('passwordUpdated');
-
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
